@@ -69,6 +69,10 @@ A push of `main` from a clone with a Netlify token configured —
 `netlify-token-path.local` — first deploys the private build to a personal site
 through `.githooks/pre-push`, and aborts the push if that fails.
 
+The public demo, https://sport-buk.pages.dev, is deployed by hand with
+`pnpm deploy:demo`: it builds a fresh clone of `HEAD`, which never holds the
+private programme, and refuses to deploy anything but the public one.
+
 ## Develop
 
 ```bash
