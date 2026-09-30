@@ -48,7 +48,6 @@
   "repository": "github:AdrienLcp/sport",
   "scripts": {
     "build": "pnpm typecheck && vite build",
-    "deploy": "pnpm build && npx -y wrangler@4 pages deploy dist --project-name sport --branch main",
     "deps:upgrade": "corepack use pnpm@latest && pnpm up -L && biome migrate --write",
     "dev": "vite",
     "lint": "biome check --write",

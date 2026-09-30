@@ -6,8 +6,8 @@ mat, keeps a journal and draws the curves — and it is a real Progressive Web
 App: installable, fully offline, with reminders, and with every number kept on
 the device.
 
-**Live:** https://sport-buk.pages.dev — open `/specimen` to see every plate and
-curve full, with made-up numbers kept apart from your own.
+Open `/specimen` to see every plate and curve full, with made-up numbers kept
+apart from your own.
 
 ## What it does
 
@@ -64,6 +64,11 @@ to `private/programme/<file>.ts` when it exists and to the public file
 otherwise, for Vite, Vitest and `tsc` alike; the build prints which one it
 read. A copy exports the same names as the file it replaces.
 
+A push of `main` from a clone with a Netlify token configured —
+`NETLIFY_TOKEN_FILE`, or its path on the first line of
+`netlify-token-path.local` — first deploys the private build to a personal site
+through `.githooks/pre-push`, and aborts the push if that fails.
+
 ## Develop
 
 ```bash
@@ -73,7 +78,6 @@ pnpm validate     # typecheck + build + biome ci + tests
 pnpm lint         # biome check --write
 pnpm test         # vitest
 pnpm preview      # the built app with its service worker, http://localhost:5187
-pnpm deploy       # build, then Cloudflare Pages (project `sport`)
 ```
 
 Vite, React 19 with the React Compiler, react-router in data mode,

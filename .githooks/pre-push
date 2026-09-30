@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# A push of main deploys the owner's personal site first; a failed deploy
+# aborts the push. Git feeds one "<local ref> <local sha> <remote ref> <remote sha>"
+# line per pushed ref on stdin.
+
+set -e
+
+pushes_main=false
+while read -r _local_ref local_sha remote_ref _remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ] && [ "$local_sha" != "0000000000000000000000000000000000000000" ]; then
+    pushes_main=true
+  fi
+done
+
+if [ "$pushes_main" = true ]; then
+  sh "$(git rev-parse --show-toplevel)/scripts/deploy-personal-site.sh"
+fi
