@@ -1,0 +1,11 @@
+coverage
+dist
+dev-dist
+node_modules
+
+*.tsbuildinfo
+*.local
+
+# Kept on this machine only: a personal copy of the programme, local agent notes
+private
+CLAUDE.local.md

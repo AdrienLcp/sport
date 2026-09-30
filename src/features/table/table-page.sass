@@ -1,0 +1,81 @@
+// The table. Same manual, three more plates: what the day counted, what goes
+// in the pot, what to buy. No dashboard, no ring, no streak — the only figure
+// that means anything is the one the day actually reached.
+
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .table-page
+    .columns
+      flex: 1 1 auto
+      display: grid
+      gap: var(--s-5)
+      min-width: 0
+
+    .column
+      min-width: 0
+      display: flex
+      flex-direction: column
+      gap: var(--s-2)
+
+      & + .column
+        padding-top: var(--s-5)
+        border-top: 1px solid var(--rule-soft)
+
+    .heading
+      font-size: 1.35rem
+      font-weight: 800
+      letter-spacing: var(--track-tight)
+      line-height: 1.1
+
+    .hint
+      font-size: 0.85rem
+      line-height: 1.45
+      color: var(--ink-dim)
+
+      b
+        color: var(--ink)
+        font-weight: 700
+
+    // ---------- the register of three ----------
+
+    .tabs
+      border-top: 1px solid var(--rule-soft)
+      padding-top: var(--s-1)
+
+      // Compounded with `.ledger` to win over its line padding by specificity:
+      // the link carries the line's height.
+      &.ledger li
+        padding: 0
+
+    // A link drawn as the ledger line it replaces: no underline, no link colour.
+    .tab
+      display: flex
+      align-items: baseline
+      gap: var(--s-3)
+      width: 100%
+      min-height: 46px
+      color: inherit
+      text-align: left
+      text-decoration: none
+      transition: color 160ms var(--ease-out)
+      -webkit-tap-highlight-color: transparent
+
+    .tabs li:not([data-state='live']) .tab[data-hovered]
+      color: var(--ink)
+
+  @include breakpoints.wide
+    .table-page
+      // The binding runs the full height of the open manual, as in the journal.
+      .columns
+        grid-template-columns: 1fr 1fr
+        gap: var(--s-7)
+
+      .column + .column
+        padding-top: 0
+        padding-left: var(--s-7)
+        border-top: 0
+        border-left: 1px solid var(--rule-soft)
+
+      .heading
+        font-size: 1.6rem

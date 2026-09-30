@@ -1,0 +1,42 @@
+@layer components
+  .figure-body
+    .limb
+      stroke: currentColor
+
+    .far-limb
+      stroke: var(--fig-far)
+
+    .head
+      fill: currentColor
+
+    // Reduced motion prints the far end of the gesture behind the working pose,
+    // in the broken line a manual uses for a position that is not the one drawn.
+    // It reads as construction, never as a second body. 4.0:1, measured.
+    .ghost-limb,
+    .ghost-head
+      stroke: var(--fig-ghost)
+      stroke-width: 2.2
+      stroke-dasharray: 4 4
+
+    .ghost-head
+      fill: none
+
+  .figure-stage
+    stroke: var(--fig-prop)
+
+  // The whole drawing is the replay target — a manual has no play button, so
+  // the figure itself is the affordance and carries no chrome of its own.
+  .figure-replay
+    appearance: none
+    display: grid
+    place-items: center
+    width: 100%
+    height: 100%
+    min-height: 0
+    margin: 0
+    padding: 0
+    border: 0
+    background: none
+    color: inherit
+    font: inherit
+    cursor: pointer

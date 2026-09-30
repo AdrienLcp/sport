@@ -1,0 +1,42 @@
+@layer base
+  body
+    -webkit-font-smoothing: antialiased
+    background: var(--ground)
+    color: var(--ink)
+    font-family: 'Libre Franklin', system-ui, sans-serif
+    font-synthesis: none
+    font-variant-numeric: tabular-nums
+    font-weight: 400
+    line-height: 1.5
+    margin: 0
+    overscroll-behavior: none
+
+  // The surfaces the browser draws for us still belong to the plate.
+  ::selection
+    background: var(--ink)
+    color: var(--ground)
+
+  :root
+    caret-color: var(--signal)
+    scrollbar-color: var(--rule) var(--ground)
+    scrollbar-width: thin
+
+  :focus-visible
+    outline: 2px solid var(--signal)
+    outline-offset: 3px
+
+  @media (prefers-reduced-motion: reduce)
+    *,
+    *::before,
+    *::after
+      animation-duration: 1ms !important
+      animation-iteration-count: 1 !important
+      transition-duration: 1ms !important
+
+  // The one authored moment: the plate turns, and the new figure is laid down
+  // like ink across the page. It holds when it lands; it never blinks.
+  @keyframes lay-down
+    from
+      clip-path: inset(0 100% 0 0)
+    to
+      clip-path: inset(0 0 0 0)

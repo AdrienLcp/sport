@@ -1,0 +1,512 @@
+// The plate. A framed page from a gymnastics manual, one movement per page,
+// turned rather than scrolled. Everything here is either ink, rule or signal.
+//
+// One stylesheet for the whole plate system rather than one per piece: the
+// short-screen and desk media queries at the bottom re-space the head, the
+// figure, the ledger and the action together, and they only win because they
+// come after every rule they override.
+
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .plate
+    position: relative
+    display: flex
+    flex-direction: column
+    min-height: 0
+    // The body scrolls inside the frame; the plate itself never grows past the
+    // screen, or the head band and the action leave with it.
+    max-height: 100%
+    padding: var(--s-5) var(--s-5) var(--s-4)
+    // An engraved double frame: hairline, gap, hairline. Not a card border.
+    box-shadow: inset 0 0 0 1px var(--rule), inset 0 0 0 7px var(--ground), inset 0 0 0 8px var(--rule-soft)
+
+    // ---------- the head band, and the ruled line that is the chrono ----------
+
+    .plate-head
+      position: relative
+      flex: none
+      display: flex
+      align-items: baseline
+      justify-content: space-between
+      gap: var(--s-3)
+      padding-bottom: var(--s-2)
+      border-bottom: 1px solid var(--rule-mid)
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+
+      .rank
+        color: var(--ink-dim)
+        letter-spacing: 0.1em
+        white-space: nowrap
+
+      // A printed plate has no clock. The rule that was already under the title
+      // withdraws instead — nothing was added to carry the time.
+      .chrono
+        position: absolute
+        inset: auto 0 -1px 0
+        height: 1px
+        background: var(--ink)
+        transform: scaleX(var(--chrono-scale))
+        transform-origin: left center
+        will-change: transform
+
+        &[data-state='rest']
+          height: 2px
+          bottom: -2px
+          background: var(--signal)
+
+      // The same rule, read the other way: the count lays it down as the day
+      // fills. Length carries the whole state — at target the rule is simply
+      // whole, which is what an untouched chrono looks like.
+      .gauge
+        position: absolute
+        inset: auto 0 -2px 0
+        height: 2px
+        background: var(--ink-dim)
+        transform: scaleX(var(--gauge-scale))
+        transform-origin: left center
+        transition: transform 320ms var(--ease-out), background 320ms var(--ease-out)
+
+        &[data-full='true']
+          background: var(--ink)
+
+    // The exits share the row and drop below rather than clip a label: three
+    // exits do not fit side by side on a phone.
+    .exits
+      flex: none
+      display: flex
+      flex-wrap: wrap
+      gap: var(--s-2)
+
+      .action
+        flex: 1 1 8rem
+        min-width: 0
+
+    .turning
+      animation: lay-down var(--turn) var(--ease-out) both
+
+    // ---------- the legend, as under an engraving ----------
+
+    .caption
+      flex: none
+      font-size: var(--t-name)
+      font-weight: 800
+      letter-spacing: var(--track-tight)
+      line-height: 1.05
+      text-wrap: balance
+
+    .legend
+      flex: none
+      display: flex
+      align-items: baseline
+      flex-wrap: wrap
+      gap: 0 var(--s-2)
+      margin-top: var(--s-2)
+      font-size: var(--t-legend)
+      color: var(--ink-dim)
+
+      // A number read in action, at a metre: display type, not a footnote.
+      .count
+        color: var(--ink)
+        font-weight: 800
+        font-size: clamp(1.5rem, 6vw, 2rem)
+        letter-spacing: var(--track-tight)
+
+      .side
+        letter-spacing: 0.14em
+        text-transform: uppercase
+        font-size: var(--t-head)
+        font-weight: 700
+        color: var(--signal-ink)
+
+      .prev
+        margin-left: auto
+        white-space: nowrap
+
+        b
+          color: var(--signal-ink)
+          font-size: 1.2rem
+          font-weight: 800
+
+    // ---------- the ledger: five lines, visible start to finish ----------
+
+    .ledger
+      flex: none
+      margin-top: var(--s-4)
+      font-size: var(--t-ledger)
+
+      > *
+        display: flex
+        align-items: baseline
+        gap: var(--s-3)
+        padding: 5px 0
+        border-bottom: 1px solid var(--rule-faint)
+        color: var(--ink-dim)
+
+        &:last-child
+          border-bottom: 0
+
+      .address
+        flex: none
+        width: 3.6em
+        font-size: 0.8em
+        letter-spacing: 0.08em
+
+      .label
+        flex: 1 1 auto
+        min-width: 0
+
+      .state
+        flex: none
+        font-size: 0.78em
+        letter-spacing: 0.13em
+        text-transform: uppercase
+
+      // State reads from the stroke first: struck through when done, heavy when
+      // live, quiet when still to come. The cinnabar only confirms.
+      > [data-state='done']
+        color: var(--ink-spent)
+
+        .label
+          text-decoration: line-through
+          text-decoration-color: var(--rule-mid)
+
+      > [data-state='live']
+        color: var(--ink)
+        font-weight: 700
+
+        .state
+          color: var(--signal-ink)
+
+    // The same lines, picked by a tap: the front door's five sessions.
+    .register
+      > .choice
+        min-height: 46px
+        align-items: center
+        cursor: pointer
+        -webkit-tap-highlight-color: transparent
+        transition: color 160ms var(--ease-out)
+
+        &[data-hovered]:not([data-state='live'])
+          color: var(--ink)
+
+        &[data-focus-visible]
+          outline: 2px solid var(--signal)
+          outline-offset: -2px
+
+      // Suggested by the order of A to E: the word says it, the cinnabar confirms.
+      > [data-due] .state
+        color: var(--signal-ink)
+
+    // ---------- rounds, next up, and the constraint that never leaves ----------
+
+    .rounds
+      display: flex
+      align-items: center
+      gap: 7px
+      margin-top: var(--s-4)
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)
+
+      i
+        flex: 1 1 auto
+        height: 6px
+        box-shadow: inset 0 0 0 1px var(--rule)
+
+        &[data-on='true']
+          background: var(--ink)
+          box-shadow: none
+
+      .rank
+        letter-spacing: 0.08em
+
+    .next-up
+      margin-top: var(--s-4)
+      padding-top: var(--s-3)
+      border-top: 1px solid var(--rule-soft)
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)
+
+      b
+        display: block
+        margin-top: 5px
+        color: var(--ink)
+        font-size: 1.05rem
+        font-weight: 800
+        letter-spacing: var(--track-tight)
+        text-transform: none
+
+    .guard
+      margin-top: var(--s-3)
+      font-size: 0.78rem
+      line-height: 1.45
+      color: var(--ink-dim)
+
+    // ---------- the action: one target, the widest the plate allows ----------
+
+    .action
+      flex: none
+      width: 100%
+      margin-top: var(--s-4)
+      padding: 22px var(--s-3)
+      background: var(--ink)
+      color: var(--ground)
+      font-size: var(--t-button)
+      font-weight: 800
+      letter-spacing: 0.14em
+      text-align: center
+      text-decoration: none
+      text-transform: uppercase
+      transition: background 180ms var(--ease-out)
+      -webkit-tap-highlight-color: transparent
+      touch-action: manipulation
+
+      // A link drawn as the action: it takes the centring a button gives its
+      // label for free — a wrapped label in a taller row included — and loses
+      // its underline.
+      &:is(a)
+        display: flex
+        align-items: center
+        justify-content: center
+
+      &[data-hovered]
+        background: var(--ink-bright)
+
+      &[data-pressed]
+        background: var(--ink-soft)
+
+      // Nothing to note yet: the button says so and stops taking taps, rather
+      // than looking live and doing nothing. 4.57:1, measured.
+      &[data-disabled]
+        background: var(--rule-soft)
+        color: var(--ink-dim)
+        cursor: default
+
+      &.ghost
+        margin-top: var(--s-3)
+        padding: 17px var(--s-3)
+        background: transparent
+        color: var(--ink-dim)
+        font-size: 0.85rem
+        box-shadow: inset 0 0 0 1px var(--rule)
+        transition: color 180ms var(--ease-out), box-shadow 180ms var(--ease-out)
+
+        &[data-hovered]
+          color: var(--ink)
+          background: transparent
+          box-shadow: inset 0 0 0 1px var(--ink-dim)
+
+    // ---------- title, verdict ----------
+
+    .body
+      flex: 1 1 auto
+      min-height: 0
+      display: flex
+      flex-direction: column
+      justify-content: center
+      gap: var(--s-3)
+      padding: var(--s-4) 0
+      overflow-y: auto
+
+      // A body taller than its frame cannot centre: centred, its top becomes
+      // unreachable.
+      &.from-top
+        justify-content: flex-start
+
+      // A register scrolls; reserving the gutter keeps the scrollbar off its
+      // columns instead of shaving them when the content grows.
+      &.register
+        justify-content: flex-start
+        scrollbar-gutter: stable
+        padding-right: var(--s-2)
+
+    .headline
+      font-size: var(--t-title)
+      font-weight: 800
+      letter-spacing: var(--track-tight)
+      line-height: 1.05
+      text-wrap: balance
+
+    .prose
+      max-width: 62ch
+      font-size: var(--t-prose)
+      line-height: 1.55
+      color: var(--ink-soft)
+
+    .divider
+      height: 1px
+      background: var(--rule-soft)
+
+    .facts
+      display: grid
+      grid-template-columns: auto 1fr
+      gap: 6px var(--s-4)
+      font-size: 0.85rem
+      color: var(--ink-dim)
+
+      dt
+        font-size: var(--t-head)
+        font-weight: 700
+        letter-spacing: 0.12em
+        text-transform: uppercase
+        padding-top: 3px
+
+      dd
+        color: var(--ink)
+
+    .tally
+      width: 100%
+      border-collapse: collapse
+      font-size: 0.9rem
+
+      th
+        text-align: left
+        padding: 0 0 7px
+        border-bottom: 1px solid var(--rule-soft)
+        font-size: var(--t-head)
+        font-weight: 700
+        letter-spacing: 0.15em
+        text-transform: uppercase
+        color: var(--ink-dim)
+
+      td
+        padding: 7px 0
+        border-bottom: 1px solid var(--rule-faint)
+        color: var(--ink-soft)
+
+      th:not(:first-child),
+      td:not(:first-child)
+        text-align: right
+
+      td:last-child
+        color: var(--ink)
+        font-weight: 700
+
+    // ---------- the double page, once the screen is a desk ----------
+
+    // One DOM for both. On a phone the pages dissolve and the plate reads top
+    // to bottom; on a desk they become the two pages of an open manual.
+    &.spread
+      .first-page,
+      .second-page
+        display: contents
+
+      .plate-head
+        order: 1
+
+      .figure-frame
+        order: 2
+
+      .movement
+        order: 3
+        flex: none
+
+      .aside
+        order: 4
+        flex: none
+
+      .action
+        order: 5
+
+      .exits
+        order: 6
+
+  // ---------- the figure, which is the reason this world exists ----------
+
+  // Outside the plate's nesting: the contact sheet and the solo page draw a
+  // figure in the same frame with no plate around it.
+  .figure-frame
+    flex: 1 1 auto
+    min-height: 90px
+    display: grid
+    place-items: center
+    padding: var(--s-3) 0 var(--s-1)
+    color: var(--ink)
+
+    svg
+      width: 100%
+      height: 100%
+      max-height: 280px
+
+  // A phone with browser chrome leaves barely 600px of height. The figure and
+  // the action keep their size; everything secondary gives up its air, so the
+  // head band — which carries the chrono — never scrolls off the top.
+  @media (max-height: 720px)
+    .plate
+      padding: var(--s-4) var(--s-4) var(--s-3)
+
+      .ledger
+        margin-top: var(--s-3)
+
+        li
+          padding: 3px 0
+
+      .rounds,
+      .next-up,
+      .action
+        margin-top: var(--s-3)
+
+      .next-up
+        padding-top: var(--s-2)
+
+      .guard
+        margin-top: var(--s-2)
+
+      .action
+        padding: 18px var(--s-3)
+
+    .figure-frame
+      padding: var(--s-2) 0 0
+
+  @include breakpoints.wide
+    .plate
+      width: min(1080px, 100%)
+      min-height: min(660px, 100%)
+      padding: 0
+
+      &.spread
+        display: grid
+        grid-template-columns: 1fr 1.18fr
+
+        .first-page,
+        .second-page
+          display: flex
+          flex-direction: column
+          min-height: 0
+          padding: var(--s-6) var(--s-6) var(--s-5)
+
+        .first-page
+          border-right: 1px solid var(--rule-soft)
+
+          // The ledger sits straight under the head band, as a summary does; the
+          // air collects above the action instead of between the two. Only the
+          // action it belongs to: an exit under it would take a share of the same
+          // free space and the two would drift apart.
+          > .action
+            margin-top: auto
+
+        // Figure and legend centre as one block on the right page, the way a
+        // plate and its caption sit together.
+        .second-page
+          justify-content: center
+
+        .figure-frame
+          flex: 0 1 auto
+
+          svg
+            max-height: 340px
+
+      &.single
+        padding: var(--s-6) var(--s-7) var(--s-5)
+
+      .caption
+        font-size: clamp(2.2rem, 3.4vw, 3rem)

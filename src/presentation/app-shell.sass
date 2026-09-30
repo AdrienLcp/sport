@@ -1,0 +1,34 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .app-shell
+    // Bounded, not just tall: the plate has to be height-constrained for the
+    // figure to give up space on a short screen instead of pushing the head
+    // band and the action off the bottom. The notices take what they need
+    // above it; the plate keeps the rest.
+    height: 100dvh
+    display: grid
+    grid-template-rows: auto minmax(0, 1fr)
+    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left))
+
+    .notices
+      display: grid
+      gap: var(--s-2)
+
+      &:not(:empty)
+        margin-bottom: var(--s-2)
+
+    .stage
+      min-height: 0
+      display: grid
+
+  @include breakpoints.wide
+    .app-shell
+      padding: var(--s-5)
+
+      .notices
+        justify-self: center
+        width: min(1080px, 100%)
+
+      .stage
+        place-items: center

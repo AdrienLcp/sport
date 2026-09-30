@@ -1,0 +1,17 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .plate-figure
+    width: 100%
+    max-width: 215px
+    height: auto
+    margin: 0 auto
+
+  .swatch
+    flex: none
+    width: 26px
+    height: 18px
+
+  @include breakpoints.wide
+    .plate-figure
+      max-width: 250px

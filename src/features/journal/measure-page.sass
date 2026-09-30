@@ -1,0 +1,13 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .measure-page
+    .fields
+      display: grid
+      gap: var(--s-6)
+      margin-top: var(--s-3)
+
+  @include breakpoints.wide
+    .measure-page .fields
+      grid-template-columns: 1fr 1fr
+      gap: var(--s-7)

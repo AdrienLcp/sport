@@ -1,0 +1,39 @@
+@layer components
+  .report-page
+    // The text is not a read, it is what leaves. It keeps the world's typeface:
+    // a monospace would be a second voice for nothing.
+    .outgoing
+      margin: 0
+      min-width: 0
+      max-width: 74ch
+      font: inherit
+      font-size: 0.85rem
+      line-height: 1.6
+      color: var(--ink-dim)
+      font-variant-numeric: tabular-nums
+      white-space: pre-wrap
+      overflow-wrap: anywhere
+      // A rule says where what leaves begins: without it, the text to take away
+      // blends into the prose announcing it.
+      padding-left: var(--s-3)
+      border-left: 1px solid var(--rule)
+
+    // Outside the scrolling body: a confirmation that has to be looked for has
+    // not been seen.
+    .taken,
+    .refused
+      flex: none
+      margin-top: var(--s-3)
+
+    .taken
+      font-size: 0.85rem
+      color: var(--ink-dim)
+
+      b
+        color: var(--ink)
+        font-weight: 700
+
+    // A refused clipboard says so, and says how to finish the gesture.
+    .refused
+      font-size: var(--t-legend)
+      color: var(--signal-ink)

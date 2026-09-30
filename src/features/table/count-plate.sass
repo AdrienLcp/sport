@@ -1,0 +1,130 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .count-plate
+    // The rest plate is the only one allowed an enormous number. The day's
+    // total is the name of this plate, so it takes the scale a movement name takes.
+    .total
+      display: flex
+      align-items: baseline
+      gap: var(--s-2)
+      line-height: 0.95
+
+      b
+        font-size: var(--t-name)
+        font-weight: 800
+        letter-spacing: var(--track-tight)
+
+    .unit
+      font-size: 1.15rem
+      font-weight: 700
+      color: var(--ink)
+
+    .of-target
+      font-size: var(--t-legend)
+      color: var(--ink-dim)
+
+    .shortfall
+      font-size: var(--t-legend)
+      color: var(--ink-soft)
+
+      // The one place the signal belongs on this plate: the gauge under the band
+      // is short, and the cinnabar says by how much. Met, nothing is lit at all.
+      b
+        color: var(--signal-ink)
+        font-weight: 800
+
+      &[data-met='true']
+        color: var(--ink-dim)
+
+    .prior
+      font-size: 0.85rem
+      color: var(--ink-dim)
+
+      b
+        color: var(--ink)
+        font-weight: 700
+
+    .sources
+      margin-top: var(--s-1)
+
+      li
+        display: flex
+        align-items: stretch
+        gap: 6px
+        border-bottom: 1px solid var(--rule-faint)
+
+        &:last-child
+          border-bottom: 0
+
+    // One line, one portion: the whole row is the target, because the hand
+    // doing this is holding a fork.
+    .add
+      flex: 1 1 auto
+      min-width: 0
+      display: flex
+      align-items: baseline
+      gap: 6px
+      min-height: 48px
+      padding: var(--s-2) 0
+      text-align: left
+      transition: color 160ms var(--ease-out)
+
+    .source-name
+      flex: 1 1 auto
+      min-width: 0
+      font-size: 1rem
+      color: var(--ink-soft)
+
+    // Never the thing that shrinks: a portion clipped to "10…" is the one word
+    // on the line that cannot be guessed back.
+    .portion
+      flex: none
+      white-space: nowrap
+      font-size: 0.8rem
+      color: var(--ink-dim)
+
+    .taps
+      flex: none
+      font-size: 0.85rem
+      font-weight: 800
+      letter-spacing: 0.04em
+      color: var(--ink)
+
+    .yield
+      flex: none
+      min-width: 3.2em
+      text-align: right
+      font-size: 0.9rem
+      color: var(--ink-dim)
+
+    .sources li[data-counted='true']
+      .source-name,
+      .yield
+        color: var(--ink)
+        font-weight: 700
+
+    .add[data-hovered] .source-name
+      color: var(--ink)
+
+    // The correcting target, never a deciding one: it exists only on a line
+    // that already carries a count, and it keeps its width so the row never
+    // shifts.
+    .less
+      flex: none
+      width: 44px
+      display: grid
+      place-items: center
+      font-size: 1.2rem
+      color: var(--ink-dim)
+      transition: color 160ms var(--ease-out)
+
+      &[data-hovered]
+        color: var(--ink)
+
+    .sources li[data-counted='false'] .less
+      visibility: hidden
+
+  @include breakpoints.wide
+    .count-plate .settled
+      justify-content: center

@@ -1,0 +1,86 @@
+@layer components
+  .market-plate
+    .list-head
+      display: flex
+      align-items: baseline
+      justify-content: space-between
+      gap: var(--s-3)
+
+    .tick-count b
+      font-size: 1.15rem
+
+    .clear
+      flex: none
+      // A 44px target that does not make the header row 44px tall.
+      padding: 14px 0
+      margin: -14px 0
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)
+      transition: color 160ms var(--ease-out)
+
+      &[data-hovered]
+        color: var(--ink)
+
+      &[data-disabled]
+        color: var(--ink-spent)
+        cursor: default
+
+    .aisles
+      flex: 1 1 auto
+      display: grid
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr))
+      align-items: start
+      gap: var(--s-5) var(--s-6)
+      margin-top: var(--s-2)
+
+    .aisle-name
+      padding-bottom: var(--s-2)
+      border-bottom: 1px solid var(--rule-soft)
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)
+
+    .item
+      display: flex
+      align-items: center
+      gap: var(--s-3)
+      width: 100%
+      min-height: 44px
+      text-align: left
+
+    // Got it or not reads from the square and from the struck label, the way
+    // the ledger reads a movement that is done. No check glyph is invented.
+    .tick
+      flex: none
+      width: 14px
+      height: 14px
+      box-shadow: inset 0 0 0 1px var(--rule)
+      transition: background 160ms var(--ease-out), box-shadow 160ms var(--ease-out)
+
+    .item-label
+      min-width: 0
+      font-size: 0.95rem
+      color: var(--ink-soft)
+      transition: color 160ms var(--ease-out)
+
+    .item[data-hovered]
+      .tick
+        box-shadow: inset 0 0 0 1px var(--ink-dim)
+
+      .item-label
+        color: var(--ink)
+
+    .items li[data-state='done']
+      .tick
+        background: var(--ink)
+        box-shadow: inset 0 0 0 1px var(--ink)
+
+      .item-label
+        color: var(--ink-spent)
+        text-decoration: line-through
+        text-decoration-color: var(--rule-mid)

@@ -1,0 +1,99 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  .pot-plate
+    .bases-heading
+      margin-top: var(--s-5)
+
+    .dish
+      display: flex
+      flex-direction: column
+      gap: var(--s-4)
+      margin-top: var(--s-2)
+
+    .shares
+      display: grid
+      gap: var(--s-3)
+
+    .share
+      dt
+        display: flex
+        align-items: center
+        gap: var(--s-2)
+        font-size: var(--t-head)
+        font-weight: 700
+        letter-spacing: var(--track-caps)
+        text-transform: uppercase
+        color: var(--ink-dim)
+
+      dd
+        padding-left: calc(26px + var(--s-2))
+        font-size: 0.88rem
+        line-height: 1.45
+        color: var(--ink-soft)
+
+        b
+          color: var(--ink)
+          font-weight: 700
+
+    .parts
+      display: grid
+      gap: var(--s-3)
+      margin-top: var(--s-2)
+
+    .part-name
+      display: block
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)
+
+    .part-detail
+      display: block
+      font-size: 0.88rem
+      line-height: 1.45
+      color: var(--ink-soft)
+
+    .bases
+      margin-top: var(--s-2)
+
+      li
+        display: flex
+        gap: var(--s-3)
+        padding: var(--s-3) 0
+        border-bottom: 1px solid var(--rule-faint)
+
+        &:last-child
+          border-bottom: 0
+
+      .address
+        flex: none
+        width: 3.6em
+        padding-top: 2px
+        font-size: var(--t-head)
+        font-weight: 700
+        letter-spacing: 0.08em
+        color: var(--ink-dim)
+
+    .base-body
+      min-width: 0
+      display: flex
+      flex-direction: column
+      gap: 2px
+
+    .base-name
+      font-size: 1rem
+      font-weight: 700
+      color: var(--ink)
+      text-wrap: balance
+
+    .base-detail
+      font-size: 0.82rem
+      color: var(--ink-dim)
+
+  @include breakpoints.wide
+    // Two up, so the key stays in the same eyeful as the drawing it keys.
+    .pot-plate .shares
+      grid-template-columns: 1fr 1fr
+      gap: var(--s-4) var(--s-5)

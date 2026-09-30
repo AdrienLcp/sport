@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@programme/*": [
+        "./private/programme/*",
+        "./src/features/program/content/*"
+      ]
+    }
+  },
+  "exclude": ["src/service-worker"],
+  "extends": "@adrienlcp/tsconfig/web-app.json",
+  "include": ["private", "scripts", "src", "vite.config.ts"]
+}

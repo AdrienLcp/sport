@@ -1,0 +1,76 @@
+@use 'chart-focus'
+
+@layer components
+  .line-chart
+    margin-top: var(--s-2)
+
+    .chart
+      position: relative
+      display: grid
+      grid-template-columns: 3.4em 1fr
+      gap: var(--s-3)
+
+    .axis
+      position: relative
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: 0.06em
+      color: var(--ink-dim)
+
+      span
+        position: absolute
+        top: var(--tick-top)
+        right: 0
+        transform: translateY(-50%)
+        white-space: nowrap
+
+    .plot-area
+      position: relative
+      touch-action: pan-y
+      @include chart-focus.ring
+
+    .plot
+      display: block
+      width: 100%
+      height: auto
+      overflow: visible
+
+    .gridline
+      stroke: var(--rule-faint)
+      stroke-width: 1
+
+    .crosshair
+      stroke: var(--rule)
+      stroke-width: 1
+
+    .line
+      fill: none
+      stroke: var(--ink)
+      stroke-width: 2
+      stroke-linecap: round
+      stroke-linejoin: round
+
+    // A pierced dot, the way an engraving marks a reading. The cinnabar confirms
+    // the most recent one; it never carries the value on its own.
+    .dot
+      fill: var(--ground)
+      stroke: var(--ink)
+      stroke-width: 2
+
+      &[data-last='true']
+        fill: var(--signal)
+        stroke: var(--signal)
+
+      &[data-active='true']
+        fill: var(--ink)
+        stroke: var(--ground)
+
+    .dates
+      display: flex
+      justify-content: space-between
+      margin: var(--s-2) 0 0 calc(3.4em + var(--s-3))
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: var(--track-caps)
+      text-transform: uppercase
+      color: var(--ink-dim)

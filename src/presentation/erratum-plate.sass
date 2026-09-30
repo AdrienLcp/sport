@@ -1,0 +1,14 @@
+@layer components
+  .erratum-plate
+    // A path can outgrow a phone's band: it is cut, never allowed to push the
+    // title out.
+    .plate-head .rank
+      min-width: 0
+      overflow: hidden
+      text-overflow: ellipsis
+
+    // An error message has no spaces to break on when it is a URL or a stack
+    // frame; it wraps anywhere rather than widening the plate.
+    .reason
+      min-width: 0
+      overflow-wrap: anywhere

@@ -1,0 +1,7 @@
+// The ring a chart shows when the keyboard walks it: the world's one focus
+// signal, drawn by the plot around the invisible scrubber, a little away from
+// the marks so it never sits on one.
+@mixin ring
+  &:has(.chart-scrubber:focus-visible)
+    outline: 2px solid var(--signal)
+    outline-offset: 6px

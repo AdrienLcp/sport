@@ -1,0 +1,17 @@
+@layer components
+  // Says the register is a choice: without it the five lines read as a
+  // timetable, and a reader never found out he could pick another session.
+  .title-plate .register-label
+    margin-top: var(--s-2)
+    font-size: var(--t-head)
+    font-weight: 700
+    letter-spacing: var(--track-caps)
+    text-transform: uppercase
+    color: var(--ink-dim)
+
+    + .ledger
+      margin-top: 0
+
+  // The rules are read, not scanned for a number: prose ink, not full ink.
+  .title-plate .facts.rules dd
+    color: var(--ink-soft)

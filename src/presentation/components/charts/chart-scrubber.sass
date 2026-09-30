@@ -1,0 +1,13 @@
+@layer components
+  // Covers the plot and paints nothing: the marks are the visible part.
+  .chart-scrubber
+    position: absolute
+    inset: 0
+    z-index: 1
+    width: 100%
+    height: 100%
+    margin: 0
+    opacity: 0
+    cursor: crosshair
+    appearance: none
+    touch-action: pan-y

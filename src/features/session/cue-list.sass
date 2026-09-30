@@ -1,0 +1,127 @@
+@use '@adrienlcp/styles/breakpoints'
+
+@layer components
+  // The block under the legend: a ruled toggle, then either the cues or the
+  // full how-to in the same place.
+  .cue-block
+    flex: none
+    display: flex
+    flex-direction: column
+    min-height: 0
+    margin-top: var(--s-3)
+    border-top: 1px solid var(--rule-soft)
+
+  // A ledger line that opens: the label on the left, the state on the right,
+  // tall enough for a thumb. Bold ink once open, like a live line.
+  .cue-toggle
+    flex: none
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: var(--s-3)
+    min-height: 44px
+    padding: 0
+    font-size: var(--t-head)
+    font-weight: 700
+    letter-spacing: var(--track-caps)
+    text-align: left
+    text-transform: uppercase
+    color: var(--ink-dim)
+    cursor: pointer
+    -webkit-tap-highlight-color: transparent
+    touch-action: manipulation
+    transition: color 160ms var(--ease-out)
+
+    .state
+      flex: none
+      letter-spacing: 0.1em
+
+    &[data-hovered],
+    &[data-selected]
+      color: var(--ink)
+
+    &[data-focus-visible]
+      outline: 2px solid var(--signal)
+      outline-offset: -2px
+
+  // The term takes the head band's capitals so the eye finds a line by its
+  // label; the answer is prose, one step quieter than the count above it.
+  .cue-list
+    display: grid
+    grid-template-columns: max-content 1fr
+    align-content: start
+    gap: 3px var(--s-3)
+    font-size: 0.84rem
+    line-height: 1.35
+
+    .cue
+      display: contents
+
+    dt
+      padding-top: 0.2em
+      font-size: var(--t-head)
+      font-weight: 700
+      letter-spacing: 0.12em
+      text-transform: uppercase
+      color: var(--ink-dim)
+
+    dd
+      color: var(--ink-soft)
+      text-wrap: pretty
+
+  // The how-to, numbered as a manual numbers its steps.
+  .setup-steps
+    display: grid
+    gap: var(--s-2)
+    padding-left: 1.4em
+    font-size: 0.86rem
+    line-height: 1.4
+    color: var(--ink-soft)
+    list-style: decimal
+
+    li
+      max-width: 62ch
+      padding-left: 0.2em
+      text-wrap: pretty
+
+      &::marker
+        font-weight: 700
+        color: var(--ink-dim)
+
+  // A phone cannot hold the figure, the count, seven cues and the five-line
+  // register at once. The register and the action never leave, so the cue
+  // block is what gives: it scrolls inside itself, under a figure that keeps a
+  // size worth looking at, its toggle always in reach. « Ensuite » goes too —
+  // on a phone the register right under it already names the next line.
+  @include breakpoints.narrow
+    .plate.spread
+      &:has(.cue-block)
+        .figure-frame
+          min-height: clamp(120px, 21vh, 190px)
+
+        .next-up
+          display: none
+
+      .movement:has(> .cue-block)
+        flex: 0 1 auto
+        min-height: 0
+        display: flex
+        flex-direction: column
+
+        > .cue-block
+          flex: 0 1 auto
+          min-height: 5.5em
+
+          > .cue-list,
+          > .setup-steps
+            flex: 0 1 auto
+            min-height: 0
+            overflow-y: auto
+            overscroll-behavior: contain
+
+          > .cue-list
+            gap: 2px var(--s-2)
+            font-size: 0.8rem
+
+          > .setup-steps
+            font-size: 0.82rem
