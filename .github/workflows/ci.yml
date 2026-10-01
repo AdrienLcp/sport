@@ -12,6 +12,9 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
       - uses: actions/checkout@v7
 
@@ -30,7 +33,14 @@ jobs:
         run: pnpm lint:ci
 
       - name: Build
-        run: pnpm build
+        run: pnpm build | tee build.log
 
       - name: Test
         run: pnpm test
+
+      # A clean clone only holds the public programme; the check keeps it that way.
+      - name: Deploy the public demo
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && env.CLOUDFLARE_API_TOKEN != ''
+        run: |
+          grep -q 'programme: public' build.log || { echo 'Refusing to deploy: the build did not use the public programme.'; exit 1; }
+          pnpm dlx wrangler@4 pages deploy dist --project-name sport --branch main
