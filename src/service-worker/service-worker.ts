@@ -1,4 +1,8 @@
 /// <reference lib="webworker" />
+// A worker may not import() on demand: the polyfill is bundled, and stands
+// aside wherever the browser has a native Temporal.
+import 'temporal-polyfill/global'
+
 import { clientsClaim } from 'workbox-core'
 import {
   cleanupOutdatedCaches,
