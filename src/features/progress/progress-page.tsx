@@ -15,6 +15,7 @@ import {
   progressPathFor,
   useGoBack
 } from '@/infrastructure/router/navigation'
+import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton, ActionLink } from '@/presentation/components/action'
 import {
   type Column,
@@ -372,7 +373,7 @@ export const ProgressPage: React.FC = () => {
   const translate = useTranslate()
   const goBack = useGoBack(homePathFor())
   const [log] = useState(readTrainingLogOrEmpty)
-  const [today] = useState(() => isoDay(new Date()))
+  const today = useToday()
 
   const weeks = weeklyTallies({ log, today })
   const days = trainingDays({ log, today })

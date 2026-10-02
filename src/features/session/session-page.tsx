@@ -7,9 +7,9 @@ import { sessionAtWeek } from '@/features/program/progression'
 import { doneThisWeek, dueSession, weekOf } from '@/features/program/schedule'
 import { SESSIONS } from '@/features/program/sessions'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
-import { isoDay } from '@/helpers/days'
 import { useChildPage } from '@/infrastructure/router/navigation'
 import { readRunSnapshot } from '@/infrastructure/storage/session-run-storage'
+import { useToday } from '@/presentation/clock/use-today'
 
 import { CooldownPlate } from './cooldown-plate'
 import { DonePlate } from './done-plate'
@@ -28,7 +28,7 @@ type SessionRunProps = {
   onClose: () => void
   onPick: (session: Session) => void
   session: Session
-  today: Date
+  today: string
   week: number
 }
 
@@ -48,7 +48,7 @@ const SessionRun: React.FC<SessionRunProps> = ({
   week
 }) => {
   const session = sessionAtWeek(planned, week)
-  const run = useSessionRun({ session, today, week })
+  const run = useSessionRun({ day: today, session, week })
   const { state } = run
   // A phone propped against a wall must not go dark in the middle of a set.
   useScreenAwake(state.stage !== 'title' && state.stage !== 'done')
@@ -127,7 +127,6 @@ const SessionRun: React.FC<SessionRunProps> = ({
           onPick={onPick}
           onStart={() => run.dispatch({ type: 'begin' })}
           session={session}
-          today={today}
           week={week}
         />
       )
@@ -146,10 +145,10 @@ const readTurn = (): Turn => {
 }
 
 /** A session interrupted today reopens where it stood; otherwise, the one due. */
-const openingSession = (due: Session, today: Date): Session => {
+const openingSession = (due: Session, today: string): Session => {
   const read = readRunSnapshot()
   if (read.status === 'failure' || read.data === null) return due
-  return read.data.day === isoDay(today) ? SESSIONS[read.data.sessionId] : due
+  return read.data.day === today ? SESSIONS[read.data.sessionId] : due
 }
 
 /**
@@ -158,7 +157,7 @@ const openingSession = (due: Session, today: Date): Session => {
  * finds the plate it left.
  */
 export const SessionPage: React.FC = () => {
-  const [today] = useState(() => new Date())
+  const today = useToday()
   const [turn, setTurn] = useState(readTurn)
   const [picked, setPicked] = useState(() => openingSession(turn.due, today))
   const childPage = useChildPage()

@@ -69,8 +69,7 @@ const Counts: React.FC<CountsProps> = ({ backup }) => {
 export const BackupPage: React.FC = () => {
   const translate = useTranslate()
   const goBack = useGoBack(settingsPathFor())
-  const [today] = useState(() => new Date())
-  const [here] = useState(() => gatherHere(today))
+  const [here] = useState(() => gatherHere(new Date()))
   const [incoming, setIncoming] = useState<Backup | null>(null)
   const [isRejected, setIsRejected] = useState(false)
 
@@ -83,7 +82,7 @@ export const BackupPage: React.FC = () => {
   }
 
   const exportHere = () => {
-    const backup = gatherHere(today)
+    const backup = gatherHere(new Date())
     const saved = downloadTextFile({
       name: backupFileName(backup),
       text: serializeBackup(backup),

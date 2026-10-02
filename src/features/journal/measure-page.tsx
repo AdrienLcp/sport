@@ -3,9 +3,10 @@ import { useState } from 'react'
 
 import { putMeasure } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
-import { isoDay } from '@/helpers/days'
+import { dateOfDay } from '@/helpers/days'
 import { capitalize } from '@/helpers/text'
 import { journalPathFor, useGoBack } from '@/infrastructure/router/navigation'
+import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { TextField } from '@/presentation/components/text-field'
@@ -25,10 +26,9 @@ const parseMeasure = (text: string): number | undefined => {
 export const MeasurePage: React.FC = () => {
   const translate = useTranslate()
   const goBack = useGoBack(journalPathFor())
-  const [today] = useState(() => new Date())
   const [log, keepLog] = useTrainingLog()
 
-  const day = isoDay(today)
+  const day = useToday()
   const existing = log.measures?.find((measure) => measure.day === day)
   const [waist, setWaist] = useState(
     existing?.waist === undefined ? '' : String(existing.waist)
@@ -62,7 +62,9 @@ export const MeasurePage: React.FC = () => {
         <h1 className='headline'>{translate('journal.measure.title')}</h1>
         <p className='prose'>
           {translate('journal.measure.prose', {
-            day: capitalize(translate('common.longDay', { day: today }))
+            day: capitalize(
+              translate('common.longDay', { day: dateOfDay(day) })
+            )
           })}
         </p>
 

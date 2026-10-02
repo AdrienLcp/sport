@@ -8,7 +8,6 @@ import {
 } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
 import { noteSessionRun } from '@/features/reminders/reminder-device'
-import { isoDay } from '@/helpers/days'
 import {
   clearRunSnapshot,
   readRunSnapshot,
@@ -66,15 +65,15 @@ const warnOnFailure = (
  * on top of it — the report — finds it untouched on the way back.
  */
 export const useSessionRun = ({
+  day,
   session,
-  today,
   week
 }: {
+  /** The calendar day the run is written under, read live by the page. */
+  day: string
   session: Session
-  today: Date
   week: number
 }) => {
-  const day = isoDay(today)
   const [log, keepLog] = useTrainingLog()
   const [logBefore, setLogBefore] = useState<Log | null>(null)
   const [isStopped, setIsStopped] = useState(false)

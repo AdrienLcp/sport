@@ -9,6 +9,7 @@ import {
   settingsPathFor,
   tablePathFor
 } from '@/infrastructure/router/navigation'
+import { useWallMinute } from '@/presentation/clock/use-wall-minute'
 import { ActionButton, ActionLink } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { Radio, RadioGroup } from '@/presentation/components/radio-group'
@@ -29,7 +30,6 @@ type TitlePlateProps = {
   onStart: () => void
   /** Already carrying this week's rounds. */
   session: Session
-  today: Date
   week: number
 }
 
@@ -40,10 +40,10 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
   onPick,
   onStart,
   session,
-  today,
   week
 }) => {
   const translate = useTranslate()
+  const now = useWallMinute()
   const localize = useLocalize()
   const title = isCalibration
     ? translate('session.title.calibration')
@@ -52,8 +52,8 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
   return (
     <Plate className='title-plate'>
       <PlateHead
-        rank={translate('common.clock', { time: today })}
-        title={capitalize(translate('common.longDay', { day: today }))}
+        rank={translate('common.clock', { time: now })}
+        title={capitalize(translate('common.longDay', { day: now }))}
       />
 
       <div className='body from-top'>

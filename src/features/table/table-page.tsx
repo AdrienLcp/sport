@@ -3,13 +3,14 @@ import { useState } from 'react'
 
 import { proteinTargetOf } from '@/features/profile-settings/profile-settings'
 import { readProfileSettingsOrEmpty } from '@/features/profile-settings/use-profile-settings'
-import { isoDay } from '@/helpers/days'
+import { dateOfDay } from '@/helpers/days'
 import {
   homePathFor,
   tablePathFor,
   useGoBack,
   useTablePlateParam
 } from '@/infrastructure/router/navigation'
+import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Link } from '@/presentation/components/link'
 import { Plate } from '@/presentation/components/plate'
@@ -53,12 +54,12 @@ export const TablePage: React.FC = () => {
   const translate = useTranslate()
   const goBack = useGoBack(homePathFor())
   const plate = useTablePlateParam() ?? 'count'
-  const [today] = useState(() => new Date())
+  const day = useToday()
+  const today = dateOfDay(day)
   const [table, setTable] = useState(readTableOrEmpty)
   const [settings] = useState(readProfileSettingsOrEmpty)
   const target = proteinTargetOf(settings)
 
-  const day = isoDay(today)
   const week = weekKeyOf(today)
   const ticked = marketOf(table, week)
 

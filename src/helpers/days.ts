@@ -22,3 +22,6 @@ export const addDays = (day: string, count: number): string => {
 /** The Monday that opens the calendar week `day` falls in. */
 export const mondayOf = (day: string): string =>
   addDays(day, -((dateOfDay(day).getDay() + 6) % 7))
+
+/** The device's calendar day, now. */
+export const todayIsoDay = (): string => Temporal.Now.plainDateISO().toString()

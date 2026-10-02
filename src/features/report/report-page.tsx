@@ -1,17 +1,18 @@
 import { copyText, selectContents } from '@adrienlcp/browser'
 import type React from 'react'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { proteinTargetOf } from '@/features/profile-settings/profile-settings'
 import { readProfileSettingsOrEmpty } from '@/features/profile-settings/use-profile-settings'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
 import { readTableOrEmpty } from '@/features/table/use-table'
-import { isoDay } from '@/helpers/days'
+import { dateOfDay } from '@/helpers/days'
 import {
   homePathFor,
   journalPathFor,
   useGoBack
 } from '@/infrastructure/router/navigation'
+import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { useI18n } from '@/presentation/i18n/i18n-provider'
@@ -32,19 +33,21 @@ type ReportPlateProps = {
 const ReportPlate: React.FC<ReportPlateProps> = ({ fallbackPath, scope }) => {
   const { locale, translate } = useI18n()
   const goBack = useGoBack(fallbackPath)
-  const [today] = useState(() => new Date())
-  const [made] = useState(() =>
-    buildReport({
-      log: readTrainingLogOrEmpty(),
-      scope,
-      table: readTableOrEmpty(),
-      today,
-      writing: {
-        locale,
-        proteinTarget: proteinTargetOf(readProfileSettingsOrEmpty()),
-        translate
-      }
-    })
+  const today = useToday()
+  const made = useMemo(
+    () =>
+      buildReport({
+        log: readTrainingLogOrEmpty(),
+        scope,
+        table: readTableOrEmpty(),
+        today: dateOfDay(today),
+        writing: {
+          locale,
+          proteinTarget: proteinTargetOf(readProfileSettingsOrEmpty()),
+          translate
+        }
+      }),
+    [locale, scope, today, translate]
   )
   const [handover, setHandover] = useState<Handover>('waiting')
   const text = useRef<HTMLPreElement>(null)
@@ -66,7 +69,7 @@ const ReportPlate: React.FC<ReportPlateProps> = ({ fallbackPath, scope }) => {
   return (
     <Plate className='report-page'>
       <PlateHead
-        rank={scope === 'evening' ? translate('report.tonight') : isoDay(today)}
+        rank={scope === 'evening' ? translate('report.tonight') : today}
         title={translate('report.head')}
       />
 
