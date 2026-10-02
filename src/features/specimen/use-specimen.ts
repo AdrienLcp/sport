@@ -1,3 +1,4 @@
+import { type IsoDay, todayIsoDay } from '@/helpers/days'
 import { loadPage } from '@/infrastructure/browser'
 import { writeProfileSettings } from '@/infrastructure/storage/profile-settings-storage'
 import { clearRunSnapshot } from '@/infrastructure/storage/session-run-storage'
@@ -19,7 +20,7 @@ const warnOnFailure = (
 }
 
 /** Prints a fresh specimen under its own keys; the reader's are never read or written. */
-export const printSpecimen = (today: Date): void => {
+export const printSpecimen = (today: IsoDay): void => {
   const specimen = makeSpecimen(today)
   warnOnFailure(
     writeTrainingLog(specimen.log, 'specimen'),
@@ -48,7 +49,7 @@ export const switchProfile = ({
   profile: StorageProfile
 }): void => {
   if (profile === 'specimen') {
-    printSpecimen(new Date())
+    printSpecimen(todayIsoDay())
   }
   warnOnFailure(
     writeActiveProfile(profile),

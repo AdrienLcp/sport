@@ -11,7 +11,7 @@ import {
   inCatalogue,
   type Table
 } from '@/features/table/table-tally'
-import { isoDay } from '@/helpers/days'
+import type { IsoDay } from '@/helpers/days'
 import { isRecord } from '@/helpers/records'
 
 /**
@@ -48,11 +48,11 @@ export const gatherBackup = ({
   log: Log
   settings: ProfileSettings
   table: Table
-  today: Date
+  today: IsoDay
 }): Backup => ({
   app: 'seance',
   log,
-  savedAt: isoDay(today),
+  savedAt: today,
   settings,
   table,
   version: 1

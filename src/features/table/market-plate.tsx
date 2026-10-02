@@ -3,6 +3,7 @@ import type React from 'react'
 import { Button } from '@/presentation/components/button'
 import { PlateHead } from '@/presentation/components/plate'
 import { ToggleButton } from '@/presentation/components/toggle-button'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -15,7 +16,7 @@ type MarketPlateProps = {
   onTick: (id: string) => void
   /** Ids of the items already in the basket this week. */
   ticked: readonly string[]
-  today: Date
+  today: Temporal.PlainDate
 }
 
 /** T-03: the same list every week, ticked as it lands in the basket. */
@@ -32,7 +33,7 @@ export const MarketPlate: React.FC<MarketPlateProps> = ({
   return (
     <>
       <PlateHead
-        rank={translate('table.date', { day: today })}
+        rank={translate('table.date', { day: toFormattableDate(today) })}
         title={translate('table.market.head')}
       />
 

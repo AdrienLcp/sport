@@ -1,10 +1,13 @@
 import { isRecord } from '../../helpers/records'
 
-/** 0 is Sunday, as `Date#getDay` counts; the plate prints Monday first. */
-export type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6
+/** 1 is Monday and 7 is Sunday, as `Temporal.PlainDate#dayOfWeek` counts. */
+export type Weekday = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 /** Monday first, the way a training week reads. */
-export const WEEKDAYS_FROM_MONDAY: readonly Weekday[] = [1, 2, 3, 4, 5, 6, 0]
+export const WEEKDAYS_FROM_MONDAY: readonly Weekday[] = [1, 2, 3, 4, 5, 6, 7]
+
+/** Schedules saved before the ISO count wrote Sunday as 0, as `Date#getDay` did. */
+const LEGACY_SUNDAY = 0
 
 export type ReminderSchedule = {
   readonly isEnabled: boolean
@@ -32,13 +35,20 @@ export const isReminderTime = (value: string): boolean =>
 const isWeekday = (value: unknown): value is Weekday =>
   typeof value === 'number' &&
   Number.isInteger(value) &&
-  value >= 0 &&
-  value <= 6
+  value >= 1 &&
+  value <= 7
+
+const storedWeekdayOf = (value: unknown): readonly Weekday[] => {
+  if (value === LEGACY_SUNDAY) return [7]
+  return isWeekday(value) ? [value] : []
+}
 
 /** Tolerant, like every stored shape here: what cannot be read is the default. */
 export const parseSchedule = (value: unknown): ReminderSchedule => {
   if (!isRecord(value)) return DEFAULT_SCHEDULE
-  const days = Array.isArray(value.days) ? value.days.filter(isWeekday) : []
+  const days = Array.isArray(value.days)
+    ? value.days.flatMap(storedWeekdayOf)
+    : []
   return {
     days: [...new Set(days)].toSorted((a, b) => a - b),
     isEnabled: value.isEnabled === true,
@@ -61,20 +71,29 @@ export const toggleDay = (
   ).toSorted((a, b) => a - b)
 })
 
-const reminderOn = (date: Date, time: string): Date => {
-  const [hours = 0, minutes = 0] = time.split(':').map(Number)
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    hours,
-    minutes
-  )
-}
+/**
+ * A time that falls in a daylight-saving gap rings at the same distance past
+ * it (02:30 becomes 03:30); a time that happens twice rings the first time.
+ */
+const REMINDER_DISAMBIGUATION = 'compatible'
+
+const reminderOn = (
+  day: Temporal.PlainDate,
+  time: string,
+  timeZone: string
+): Temporal.ZonedDateTime =>
+  day
+    .toPlainDateTime(Temporal.PlainTime.from(time))
+    .toZonedDateTime(timeZone, { disambiguation: REMINDER_DISAMBIGUATION })
+
+const isChosenDay = (schedule: ReminderSchedule, day: Temporal.PlainDate) =>
+  schedule.days.some((chosen) => chosen === day.dayOfWeek)
 
 /**
  * Every reminder strictly after `from`, over the next `days` days — what a
- * browser able to schedule notifications ahead is handed at once.
+ * browser able to schedule notifications ahead is handed at once. Each one is
+ * placed in `from`'s time zone, so a reminder set for 19:30 stays at 19:30
+ * across a daylight-saving change.
  */
 export const remindersAfter = ({
   days,
@@ -82,27 +101,25 @@ export const remindersAfter = ({
   schedule
 }: {
   days: number
-  from: Date
+  from: Temporal.ZonedDateTime
   schedule: ReminderSchedule
-}): readonly Date[] => {
+}): readonly Temporal.ZonedDateTime[] => {
   if (!schedule.isEnabled || schedule.days.length === 0) return []
+  const firstDay = from.toPlainDate()
   return Array.from({ length: days + 1 }, (_, offset) =>
-    reminderOn(
-      new Date(from.getFullYear(), from.getMonth(), from.getDate() + offset),
-      schedule.time
-    )
-  ).filter(
-    (moment) =>
-      moment.getTime() > from.getTime() &&
-      schedule.days.some((day) => day === moment.getDay())
+    firstDay.add({ days: offset })
   )
+    .filter((day) => isChosenDay(schedule, day))
+    .map((day) => reminderOn(day, schedule.time, from.timeZoneId))
+    .filter((moment) => Temporal.ZonedDateTime.compare(moment, from) > 0)
 }
 
 /** The next reminder after `from`, `null` when none is set. A week always holds one. */
 export const nextReminder = (
   schedule: ReminderSchedule,
-  from: Date
-): Date | null => remindersAfter({ days: 7, from, schedule })[0] ?? null
+  from: Temporal.ZonedDateTime
+): Temporal.ZonedDateTime | null =>
+  remindersAfter({ days: 7, from, schedule })[0] ?? null
 
 /**
  * Whether a wake-up at `now` owes the reader today's reminder: today is one of
@@ -113,17 +130,23 @@ export const isReminderOwed = ({
   lastSessionDay,
   lastShownDay,
   now,
-  schedule,
-  today
+  schedule
 }: {
   lastSessionDay: string | null
   lastShownDay: string | null
-  now: Date
+  now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
-  today: string
-}): boolean =>
-  schedule.isEnabled &&
-  schedule.days.some((day) => day === now.getDay()) &&
-  now.getTime() >= reminderOn(now, schedule.time).getTime() &&
-  lastShownDay !== today &&
-  lastSessionDay !== today
+}): boolean => {
+  const today = now.toPlainDate()
+  const day = today.toString()
+  return (
+    schedule.isEnabled &&
+    isChosenDay(schedule, today) &&
+    Temporal.ZonedDateTime.compare(
+      now,
+      reminderOn(today, schedule.time, now.timeZoneId)
+    ) >= 0 &&
+    lastShownDay !== day &&
+    lastSessionDay !== day
+  )
+}

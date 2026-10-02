@@ -13,6 +13,7 @@ import { useWallMinute } from '@/presentation/clock/use-wall-minute'
 import { ActionButton, ActionLink } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { Radio, RadioGroup } from '@/presentation/components/radio-group'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { sessionMinutes } from './session-length'
@@ -52,8 +53,10 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
   return (
     <Plate className='title-plate'>
       <PlateHead
-        rank={translate('common.clock', { time: now })}
-        title={capitalize(translate('common.longDay', { day: now }))}
+        rank={translate('common.clock', { time: toFormattableDate(now) })}
+        title={capitalize(
+          translate('common.longDay', { day: toFormattableDate(now) })
+        )}
       />
 
       <div className='body from-top'>

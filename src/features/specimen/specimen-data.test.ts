@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { addDays, isoDay } from '@/helpers/days'
+import { addDays } from '@/helpers/days'
 
 import { makeSpecimen } from './specimen-data'
 
-const today = new Date(2026, 8, 29)
+const today = '2026-09-29'
 
 describe('specimen', () => {
   it('[specimen] prints the same specimen for the same day', () => {
@@ -13,10 +13,10 @@ describe('specimen', () => {
 
   it('[specimen] holds twelve weeks of sessions, none in the future', () => {
     const { log } = makeSpecimen(today)
-    const first = addDays(isoDay(today), -12 * 7)
+    const first = addDays(today, -12 * 7)
     expect(log.entries.length).toBeGreaterThan(20)
     for (const entry of log.entries) {
-      expect(entry.day >= first && entry.day <= isoDay(today)).toBe(true)
+      expect(entry.day >= first && entry.day <= today).toBe(true)
     }
   })
 

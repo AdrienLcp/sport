@@ -23,15 +23,13 @@ export const owedReminder = ({
   lastSessionDay,
   lastShownDay,
   now,
-  schedule,
-  today
+  schedule
 }: {
   copy: unknown
   lastSessionDay: unknown
   lastShownDay: unknown
-  now: Date
+  now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
-  today: string
 }): OwedReminder | null => {
   if (
     !isRecord(copy) ||
@@ -44,8 +42,7 @@ export const owedReminder = ({
     lastSessionDay: asDay(lastSessionDay),
     lastShownDay: asDay(lastShownDay),
     now,
-    schedule,
-    today
+    schedule
   })
   return isOwed
     ? { body: copy.body, isSilent: !schedule.withSound, title: copy.title }

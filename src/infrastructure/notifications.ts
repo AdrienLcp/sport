@@ -136,7 +136,7 @@ export const scheduleAhead = async ({
   moments
 }: {
   content: Omit<NotificationContent, 'tag'>
-  moments: readonly Date[]
+  moments: readonly Temporal.ZonedDateTime[]
 }): Promise<Result<void, 'failed' | 'unsupported'>> => {
   if (!wakeCapabilities().canScheduleAhead) {
     return Result.failure('unsupported')
@@ -157,9 +157,9 @@ export const scheduleAhead = async ({
         badge: BADGE,
         body: content.body,
         icon: ICON,
-        showTrigger: new TimestampTrigger(moment.getTime()),
+        showTrigger: new TimestampTrigger(moment.epochMilliseconds),
         silent: content.isSilent,
-        tag: `${SCHEDULED_TAG_PREFIX}${moment.getTime()}`
+        tag: `${SCHEDULED_TAG_PREFIX}${moment.epochMilliseconds}`
       })
     }
     return Result.success()

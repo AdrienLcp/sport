@@ -12,7 +12,6 @@ import {
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 
 import { parseSchedule } from '../features/reminders/reminder-schedule'
-import { isoDay } from '../helpers/days'
 import { isRecord } from '../helpers/records'
 import {
   readDeviceValue,
@@ -55,15 +54,13 @@ const valueOrNull = async (
  * show it once.
  */
 const remindIfOwed = async (): Promise<void> => {
-  const now = new Date()
-  const today = isoDay(now)
+  const now = Temporal.Now.zonedDateTimeISO()
   const reminder = owedReminder({
     copy: await valueOrNull('reminder-copy'),
     lastSessionDay: await valueOrNull('last-session-day'),
     lastShownDay: await valueOrNull('last-shown-day'),
     now,
-    schedule: parseSchedule(await valueOrNull('reminder-schedule')),
-    today
+    schedule: parseSchedule(await valueOrNull('reminder-schedule'))
   })
   if (reminder === null) return
 
@@ -74,7 +71,7 @@ const remindIfOwed = async (): Promise<void> => {
     silent: reminder.isSilent,
     tag: 'reminder'
   })
-  await writeDeviceValue('last-shown-day', today)
+  await writeDeviceValue('last-shown-day', now.toPlainDate().toString())
 }
 
 self.addEventListener('periodicsync', (event) => {

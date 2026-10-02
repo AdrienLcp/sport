@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useState } from 'react'
 
+import { decimal, shortDay } from '@/features/journal/format'
 import { waistPoints, weightPoints } from '@/features/program/measure-points'
 import type { Measure } from '@/features/program/training-log'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
@@ -8,7 +9,7 @@ import {
   isReadingSpecimen,
   switchProfile
 } from '@/features/specimen/use-specimen'
-import { dateOfDay, isoDay } from '@/helpers/days'
+import { plainDayOf } from '@/helpers/days'
 import {
   homePathFor,
   journalPathFor,
@@ -29,6 +30,7 @@ import { LineChart } from '@/presentation/components/charts/line-chart'
 import { zeroBand } from '@/presentation/components/charts/value-band'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 import type { Translate } from '@/presentation/i18n/translation'
@@ -45,12 +47,6 @@ import {
 
 import './progress-page.sass'
 
-const shortDay = (translate: Translate, day: string): string =>
-  translate('format.shortDay', { day: dateOfDay(day) })
-
-const decimal = (translate: Translate, value: number): string =>
-  translate('format.decimal', { value })
-
 const MARK_OF: Record<TrainingDay['state'], DayMark> = {
   future: 'future',
   none: 'empty',
@@ -58,15 +54,19 @@ const MARK_OF: Record<TrainingDay['state'], DayMark> = {
   whole: 'solid'
 }
 
+const ANY_MONDAY = Temporal.PlainDate.from('2024-01-01')
+
 /** Monday first, in the reader's language, from any known Monday. */
 const weekdayInitials = (
   translate: Translate
 ): readonly { key: string; label: string }[] =>
   Array.from({ length: 7 }, (_, offset) => {
-    const day = new Date(2024, 0, 1 + offset)
+    const day = ANY_MONDAY.add({ days: offset })
     return {
-      key: isoDay(day),
-      label: translate('progress.regularity.weekday', { day })
+      key: day.toString(),
+      label: translate('progress.regularity.weekday', {
+        day: toFormattableDate(day)
+      })
     }
   })
 
@@ -118,7 +118,9 @@ const Regularity: React.FC<RegularityProps> = ({ days, weeks }) => {
           readout: translate(`progress.regularity.day.${day.state}`)
         }))}
         formatKey={(key) =>
-          translate('progress.regularity.dayLabel', { day: dateOfDay(key) })
+          translate('progress.regularity.dayLabel', {
+            day: toFormattableDate(plainDayOf(key))
+          })
         }
         summary={translate('progress.regularity.gridSummary', {
           trained: days.filter(

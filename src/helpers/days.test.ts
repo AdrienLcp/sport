@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { addDays, isoDay, mondayOf } from './days'
+import { addDays, mondayOf, plainDayOf } from './days'
 
 describe('days', () => {
   it('[days] finds the Monday of a Sunday six days back, not the next one', () => {
@@ -16,7 +16,7 @@ describe('days', () => {
     expect(addDays('2026-03-01', -1)).toBe('2026-02-28')
   })
 
-  it('[days] writes a local date as its calendar day', () => {
-    expect(isoDay(new Date(2026, 0, 5, 23, 30))).toBe('2026-01-05')
+  it('[days] reads a stored day as the same calendar day', () => {
+    expect(plainDayOf('2026-01-05').toString()).toBe('2026-01-05')
   })
 })

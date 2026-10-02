@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { PlateHead } from '@/presentation/components/plate'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -10,7 +11,7 @@ import { BASES, PLATE_SHARES, POT, POT_TARGET } from './table-catalogue'
 import './pot-plate.sass'
 
 type PotPlateProps = {
-  today: Date
+  today: Temporal.PlainDate
 }
 
 /** T-02: the plate drawn, what goes in the pot, and the five bases. */
@@ -21,7 +22,7 @@ export const PotPlate: React.FC<PotPlateProps> = ({ today }) => {
   return (
     <>
       <PlateHead
-        rank={translate('table.date', { day: today })}
+        rank={translate('table.date', { day: toFormattableDate(today) })}
         title={translate('table.pot.head')}
       />
 

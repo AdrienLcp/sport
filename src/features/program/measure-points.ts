@@ -1,4 +1,4 @@
-import { dayTime } from '@/helpers/days'
+import { type IsoDay, plainDayOf } from '@/helpers/days'
 
 import type { Measure } from './training-log'
 
@@ -7,6 +7,11 @@ export type Point = {
   readonly value: number
   readonly time: number
 }
+
+/** Midnight UTC of the day: every day is then the same width on the chart, a
+    daylight-saving change included. */
+const chartTimeOf = (day: IsoDay): number =>
+  plainDayOf(day).toZonedDateTime('UTC').epochMilliseconds
 
 const pointsOf = (
   measures: readonly Measure[],
@@ -17,7 +22,7 @@ const pointsOf = (
       const value = measure[key]
       return value === undefined
         ? []
-        : [{ day: measure.day, time: dayTime(measure.day), value }]
+        : [{ day: measure.day, time: chartTimeOf(measure.day), value }]
     })
     .toSorted((a, b) => a.time - b.time)
 

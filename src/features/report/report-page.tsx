@@ -6,7 +6,6 @@ import { proteinTargetOf } from '@/features/profile-settings/profile-settings'
 import { readProfileSettingsOrEmpty } from '@/features/profile-settings/use-profile-settings'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
 import { readTableOrEmpty } from '@/features/table/use-table'
-import { dateOfDay } from '@/helpers/days'
 import {
   homePathFor,
   journalPathFor,
@@ -40,7 +39,7 @@ const ReportPlate: React.FC<ReportPlateProps> = ({ fallbackPath, scope }) => {
         log: readTrainingLogOrEmpty(),
         scope,
         table: readTableOrEmpty(),
-        today: dateOfDay(today),
+        today,
         writing: {
           locale,
           proteinTarget: proteinTargetOf(readProfileSettingsOrEmpty()),

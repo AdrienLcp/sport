@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { proteinTargetOf } from '@/features/profile-settings/profile-settings'
 import { readProfileSettingsOrEmpty } from '@/features/profile-settings/use-profile-settings'
-import { dateOfDay } from '@/helpers/days'
+import { plainDayOf } from '@/helpers/days'
 import {
   homePathFor,
   tablePathFor,
@@ -55,12 +55,12 @@ export const TablePage: React.FC = () => {
   const goBack = useGoBack(homePathFor())
   const plate = useTablePlateParam() ?? 'count'
   const day = useToday()
-  const today = dateOfDay(day)
+  const today = plainDayOf(day)
   const [table, setTable] = useState(readTableOrEmpty)
   const [settings] = useState(readProfileSettingsOrEmpty)
   const target = proteinTargetOf(settings)
 
-  const week = weekKeyOf(today)
+  const week = weekKeyOf(day)
   const ticked = marketOf(table, week)
 
   const total = proteinOf(table.days[day])

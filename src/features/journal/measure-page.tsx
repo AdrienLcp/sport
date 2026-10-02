@@ -3,13 +3,14 @@ import { useState } from 'react'
 
 import { putMeasure } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
-import { dateOfDay } from '@/helpers/days'
+import { plainDayOf } from '@/helpers/days'
 import { capitalize } from '@/helpers/text'
 import { journalPathFor, useGoBack } from '@/infrastructure/router/navigation'
 import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { TextField } from '@/presentation/components/text-field'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import './measure-page.sass'
@@ -63,7 +64,9 @@ export const MeasurePage: React.FC = () => {
         <p className='prose'>
           {translate('journal.measure.prose', {
             day: capitalize(
-              translate('common.longDay', { day: dateOfDay(day) })
+              translate('common.longDay', {
+                day: toFormattableDate(plainDayOf(day))
+              })
             )
           })}
         </p>

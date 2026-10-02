@@ -10,7 +10,7 @@ import type {
 } from '@/features/program/training-log'
 import { SOURCES } from '@/features/table/table-catalogue'
 import type { DayCount, Table } from '@/features/table/table-tally'
-import { addDays, isoDay, mondayOf } from '@/helpers/days'
+import { addDays, type IsoDay, mondayOf } from '@/helpers/days'
 
 /**
  * The specimen: a made-up reader, twelve weeks into the programme, so every
@@ -164,8 +164,7 @@ const specimenTable = (today: string, random: () => number): Table => {
   return { days, market: { ticked: [], week: '' }, version: 1 }
 }
 
-export const makeSpecimen = (today: Date): Specimen => {
-  const day = isoDay(today)
+export const makeSpecimen = (day: IsoDay): Specimen => {
   const random = seededRandom(SPECIMEN_SEED)
   return {
     log: specimenLog(day, random),

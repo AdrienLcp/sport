@@ -56,7 +56,7 @@ export const saveReminderSchedule = async ({
   schedule
 }: {
   copy: ReminderCopy
-  now: Date
+  now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
 }): Promise<void> => {
   warnOnFailure(
@@ -106,12 +106,10 @@ const dayOrNull = (value: unknown): string | null =>
 
 const isOwedAt = async ({
   now,
-  schedule,
-  today
+  schedule
 }: {
-  now: Date
+  now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
-  today: string
 }): Promise<boolean> => {
   const lastShown = await readDeviceValue('last-shown-day')
   const lastSession = await readDeviceValue('last-session-day')
@@ -121,14 +119,13 @@ const isOwedAt = async ({
     lastShownDay:
       lastShown.status === 'success' ? dayOrNull(lastShown.data) : null,
     now,
-    schedule,
-    today
+    schedule
   })
 }
 
-const noteShown = async (today: string): Promise<void> => {
+const noteShown = async (now: Temporal.ZonedDateTime): Promise<void> => {
   warnOnFailure(
-    await writeDeviceValue('last-shown-day', today),
+    await writeDeviceValue('last-shown-day', now.toPlainDate().toString()),
     'The reminder could not be noted as shown'
   )
 }
@@ -137,15 +134,11 @@ const noteShown = async (today: string): Promise<void> => {
  * Opening the app after today's reminder time is being reminded: nothing
  * rings later that day, from the page or from the worker.
  */
-export const acknowledgeTodaysReminder = async ({
-  now,
-  today
-}: {
-  now: Date
-  today: string
-}): Promise<void> => {
+export const acknowledgeTodaysReminder = async (
+  now: Temporal.ZonedDateTime
+): Promise<void> => {
   const schedule = await readReminderSchedule()
-  if (await isOwedAt({ now, schedule, today })) await noteShown(today)
+  if (await isOwedAt({ now, schedule })) await noteShown(now)
 }
 
 /**
@@ -155,15 +148,13 @@ export const acknowledgeTodaysReminder = async ({
  */
 export const remindIfOwed = async ({
   copy,
-  now,
-  today
+  now
 }: {
   copy: ReminderCopy
-  now: Date
-  today: string
+  now: Temporal.ZonedDateTime
 }): Promise<void> => {
   const schedule = await readReminderSchedule()
-  if (!(await isOwedAt({ now, schedule, today }))) return
+  if (!(await isOwedAt({ now, schedule }))) return
 
   const shown = await showNotification({
     ...copy,
@@ -174,7 +165,7 @@ export const remindIfOwed = async ({
     console.warn(`The reminder could not be shown (${shown.error}).`)
     return
   }
-  await noteShown(today)
+  await noteShown(now)
 }
 
 export const sendTestNotification = (

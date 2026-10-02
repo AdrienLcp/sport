@@ -6,7 +6,8 @@ import {
   isReminderTime,
   type ReminderSchedule,
   toggleDay,
-  WEEKDAYS_FROM_MONDAY
+  WEEKDAYS_FROM_MONDAY,
+  type Weekday
 } from '@/features/reminders/reminder-schedule'
 import { useReminderSchedule } from '@/features/reminders/use-reminder-schedule'
 import { isStandaloneDisplay } from '@/infrastructure/browser'
@@ -18,13 +19,16 @@ import {
 import { ActionButton } from '@/presentation/components/action'
 import { Switch } from '@/presentation/components/switch'
 import { ToggleButton } from '@/presentation/components/toggle-button'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import type { Translate } from '@/presentation/i18n/translation'
 
-/** Any Monday: the weekday's name is all that is read from it. */
-const weekdayName = (translate: Translate, day: number): string =>
+/** 2024 opened on a Monday, so its first week spells the days out in ISO order. */
+const weekdayName = (translate: Translate, day: Weekday): string =>
   translate('settings.reminders.weekday', {
-    day: new Date(2024, 0, day === 0 ? 7 : day)
+    day: toFormattableDate(
+      Temporal.PlainDate.from({ day, month: 1, year: 2024 })
+    )
   })
 
 type TestOutcome = 'denied' | 'failed' | 'sent' | 'unsupported' | null

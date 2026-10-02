@@ -1,6 +1,5 @@
 import { useEffect, useEffectEvent } from 'react'
 
-import { isoDay } from '@/helpers/days'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { reminderCopyOf } from './reminder-copy'
@@ -26,11 +25,9 @@ export const useReminderClock = (): void => {
   const translate = useTranslate()
 
   const fire = useEffectEvent(async () => {
-    const now = new Date()
     await remindIfOwed({
       copy: reminderCopyOf(translate),
-      now,
-      today: isoDay(now)
+      now: Temporal.Now.zonedDateTimeISO()
     })
   })
 
@@ -41,8 +38,12 @@ export const useReminderClock = (): void => {
     const arm = async () => {
       const schedule = await readReminderSchedule()
       if (isStopped) return
-      const next = nextReminder(schedule, new Date())
-      const wait = next === null ? Infinity : next.getTime() - Date.now()
+      const now = Temporal.Now.zonedDateTimeISO()
+      const next = nextReminder(schedule, now)
+      const wait =
+        next === null
+          ? Infinity
+          : next.epochMilliseconds - now.epochMilliseconds
       timer =
         wait > LONGEST_WAIT
           ? window.setTimeout(() => void arm(), LONGEST_WAIT)
@@ -51,10 +52,7 @@ export const useReminderClock = (): void => {
             }, wait)
     }
 
-    const opened = new Date()
-    void acknowledgeTodaysReminder({ now: opened, today: isoDay(opened) }).then(
-      arm
-    )
+    void acknowledgeTodaysReminder(Temporal.Now.zonedDateTimeISO()).then(arm)
     return () => {
       isStopped = true
       window.clearTimeout(timer)

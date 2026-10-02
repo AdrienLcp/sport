@@ -8,5 +8,7 @@ const wallMinute = (): string =>
     .toString()
 
 /** The local date and time, to the minute. */
-export const useWallMinute = (): Date =>
-  new Date(useSyncExternalStore(subscribeToClockTicks, wallMinute))
+export const useWallMinute = (): Temporal.PlainDateTime =>
+  Temporal.PlainDateTime.from(
+    useSyncExternalStore(subscribeToClockTicks, wallMinute)
+  )

@@ -15,8 +15,9 @@ import {
   type Table,
   weekKeyOf
 } from '@/features/table/table-tally'
-import { dateOfDay, isoDay } from '@/helpers/days'
+import { type IsoDay, plainDayOf } from '@/helpers/days'
 import { type Locale, textIn } from '@/helpers/localized-text'
+import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import type { Translate } from '@/presentation/i18n/translation'
 
 /*
@@ -158,7 +159,7 @@ const proteinWeeks = ({
   const weeks = new Map<string, string[]>()
 
   for (const day of days) {
-    const week = weekKeyOf(dateOfDay(day))
+    const week = weekKeyOf(day)
     const rows = weeks.get(week) ?? []
     rows.push(
       `| ${day} | ${translate('report.document.grams', {
@@ -171,12 +172,14 @@ const proteinWeeks = ({
   return [...weeks.entries()]
     .map(([week, rows]) => {
       const totals = days
-        .filter((day) => weekKeyOf(dateOfDay(day)) === week)
+        .filter((day) => weekKeyOf(day) === week)
         .map((day) => proteinOf(table.days[day]))
       const mean = totals.reduce((sum, value) => sum + value, 0) / totals.length
 
       return [
-        translate('report.document.proteinWeek', { week: dateOfDay(week) }),
+        translate('report.document.proteinWeek', {
+          week: toFormattableDate(plainDayOf(week))
+        }),
         '',
         `| ${translate('report.document.proteinHeader')} |`,
         '| --- | --- | --- |',
@@ -202,11 +205,11 @@ export const buildReport = ({
   log: Log
   scope: ReportScope
   table: Table
-  today: Date
+  today: IsoDay
   writing: Writing
 }): Report => {
   const { translate } = writing
-  const day = isoDay(today)
+  const day = today
   const inScope = <T extends { readonly day: string }>(
     items: readonly T[]
   ): readonly T[] =>
@@ -219,7 +222,9 @@ export const buildReport = ({
     .toSorted((a, b) => b.localeCompare(a))
 
   const blocks: string[] = [
-    translate('report.document.title', { date: today }),
+    translate('report.document.title', {
+      date: toFormattableDate(plainDayOf(today))
+    }),
     translate(
       scope === 'evening'
         ? 'report.document.introEvening'

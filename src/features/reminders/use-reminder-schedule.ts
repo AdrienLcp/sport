@@ -32,7 +32,7 @@ export const useReminderSchedule = (): readonly [
     setSchedule(next)
     void saveReminderSchedule({
       copy: reminderCopyOf(translate),
-      now: new Date(),
+      now: Temporal.Now.zonedDateTimeISO(),
       schedule: next
     })
   }

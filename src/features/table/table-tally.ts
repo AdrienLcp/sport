@@ -1,4 +1,4 @@
-import { isoDay } from '@/helpers/days'
+import { type IsoDay, plainDayOf } from '@/helpers/days'
 
 import { MARKET_IDS, SOURCES } from './table-catalogue'
 
@@ -36,11 +36,12 @@ export const EMPTY_TABLE: Table = {
  * shopping that feeds the next five days — starts. A list ticked on Sunday
  * afternoon is still the list of the week that runs from Friday.
  */
-export const weekKeyOf = (date: Date): string => {
-  const back = (date.getDay() - 5 + 7) % 7
-  return isoDay(
-    new Date(date.getFullYear(), date.getMonth(), date.getDate() - back)
-  )
+const FRIDAY = 5
+
+export const weekKeyOf = (day: IsoDay): IsoDay => {
+  const date = plainDayOf(day)
+  const back = (date.dayOfWeek - FRIDAY + 7) % 7
+  return date.subtract({ days: back }).toString()
 }
 
 const pruned = (

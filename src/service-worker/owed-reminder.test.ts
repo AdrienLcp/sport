@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { DEFAULT_SCHEDULE } from '../features/reminders/reminder-schedule'
 import { owedReminder } from './owed-reminder'
 
-const tuesdayEvening = new Date(2026, 8, 29, 20, 0)
+const tuesdayEvening = Temporal.ZonedDateTime.from(
+  '2026-09-29T20:00[Europe/Paris]'
+)
 const schedule = { ...DEFAULT_SCHEDULE, isEnabled: true }
 
 describe('owed reminder', () => {
@@ -14,8 +16,7 @@ describe('owed reminder', () => {
         lastSessionDay: undefined,
         lastShownDay: undefined,
         now: tuesdayEvening,
-        schedule,
-        today: '2026-09-29'
+        schedule
       })
     ).toEqual({
       body: 'Time for the session.',
@@ -31,8 +32,7 @@ describe('owed reminder', () => {
         lastSessionDay: undefined,
         lastShownDay: undefined,
         now: tuesdayEvening,
-        schedule,
-        today: '2026-09-29'
+        schedule
       })
     ).toBe(null)
   })
@@ -44,8 +44,7 @@ describe('owed reminder', () => {
         lastSessionDay: '2026-09-29',
         lastShownDay: undefined,
         now: tuesdayEvening,
-        schedule,
-        today: '2026-09-29'
+        schedule
       })
     ).toBe(null)
   })
