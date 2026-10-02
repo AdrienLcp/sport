@@ -17,7 +17,6 @@ import {
 } from '@/features/table/table-tally'
 import { type IsoDay, plainDayOf } from '@/helpers/days'
 import { type Locale, textIn } from '@/helpers/localized-text'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import type { Translate } from '@/presentation/i18n/translation'
 
 /*
@@ -178,7 +177,7 @@ const proteinWeeks = ({
 
       return [
         translate('report.document.proteinWeek', {
-          week: toFormattableDate(plainDayOf(week))
+          week: plainDayOf(week)
         }),
         '',
         `| ${translate('report.document.proteinHeader')} |`,
@@ -223,7 +222,7 @@ export const buildReport = ({
 
   const blocks: string[] = [
     translate('report.document.title', {
-      date: toFormattableDate(plainDayOf(today))
+      date: plainDayOf(today)
     }),
     translate(
       scope === 'evening'

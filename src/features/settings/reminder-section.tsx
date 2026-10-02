@@ -19,16 +19,13 @@ import {
 import { ActionButton } from '@/presentation/components/action'
 import { Switch } from '@/presentation/components/switch'
 import { ToggleButton } from '@/presentation/components/toggle-button'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import type { Translate } from '@/presentation/i18n/translation'
 
 /** 2024 opened on a Monday, so its first week spells the days out in ISO order. */
 const weekdayName = (translate: Translate, day: Weekday): string =>
   translate('settings.reminders.weekday', {
-    day: toFormattableDate(
-      Temporal.PlainDate.from({ day, month: 1, year: 2024 })
-    )
+    day: Temporal.PlainDate.from({ day, month: 1, year: 2024 })
   })
 
 type TestOutcome = 'denied' | 'failed' | 'sent' | 'unsupported' | null

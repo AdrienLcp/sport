@@ -1,7 +1,6 @@
 import type React from 'react'
 
 import { PlateHead } from '@/presentation/components/plate'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -22,7 +21,7 @@ export const PotPlate: React.FC<PotPlateProps> = ({ today }) => {
   return (
     <>
       <PlateHead
-        rank={translate('table.date', { day: toFormattableDate(today) })}
+        rank={translate('table.date', { day: today })}
         title={translate('table.pot.head')}
       />
 

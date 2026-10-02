@@ -10,7 +10,6 @@ import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { TextField } from '@/presentation/components/text-field'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import './measure-page.sass'
@@ -65,7 +64,7 @@ export const MeasurePage: React.FC = () => {
           {translate('journal.measure.prose', {
             day: capitalize(
               translate('common.longDay', {
-                day: toFormattableDate(plainDayOf(day))
+                day: plainDayOf(day)
               })
             )
           })}

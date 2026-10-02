@@ -30,7 +30,6 @@ import { LineChart } from '@/presentation/components/charts/line-chart'
 import { zeroBand } from '@/presentation/components/charts/value-band'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 import type { Translate } from '@/presentation/i18n/translation'
@@ -64,9 +63,7 @@ const weekdayInitials = (
     const day = ANY_MONDAY.add({ days: offset })
     return {
       key: day.toString(),
-      label: translate('progress.regularity.weekday', {
-        day: toFormattableDate(day)
-      })
+      label: translate('progress.regularity.weekday', { day })
     }
   })
 
@@ -119,7 +116,7 @@ const Regularity: React.FC<RegularityProps> = ({ days, weeks }) => {
         }))}
         formatKey={(key) =>
           translate('progress.regularity.dayLabel', {
-            day: toFormattableDate(plainDayOf(key))
+            day: plainDayOf(key)
           })
         }
         summary={translate('progress.regularity.gridSummary', {

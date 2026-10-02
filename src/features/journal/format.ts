@@ -1,5 +1,4 @@
 import { plainDayOf } from '@/helpers/days'
-import { toFormattableDate } from '@/presentation/i18n/formattable-date'
 import type { Translate } from '@/presentation/i18n/translation'
 
 /** One decimal, always: 94,0 beside 93,5 keeps the column aligned. */
@@ -14,5 +13,5 @@ export const signed = (translate: Translate, value: number): string => {
 
 export const shortDay = (translate: Translate, day: string): string =>
   translate('format.shortDay', {
-    day: toFormattableDate(plainDayOf(day))
+    day: plainDayOf(day)
   })
