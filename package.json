@@ -25,6 +25,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "5.0.2",
     "fake-indexeddb": "^6.2.5",
     "oxc-transform-react": "^0.151.0",
     "sass": "^1.105.0",
@@ -55,6 +56,7 @@
     "preinstall": "git config core.hooksPath .githooks || true",
     "preview": "vite preview --port 5187 --strictPort",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit && tsc --noEmit -p src/service-worker",
     "validate": "pnpm build && pnpm lint:ci && pnpm test"

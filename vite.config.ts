@@ -47,6 +47,12 @@ export default defineConfig({
     strictPort: true
   },
   test: {
+    coverage: {
+      exclude: ['**/*.test.{ts,tsx}', '**/*.d.ts'],
+      include: ['src/**/*.{ts,tsx}'],
+      provider: 'v8',
+      reporter: ['text', 'html', 'json-summary']
+    },
     environment: 'node',
     include: ['src/**/*.test.ts']
   }

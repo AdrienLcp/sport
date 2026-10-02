@@ -35,8 +35,11 @@ jobs:
       - name: Build
         run: pnpm build | tee build.log
 
-      - name: Test
-        run: pnpm test
+      - name: Test with coverage
+        run: pnpm test:coverage
+
+      - name: Coverage summary
+        run: node -p "'Line coverage: ' + require('./coverage/coverage-summary.json').total.lines.pct + '%'" >> "$GITHUB_STEP_SUMMARY"
 
       # A clean clone only holds the public programme; the check keeps it that way.
       - name: Deploy the public demo
