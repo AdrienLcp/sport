@@ -64,14 +64,14 @@ to `private/programme/<file>.ts` when it exists and to the public file
 otherwise, for Vite, Vitest and `tsc` alike; the build prints which one it
 read. A copy exports the same names as the file it replaces.
 
-A push of `main` from a clone with a Netlify token configured —
+`pnpm deploy:personal`, in a clone with a Netlify token configured —
 `NETLIFY_TOKEN_FILE`, or its path on the first line of
-`netlify-token-path.local` — first deploys the private build to a personal site
-through `.githooks/pre-push`, and aborts the push if that fails.
+`netlify-token-path.local` — runs `pnpm validate` and deploys the private build
+to a personal site.
 
-The public demo, https://sport-buk.pages.dev, is deployed by hand with
-`pnpm deploy:demo`: it builds a fresh clone of `HEAD`, which never holds the
-private programme, and refuses to deploy anything but the public one.
+The public demo, https://sport-buk.pages.dev, is deployed by CI on every push to
+`main`, from a clone that never holds the private programme; it refuses to
+deploy anything but the public one.
 
 ## Develop
 

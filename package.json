@@ -50,11 +50,11 @@
   "repository": "github:AdrienLcp/sport",
   "scripts": {
     "build": "pnpm typecheck && vite build",
+    "deploy:personal": "sh scripts/deploy-personal-site.sh",
     "deps:upgrade": "corepack use pnpm@latest && pnpm up -L && biome migrate --write",
     "dev": "vite",
     "lint": "biome check --write",
     "lint:ci": "biome ci",
-    "preinstall": "git config core.hooksPath .githooks || true",
     "preview": "vite preview --port 5187 --strictPort",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
