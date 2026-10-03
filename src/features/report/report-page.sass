@@ -15,7 +15,7 @@
       overflow-wrap: anywhere
       // A rule says where what leaves begins: without it, the text to take away
       // blends into the prose announcing it.
-      padding-left: var(--s-3)
+      padding-left: var(--space-s)
       border-left: 1px solid var(--rule)
 
     // Outside the scrolling body: a confirmation that has to be looked for has
@@ -23,7 +23,7 @@
     .taken,
     .refused
       flex: none
-      margin-top: var(--s-3)
+      margin-top: var(--space-s)
 
     .taken
       font-size: 0.85rem
@@ -35,5 +35,5 @@
 
     // A refused clipboard says so, and says how to finish the gesture.
     .refused
-      font-size: var(--t-legend)
+      font-size: var(--text-legend)
       color: var(--signal-ink)

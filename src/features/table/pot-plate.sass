@@ -3,31 +3,31 @@
 @layer components
   .pot-plate
     .bases-heading
-      margin-top: var(--s-5)
+      margin-top: var(--space-l)
 
     .dish
       display: flex
       flex-direction: column
-      gap: var(--s-4)
-      margin-top: var(--s-2)
+      gap: var(--space-m)
+      margin-top: var(--space-xs)
 
     .shares
       display: grid
-      gap: var(--s-3)
+      gap: var(--space-s)
 
     .share
       dt
         display: flex
         align-items: center
-        gap: var(--s-2)
-        font-size: var(--t-head)
+        gap: var(--space-xs)
+        font-size: var(--text-head)
         font-weight: 700
         letter-spacing: var(--track-caps)
         text-transform: uppercase
         color: var(--ink-dim)
 
       dd
-        padding-left: calc(26px + var(--s-2))
+        padding-left: calc(26px + var(--space-xs))
         font-size: 0.88rem
         line-height: 1.45
         color: var(--ink-soft)
@@ -38,12 +38,12 @@
 
     .parts
       display: grid
-      gap: var(--s-3)
-      margin-top: var(--s-2)
+      gap: var(--space-s)
+      margin-top: var(--space-xs)
 
     .part-name
       display: block
-      font-size: var(--t-head)
+      font-size: var(--text-head)
       font-weight: 700
       letter-spacing: var(--track-caps)
       text-transform: uppercase
@@ -56,12 +56,12 @@
       color: var(--ink-soft)
 
     .bases
-      margin-top: var(--s-2)
+      margin-top: var(--space-xs)
 
       li
         display: flex
-        gap: var(--s-3)
-        padding: var(--s-3) 0
+        gap: var(--space-s)
+        padding: var(--space-s) 0
         border-bottom: 1px solid var(--rule-faint)
 
         &:last-child
@@ -71,7 +71,7 @@
         flex: none
         width: 3.6em
         padding-top: 2px
-        font-size: var(--t-head)
+        font-size: var(--text-head)
         font-weight: 700
         letter-spacing: 0.08em
         color: var(--ink-dim)
@@ -96,4 +96,4 @@
     // Two up, so the key stays in the same eyeful as the drawing it keys.
     .pot-plate .shares
       grid-template-columns: 1fr 1fr
-      gap: var(--s-4) var(--s-5)
+      gap: var(--space-m) var(--space-l)

@@ -8,16 +8,16 @@
     .columns
       flex: 1 1 auto
       display: grid
-      gap: var(--s-5)
+      gap: var(--space-l)
 
     .column
       min-width: 0
       display: flex
       flex-direction: column
-      gap: var(--s-3)
+      gap: var(--space-s)
 
       & + .column
-        padding-top: var(--s-5)
+        padding-top: var(--space-l)
         border-top: 1px solid var(--rule-soft)
 
     .heading
@@ -29,8 +29,8 @@
     // ---------- the readings, and the one line that matters ----------
 
     .drift
-      margin-top: var(--s-2)
-      font-size: var(--t-legend)
+      margin-top: var(--space-xs)
+      font-size: var(--text-legend)
       color: var(--ink-soft)
 
       b
@@ -39,7 +39,7 @@
         font-size: 1.15rem
 
     .session-count
-      font-size: var(--t-legend)
+      font-size: var(--text-legend)
       color: var(--ink-soft)
 
       b
@@ -68,15 +68,15 @@
           font-weight: 800
 
     .session-block
-      margin-top: var(--s-4)
+      margin-top: var(--space-m)
 
     .session-head
       display: flex
       align-items: baseline
       justify-content: space-between
-      gap: var(--s-3)
-      margin-bottom: var(--s-2)
-      font-size: var(--t-head)
+      gap: var(--space-s)
+      margin-bottom: var(--space-xs)
+      font-size: var(--text-head)
       font-weight: 700
       letter-spacing: var(--track-caps)
       text-transform: uppercase
@@ -92,11 +92,11 @@
       // under the shortest column reads as a broken border, not as a spread.
       .columns
         grid-template-columns: 1fr 1fr
-        gap: var(--s-7)
+        gap: var(--space-2xl)
 
       .column + .column
         padding-top: 0
-        padding-left: var(--s-7)
+        padding-left: var(--space-2xl)
         border-top: 0
         border-left: 1px solid var(--rule-soft)
 

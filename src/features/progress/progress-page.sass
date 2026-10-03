@@ -7,22 +7,22 @@
   .progress-page
     .columns
       display: grid
-      gap: var(--s-5)
+      gap: var(--space-l)
 
     .column
       min-width: 0
       display: flex
       flex-direction: column
-      gap: var(--s-6)
+      gap: var(--space-xl)
 
       & + .column
-        padding-top: var(--s-5)
+        padding-top: var(--space-l)
         border-top: 1px solid var(--rule-soft)
 
     .chart-block
       display: flex
       flex-direction: column
-      gap: var(--s-2)
+      gap: var(--space-xs)
 
     .heading
       font-size: 1.35rem
@@ -32,21 +32,21 @@
 
     .hint
       max-width: 62ch
-      font-size: var(--t-ledger)
+      font-size: var(--text-ledger)
       color: var(--ink-dim)
 
     .measure + .measure
-      margin-top: var(--s-4)
+      margin-top: var(--space-m)
 
     .measure-name
-      font-size: var(--t-head)
+      font-size: var(--text-head)
       font-weight: 700
       letter-spacing: var(--track-caps)
       text-transform: uppercase
       color: var(--ink)
 
     .runs
-      margin: var(--s-1) 0 var(--s-2)
+      margin: var(--space-3xs) 0 var(--space-xs)
 
       dd
         font-weight: 700
@@ -56,16 +56,16 @@
     .key
       display: flex
       flex-wrap: wrap
-      gap: var(--s-1) var(--s-4)
-      margin-top: var(--s-2)
-      font-size: var(--t-ledger)
+      gap: var(--space-3xs) var(--space-m)
+      margin-top: var(--space-xs)
+      font-size: var(--text-ledger)
       color: var(--ink-soft)
       list-style: none
 
       li
         display: flex
         align-items: center
-        gap: var(--s-2)
+        gap: var(--space-xs)
 
       i
         width: 11px
@@ -81,14 +81,14 @@
       background: var(--ink)
 
     .numbers
-      margin-top: var(--s-2)
-      font-size: var(--t-ledger)
+      margin-top: var(--space-xs)
+      font-size: var(--text-ledger)
 
       summary
         width: fit-content
-        padding: var(--s-2) 0
+        padding: var(--space-xs) 0
         cursor: pointer
-        font-size: var(--t-head)
+        font-size: var(--text-head)
         font-weight: 700
         letter-spacing: var(--track-caps)
         text-transform: uppercase
@@ -100,7 +100,7 @@
           text-decoration: underline
 
       .tally
-        margin-top: var(--s-2)
+        margin-top: var(--space-xs)
 
         td:last-child
           font-weight: 400
@@ -110,11 +110,11 @@
     .progress-page
       .columns
         grid-template-columns: 1fr 1fr
-        gap: var(--s-7)
+        gap: var(--space-2xl)
 
       .column + .column
         padding-top: 0
-        padding-left: var(--s-7)
+        padding-left: var(--space-2xl)
         border-top: 0
         border-left: 1px solid var(--rule-soft)
 

@@ -9,17 +9,17 @@
     .columns
       flex: 1 1 auto
       display: grid
-      gap: var(--s-5)
+      gap: var(--space-l)
       min-width: 0
 
     .column
       min-width: 0
       display: flex
       flex-direction: column
-      gap: var(--s-2)
+      gap: var(--space-xs)
 
       & + .column
-        padding-top: var(--s-5)
+        padding-top: var(--space-l)
         border-top: 1px solid var(--rule-soft)
 
     .heading
@@ -41,7 +41,7 @@
 
     .tabs
       border-top: 1px solid var(--rule-soft)
-      padding-top: var(--s-1)
+      padding-top: var(--space-3xs)
 
       // Compounded with `.ledger` to win over its line padding by specificity:
       // the link carries the line's height.
@@ -52,7 +52,7 @@
     .tab
       display: flex
       align-items: baseline
-      gap: var(--s-3)
+      gap: var(--space-s)
       width: 100%
       min-height: 46px
       color: inherit
@@ -69,11 +69,11 @@
       // The binding runs the full height of the open manual, as in the journal.
       .columns
         grid-template-columns: 1fr 1fr
-        gap: var(--s-7)
+        gap: var(--space-2xl)
 
       .column + .column
         padding-top: 0
-        padding-left: var(--s-7)
+        padding-left: var(--space-2xl)
         border-top: 0
         border-left: 1px solid var(--rule-soft)
 

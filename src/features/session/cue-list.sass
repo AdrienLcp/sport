@@ -8,7 +8,7 @@
     display: flex
     flex-direction: column
     min-height: 0
-    margin-top: var(--s-3)
+    margin-top: var(--space-s)
     border-top: 1px solid var(--rule-soft)
 
   // A ledger line that opens: the label on the left, the state on the right,
@@ -18,10 +18,10 @@
     display: flex
     align-items: center
     justify-content: space-between
-    gap: var(--s-3)
+    gap: var(--space-s)
     min-height: 44px
     padding: 0
-    font-size: var(--t-head)
+    font-size: var(--text-head)
     font-weight: 700
     letter-spacing: var(--track-caps)
     text-align: left
@@ -50,7 +50,7 @@
     display: grid
     grid-template-columns: max-content 1fr
     align-content: start
-    gap: 3px var(--s-3)
+    gap: 3px var(--space-s)
     font-size: 0.84rem
     line-height: 1.35
 
@@ -59,7 +59,7 @@
 
     dt
       padding-top: 0.2em
-      font-size: var(--t-head)
+      font-size: var(--text-head)
       font-weight: 700
       letter-spacing: 0.12em
       text-transform: uppercase
@@ -72,7 +72,7 @@
   // The how-to, numbered as a manual numbers its steps.
   .setup-steps
     display: grid
-    gap: var(--s-2)
+    gap: var(--space-xs)
     padding-left: 1.4em
     font-size: 0.86rem
     line-height: 1.4
@@ -120,7 +120,7 @@
             overscroll-behavior: contain
 
           > .cue-list
-            gap: 2px var(--s-2)
+            gap: 2px var(--space-xs)
             font-size: 0.8rem
 
           > .setup-steps

@@ -6,7 +6,7 @@
 
     label
       display: block
-      font-size: var(--t-head)
+      font-size: var(--text-head)
       font-weight: 700
       letter-spacing: var(--track-caps)
       text-transform: uppercase
@@ -15,10 +15,10 @@
     .input-row
       min-width: 0
       // Room for the focus ring: at offset 3 it otherwise strikes through the label.
-      margin-top: var(--s-2)
+      margin-top: var(--space-xs)
       display: flex
       align-items: baseline
-      gap: var(--s-3)
+      gap: var(--space-s)
       border-bottom: 2px solid var(--rule)
       transition: border-color 180ms var(--ease-out)
 
@@ -46,14 +46,14 @@
 
     .unit
       flex: none
-      font-size: var(--t-legend)
+      font-size: var(--text-legend)
       font-weight: 700
       letter-spacing: var(--track-caps)
       text-transform: uppercase
       color: var(--ink-dim)
 
     .hint
-      margin-top: var(--s-2)
+      margin-top: var(--space-xs)
       font-size: 0.8rem
       line-height: 1.45
       color: var(--ink-dim)
