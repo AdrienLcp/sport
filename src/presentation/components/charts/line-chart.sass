@@ -1,3 +1,4 @@
+@use 'chart-axes'
 @use 'chart-focus'
 
 @layer components
@@ -11,11 +12,7 @@
       gap: var(--space-s)
 
     .axis
-      position: relative
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: 0.06em
-      color: var(--ink-dim)
+      @include chart-axes.axis
 
       span
         position: absolute
@@ -66,11 +63,4 @@
         stroke: var(--ground)
 
     .dates
-      display: flex
-      justify-content: space-between
-      margin: var(--space-xs) 0 0 calc(3.4em + var(--space-s))
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
-      color: var(--ink-dim)
+      @include chart-axes.dates

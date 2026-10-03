@@ -1,0 +1,13 @@
+/// The world's one focus signal, a cinnabar ring a little away from the control.
+@mixin ring
+  &[data-focus-visible],
+  &:focus-visible
+    outline: var(--ring)
+    outline-offset: var(--ring-offset)
+
+/// The same ring drawn inside a control that fills its row edge to edge.
+@mixin ring-inset
+  &[data-focus-visible],
+  &:focus-visible
+    outline: var(--ring)
+    outline-offset: var(--ring-inset)

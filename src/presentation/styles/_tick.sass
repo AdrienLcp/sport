@@ -1,0 +1,11 @@
+/// The square a line inks once it holds: the market list's item, the settings' switch.
+@mixin tick
+  flex: none
+  width: var(--tick)
+  height: var(--tick)
+  box-shadow: var(--frame)
+  transition: background var(--transition-fast) var(--ease-out), box-shadow var(--transition-fast) var(--ease-out)
+
+@mixin tick-on
+  background: var(--ink)
+  box-shadow: var(--frame-ink)

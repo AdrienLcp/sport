@@ -90,19 +90,42 @@
     @include day-printing
 
     // Read from a metre away, on the floor, tired: the scale grows with width.
+    --text-micro: 0.66rem
     --text-head: 0.72rem
+    --text-note: 0.8rem
     --text-ledger: 0.85rem
+    --text-tally: 0.9rem
     --text-legend: 0.95rem
     --text-prose: 1rem
     --text-button: 1.05rem
+    --text-figure: 1.15rem
+    --text-to-beat: 1.2rem
+    --text-heading: 1.35rem
+    --text-heading-wide: 1.6rem
+    --text-field-inline: 1.7rem
+    --text-field: 2.1rem
+    --text-reps: clamp(1.5rem, 6vw, 2rem)
     --text-name: clamp(1.75rem, 7.2vw, 2.6rem)
+    --text-name-wide: clamp(2.2rem, 3.4vw, 3rem)
     --text-title: clamp(1.9rem, 8vw, 2.9rem)
     --text-count: clamp(4.5rem, 23vw, 7.5rem)
 
-    --track-caps: 0.19em
-    --track-tight: -0.03em
+    --leading-display: 1.05
+    --leading-heading: 1.1
+    --leading-note: 1.45
+    --leading-prose: 1.55
 
+    --track-display: -0.05em
+    --track-tight: -0.03em
+    --track-numeral: 0.06em
+    --track-index: 0.08em
+    --track-term: 0.12em
+    --track-action: 0.14em
+    --track-caps: 0.19em
+
+    --space-4xs: 2px
     --space-3xs: 4px
+    --space-2xs: 6px
     --space-xs: 8px
     --space-s: 12px
     --space-m: 16px
@@ -110,6 +133,45 @@
     --space-xl: 30px
     --space-2xl: 42px
 
+    --measure: 62ch
+    --measure-wide: 74ch
+    --plate-width: 1080px
+
+    // A thumb's target, and the reach a smaller control borrows to make one.
+    --target: 44px
+    --target-row: 46px
+    --target-reach: 14px
+    --tick: 14px
+    --ledger-inset: 5px
+    --ghost-inset: 17px
+    --swatch: 26px
+
+    --stroke-hair: 1px
+    --stroke-mark: 1.5px
+    --stroke-bold: 2px
+    --outline-thin: 2px
+
+    --hairline: var(--stroke-hair) solid var(--rule)
+    --hairline-mid: var(--stroke-hair) solid var(--rule-mid)
+    --hairline-soft: var(--stroke-hair) solid var(--rule-soft)
+    --hairline-faint: var(--stroke-hair) solid var(--rule-faint)
+    --field-rule: var(--stroke-bold) solid var(--rule)
+
+    // A frame drawn inside the box, so it never moves the layout.
+    --frame: inset 0 0 0 var(--stroke-hair) var(--rule)
+    --frame-soft: inset 0 0 0 var(--stroke-hair) var(--rule-soft)
+    --frame-dim: inset 0 0 0 var(--stroke-hair) var(--ink-dim)
+    --frame-ink: inset 0 0 0 var(--stroke-hair) var(--ink)
+    --frame-signal: inset 0 0 0 var(--stroke-hair) var(--signal)
+    --frame-hollow: inset 0 0 0 var(--stroke-mark) var(--ink-dim)
+
+    --ring: var(--outline-thin) solid var(--signal)
+    --ring-offset: 3px
+    --ring-inset: -2px
+    --underline-offset: 5px
+
+    --transition-fast: 160ms
+    --transition-slow: 320ms
     --turn: 420ms
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1)
 

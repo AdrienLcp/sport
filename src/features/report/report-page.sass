@@ -5,9 +5,9 @@
     .outgoing
       margin: 0
       min-width: 0
-      max-width: 74ch
+      max-width: var(--measure-wide)
       font: inherit
-      font-size: 0.85rem
+      font-size: var(--text-ledger)
       line-height: 1.6
       color: var(--ink-dim)
       font-variant-numeric: tabular-nums
@@ -16,7 +16,7 @@
       // A rule says where what leaves begins: without it, the text to take away
       // blends into the prose announcing it.
       padding-left: var(--space-s)
-      border-left: 1px solid var(--rule)
+      border-left: var(--hairline)
 
     // Outside the scrolling body: a confirmation that has to be looked for has
     // not been seen.
@@ -26,7 +26,7 @@
       margin-top: var(--space-s)
 
     .taken
-      font-size: 0.85rem
+      font-size: var(--text-ledger)
       color: var(--ink-dim)
 
       b

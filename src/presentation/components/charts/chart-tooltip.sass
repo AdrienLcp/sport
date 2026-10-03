@@ -1,3 +1,5 @@
+@use '../../styles/typography'
+
 @layer components
   // Framed by a hairline like everything else in the manual: no shadow, no radius.
   .chart-tooltip
@@ -6,18 +8,18 @@
     top: var(--tooltip-down)
     left: var(--tooltip-across)
     display: grid
-    gap: 1px
+    gap: var(--space-4xs)
     min-width: max-content
-    padding: 6px var(--space-xs)
+    padding: var(--space-2xs) var(--space-xs)
     background: var(--ground)
-    box-shadow: inset 0 0 0 1px var(--rule)
+    box-shadow: var(--frame)
     font-size: var(--text-ledger)
     line-height: 1.3
     pointer-events: none
-    transform: translate(12px, -50%)
+    transform: translate(var(--space-s), -50%)
 
     &[data-side='left']
-      transform: translate(calc(-100% - 12px), -50%)
+      transform: translate(calc(-100% - var(--space-s)), -50%)
 
     b
       color: var(--ink)
@@ -27,8 +29,6 @@
       color: var(--ink-soft)
 
     .label
+      @include typography.term
+
       color: var(--ink-dim)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: 0.12em
-      text-transform: uppercase

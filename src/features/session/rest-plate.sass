@@ -1,3 +1,5 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   // The only plate where a number may be enormous.
   .rest-plate .countdown
@@ -10,15 +12,13 @@
     padding: var(--space-m) 0
 
     .label
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: 0.2em
-      text-transform: uppercase
+      @include typography.caps
+
       color: var(--ink-dim)
 
     .time
       margin: var(--space-xs) 0 0
       font-size: var(--text-count)
       font-weight: 800
-      letter-spacing: -0.05em
+      letter-spacing: var(--track-display)
       line-height: 0.9

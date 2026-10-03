@@ -1,23 +1,12 @@
 // The curves. The journal's plate again, a register rather than a figure: two
 // columns on a desk, one on a phone, every chart with its numbers under it.
 
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/spread'
+@use '../../presentation/styles/typography'
 
 @layer components
   .progress-page
-    .columns
-      display: grid
-      gap: var(--space-l)
-
-    .column
-      min-width: 0
-      display: flex
-      flex-direction: column
-      gap: var(--space-xl)
-
-      & + .column
-        padding-top: var(--space-l)
-        border-top: 1px solid var(--rule-soft)
+    @include spread.columns($gap: var(--space-xl))
 
     .chart-block
       display: flex
@@ -25,13 +14,10 @@
       gap: var(--space-xs)
 
     .heading
-      font-size: 1.35rem
-      font-weight: 800
-      letter-spacing: var(--track-tight)
-      line-height: 1.1
+      @include typography.heading
 
     .hint
-      max-width: 62ch
+      max-width: var(--measure)
       font-size: var(--text-ledger)
       color: var(--ink-dim)
 
@@ -39,10 +25,8 @@
       margin-top: var(--space-m)
 
     .measure-name
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      @include typography.caps
+
       color: var(--ink)
 
     .runs
@@ -74,7 +58,7 @@
 
         &[data-tone='hollow']
           background: transparent
-          box-shadow: inset 0 0 0 1.5px var(--ink-dim)
+          box-shadow: var(--frame-hollow)
 
     // The grid inks a whole day in full ink, not the columns' spent ink.
     .grid-key i[data-tone='solid']
@@ -85,15 +69,13 @@
       font-size: var(--text-ledger)
 
       summary
+        @include typography.caps
+
         width: fit-content
         padding: var(--space-xs) 0
         cursor: pointer
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: var(--track-caps)
-        text-transform: uppercase
         color: var(--ink-dim)
-        text-underline-offset: 4px
+        text-underline-offset: var(--underline-offset)
 
         &:hover
           color: var(--ink)
@@ -101,22 +83,3 @@
 
       .tally
         margin-top: var(--space-xs)
-
-        td:last-child
-          font-weight: 400
-          color: var(--ink-soft)
-
-  @include breakpoints.wide
-    .progress-page
-      .columns
-        grid-template-columns: 1fr 1fr
-        gap: var(--space-2xl)
-
-      .column + .column
-        padding-top: 0
-        padding-left: var(--space-2xl)
-        border-top: 0
-        border-left: 1px solid var(--rule-soft)
-
-      .heading
-        font-size: 1.6rem

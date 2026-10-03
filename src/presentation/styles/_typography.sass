@@ -1,0 +1,44 @@
+@use '@adrienlcp/styles/breakpoints'
+
+/// The head band's capitals: a label, a column's name, a field's name.
+@mixin caps
+  font-size: var(--text-head)
+  font-weight: 700
+  letter-spacing: var(--track-caps)
+  text-transform: uppercase
+
+/// A term beside its answer: the head band's capitals, set closer.
+@mixin term
+  font-size: var(--text-head)
+  font-weight: 700
+  letter-spacing: var(--track-term)
+  text-transform: uppercase
+
+/// A chart's numerals and a grid's day initials, beside the marks they read.
+@mixin numeral
+  font-size: var(--text-head)
+  font-weight: 700
+  letter-spacing: var(--track-numeral)
+
+/// A column's title on a register page, larger once the page is a spread.
+@mixin heading
+  font-size: var(--text-heading)
+  font-weight: 800
+  letter-spacing: var(--track-tight)
+  line-height: var(--leading-heading)
+
+  @include breakpoints.wide
+    font-size: var(--text-heading-wide)
+
+/// The plate's display line — a movement's name, a verdict. The size is the caller's.
+@mixin display
+  font-weight: 800
+  letter-spacing: var(--track-tight)
+  line-height: var(--leading-display)
+  text-wrap: balance
+
+/// The number a sentence of prose is about.
+@mixin figure
+  color: var(--ink)
+  font-size: var(--text-figure)
+  font-weight: 800

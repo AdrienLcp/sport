@@ -7,6 +7,8 @@
 // come after every rule they override.
 
 @use '@adrienlcp/styles/breakpoints'
+@use '../styles/focus'
+@use '../styles/typography'
 
 @layer components
   .plate
@@ -19,11 +21,13 @@
     max-height: 100%
     padding: var(--space-l) var(--space-l) var(--space-m)
     // An engraved double frame: hairline, gap, hairline. Not a card border.
-    box-shadow: inset 0 0 0 1px var(--rule), inset 0 0 0 7px var(--ground), inset 0 0 0 8px var(--rule-soft)
+    box-shadow: var(--frame), inset 0 0 0 7px var(--ground), inset 0 0 0 8px var(--rule-soft)
 
     // ---------- the head band, and the ruled line that is the chrono ----------
 
     .plate-head
+      @include typography.caps
+
       position: relative
       flex: none
       display: flex
@@ -31,31 +35,27 @@
       justify-content: space-between
       gap: var(--space-s)
       padding-bottom: var(--space-xs)
-      border-bottom: 1px solid var(--rule-mid)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      border-bottom: var(--hairline-mid)
 
       .rank
         color: var(--ink-dim)
-        letter-spacing: 0.1em
+        letter-spacing: var(--track-index)
         white-space: nowrap
 
       // A printed plate has no clock. The rule that was already under the title
       // withdraws instead — nothing was added to carry the time.
       .chrono
         position: absolute
-        inset: auto 0 -1px 0
-        height: 1px
+        inset: auto 0 calc(-1 * var(--stroke-hair)) 0
+        height: var(--stroke-hair)
         background: var(--ink)
         transform: scaleX(var(--chrono-scale))
         transform-origin: left center
         will-change: transform
 
         &[data-state='rest']
-          height: 2px
-          bottom: -2px
+          height: var(--stroke-bold)
+          bottom: calc(-1 * var(--stroke-bold))
           background: var(--signal)
 
       // The same rule, read the other way: the count lays it down as the day
@@ -63,12 +63,12 @@
       // whole, which is what an untouched chrono looks like.
       .gauge
         position: absolute
-        inset: auto 0 -2px 0
-        height: 2px
+        inset: auto 0 calc(-1 * var(--stroke-bold)) 0
+        height: var(--stroke-bold)
         background: var(--ink-dim)
         transform: scaleX(var(--gauge-scale))
         transform-origin: left center
-        transition: transform 320ms var(--ease-out), background 320ms var(--ease-out)
+        transition: transform var(--transition-slow) var(--ease-out), background var(--transition-slow) var(--ease-out)
 
         &[data-full='true']
           background: var(--ink)
@@ -91,12 +91,10 @@
     // ---------- the legend, as under an engraving ----------
 
     .caption
+      @include typography.display
+
       flex: none
       font-size: var(--text-name)
-      font-weight: 800
-      letter-spacing: var(--track-tight)
-      line-height: 1.05
-      text-wrap: balance
 
     .legend
       flex: none
@@ -112,14 +110,12 @@
       .count
         color: var(--ink)
         font-weight: 800
-        font-size: clamp(1.5rem, 6vw, 2rem)
+        font-size: var(--text-reps)
         letter-spacing: var(--track-tight)
 
       .side
-        letter-spacing: 0.14em
-        text-transform: uppercase
-        font-size: var(--text-head)
-        font-weight: 700
+        @include typography.term
+
         color: var(--signal-ink)
 
       .prev
@@ -127,9 +123,10 @@
         white-space: nowrap
 
         b
+          @include typography.figure
+
           color: var(--signal-ink)
-          font-size: 1.2rem
-          font-weight: 800
+          font-size: var(--text-to-beat)
 
     // ---------- the ledger: five lines, visible start to finish ----------
 
@@ -142,8 +139,8 @@
         display: flex
         align-items: baseline
         gap: var(--space-s)
-        padding: 5px 0
-        border-bottom: 1px solid var(--rule-faint)
+        padding: var(--ledger-inset) 0
+        border-bottom: var(--hairline-faint)
         color: var(--ink-dim)
 
         &:last-child
@@ -153,7 +150,7 @@
         flex: none
         width: 3.6em
         font-size: 0.8em
-        letter-spacing: 0.08em
+        letter-spacing: var(--track-index)
 
       .label
         flex: 1 1 auto
@@ -162,7 +159,7 @@
       .state
         flex: none
         font-size: 0.78em
-        letter-spacing: 0.13em
+        letter-spacing: var(--track-term)
         text-transform: uppercase
 
       // State reads from the stroke first: struck through when done, heavy when
@@ -184,18 +181,16 @@
     // The same lines, picked by a tap: the front door's five sessions.
     .register
       > .choice
-        min-height: 46px
+        @include focus.ring-inset
+
+        min-height: var(--target-row)
         align-items: center
         cursor: pointer
         -webkit-tap-highlight-color: transparent
-        transition: color 160ms var(--ease-out)
+        transition: color var(--transition-fast) var(--ease-out)
 
         &[data-hovered]:not([data-state='live'])
           color: var(--ink)
-
-        &[data-focus-visible]
-          outline: 2px solid var(--signal)
-          outline-offset: -2px
 
       // Suggested by the order of A to E: the word says it, the cinnabar confirms.
       > [data-due] .state
@@ -204,51 +199,47 @@
     // ---------- rounds, next up, and the constraint that never leaves ----------
 
     .rounds
+      @include typography.caps
+
       display: flex
       align-items: center
-      gap: 7px
+      gap: var(--space-2xs)
       margin-top: var(--space-m)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
       color: var(--ink-dim)
 
       i
         flex: 1 1 auto
         height: 6px
-        box-shadow: inset 0 0 0 1px var(--rule)
+        box-shadow: var(--frame)
 
         &[data-on='true']
           background: var(--ink)
           box-shadow: none
 
       .rank
-        letter-spacing: 0.08em
+        letter-spacing: var(--track-index)
 
     .next-up
+      @include typography.caps
+
       margin-top: var(--space-m)
       padding-top: var(--space-s)
-      border-top: 1px solid var(--rule-soft)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      border-top: var(--hairline-soft)
       color: var(--ink-dim)
 
       b
         display: block
-        margin-top: 5px
+        margin-top: var(--space-3xs)
         color: var(--ink)
-        font-size: 1.05rem
+        font-size: var(--text-button)
         font-weight: 800
         letter-spacing: var(--track-tight)
         text-transform: none
 
     .guard
       margin-top: var(--space-s)
-      font-size: 0.78rem
-      line-height: 1.45
+      font-size: var(--text-note)
+      line-height: var(--leading-note)
       color: var(--ink-dim)
 
     // ---------- the action: one target, the widest the plate allows ----------
@@ -257,16 +248,16 @@
       flex: none
       width: 100%
       margin-top: var(--space-m)
-      padding: 22px var(--space-s)
+      padding: var(--space-l) var(--space-s)
       background: var(--ink)
       color: var(--ground)
       font-size: var(--text-button)
       font-weight: 800
-      letter-spacing: 0.14em
+      letter-spacing: var(--track-action)
       text-align: center
       text-decoration: none
       text-transform: uppercase
-      transition: background 180ms var(--ease-out)
+      transition: background var(--transition-fast) var(--ease-out)
       -webkit-tap-highlight-color: transparent
       touch-action: manipulation
 
@@ -293,17 +284,17 @@
 
       &.ghost
         margin-top: var(--space-s)
-        padding: 17px var(--space-s)
+        padding: var(--ghost-inset) var(--space-s)
         background: transparent
         color: var(--ink-dim)
-        font-size: 0.85rem
-        box-shadow: inset 0 0 0 1px var(--rule)
-        transition: color 180ms var(--ease-out), box-shadow 180ms var(--ease-out)
+        font-size: var(--text-ledger)
+        box-shadow: var(--frame)
+        transition: color var(--transition-fast) var(--ease-out), box-shadow var(--transition-fast) var(--ease-out)
 
         &[data-hovered]
           color: var(--ink)
           background: transparent
-          box-shadow: inset 0 0 0 1px var(--ink-dim)
+          box-shadow: var(--frame-dim)
 
     // ---------- title, verdict ----------
 
@@ -330,35 +321,31 @@
         padding-right: var(--space-xs)
 
     .headline
+      @include typography.display
+
       font-size: var(--text-title)
-      font-weight: 800
-      letter-spacing: var(--track-tight)
-      line-height: 1.05
-      text-wrap: balance
 
     .prose
-      max-width: 62ch
+      max-width: var(--measure)
       font-size: var(--text-prose)
-      line-height: 1.55
+      line-height: var(--leading-prose)
       color: var(--ink-soft)
 
     .divider
-      height: 1px
+      height: var(--stroke-hair)
       background: var(--rule-soft)
 
     .facts
       display: grid
       grid-template-columns: auto 1fr
-      gap: 6px var(--space-m)
-      font-size: 0.85rem
+      gap: var(--space-2xs) var(--space-m)
+      font-size: var(--text-ledger)
       color: var(--ink-dim)
 
       dt
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: 0.12em
-        text-transform: uppercase
-        padding-top: 3px
+        @include typography.term
+
+        padding-top: var(--space-4xs)
 
       dd
         color: var(--ink)
@@ -366,21 +353,19 @@
     .tally
       width: 100%
       border-collapse: collapse
-      font-size: 0.9rem
+      font-size: var(--text-tally)
 
       th
+        @include typography.term
+
         text-align: left
-        padding: 0 0 7px
-        border-bottom: 1px solid var(--rule-soft)
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: 0.15em
-        text-transform: uppercase
+        padding: 0 0 var(--space-2xs)
+        border-bottom: var(--hairline-soft)
         color: var(--ink-dim)
 
       td
-        padding: 7px 0
-        border-bottom: 1px solid var(--rule-faint)
+        padding: var(--space-2xs) 0
+        border-bottom: var(--hairline-faint)
         color: var(--ink-soft)
 
       th:not(:first-child),
@@ -390,6 +375,11 @@
       td:last-child
         color: var(--ink)
         font-weight: 700
+
+      // A log, not a sum: its last column is one more reading, not a total.
+      &.logbook td:last-child
+        color: var(--ink-soft)
+        font-weight: 400
 
     // ---------- the double page, once the screen is a desk ----------
 
@@ -448,7 +438,7 @@
         margin-top: var(--space-s)
 
         li
-          padding: 3px 0
+          padding: var(--space-4xs) 0
 
       .rounds,
       .next-up,
@@ -462,14 +452,14 @@
         margin-top: var(--space-xs)
 
       .action
-        padding: 18px var(--space-s)
+        padding: var(--space-m) var(--space-s)
 
     .figure-frame
       padding: var(--space-xs) 0 0
 
   @include breakpoints.wide
     .plate
-      width: min(1080px, 100%)
+      width: min(var(--plate-width), 100%)
       min-height: min(660px, 100%)
       padding: 0
 
@@ -485,7 +475,7 @@
           padding: var(--space-xl) var(--space-xl) var(--space-l)
 
         .first-page
-          border-right: 1px solid var(--rule-soft)
+          border-right: var(--hairline-soft)
 
           // The ledger sits straight under the head band, as a summary does; the
           // air collects above the action instead of between the two. Only the
@@ -509,4 +499,4 @@
         padding: var(--space-xl) var(--space-2xl) var(--space-l)
 
       .caption
-        font-size: clamp(2.2rem, 3.4vw, 3rem)
+        font-size: var(--text-name-wide)

@@ -1,0 +1,17 @@
+@use '../../styles/typography'
+
+/// The value axis beside a plot: its numerals hang on the ticks, right-aligned.
+@mixin axis
+  @include typography.numeral
+
+  position: relative
+  color: var(--ink-dim)
+
+/// The dates under a plot, its first week to its last, clear of the axis.
+@mixin dates
+  @include typography.caps
+
+  display: flex
+  justify-content: space-between
+  margin: var(--space-xs) 0 0 calc(3.4em + var(--space-s))
+  color: var(--ink-dim)

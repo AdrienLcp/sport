@@ -1,104 +1,59 @@
 // The journal. Same plate, but a register rather than a figure: the curve is
 // the shape, the rows under it are the data. Nothing here is a dashboard.
 
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/spread'
+@use '../../presentation/styles/typography'
 
 @layer components
   .journal-page
+    @include spread.columns($gap: var(--space-s))
+
     .columns
       flex: 1 1 auto
-      display: grid
-      gap: var(--space-l)
-
-    .column
-      min-width: 0
-      display: flex
-      flex-direction: column
-      gap: var(--space-s)
-
-      & + .column
-        padding-top: var(--space-l)
-        border-top: 1px solid var(--rule-soft)
 
     .heading
-      font-size: 1.35rem
-      font-weight: 800
-      letter-spacing: var(--track-tight)
-      line-height: 1.1
+      @include typography.heading
 
     // ---------- the readings, and the one line that matters ----------
 
-    .drift
-      margin-top: var(--space-xs)
-      font-size: var(--text-legend)
-      color: var(--ink-soft)
-
-      b
-        color: var(--ink)
-        font-weight: 800
-        font-size: 1.15rem
-
+    .drift,
     .session-count
       font-size: var(--text-legend)
       color: var(--ink-soft)
 
       b
+        @include typography.figure
+
+    .drift
+      margin-top: var(--space-xs)
+
+    // The waist is the measure that settles it, and the last row is the one
+    // being read. Compounded with `.tally` to win over the plate by specificity.
+    .tally.logbook.readings
+      tbody td:nth-child(2)
         color: var(--ink)
+        font-weight: 700
+
+      tr[data-last='true'] td
+        color: var(--ink)
+
+      tr[data-last='true'] td:nth-child(2)
+        color: var(--signal-ink)
         font-weight: 800
-        font-size: 1.15rem
-
-    // The tally's default puts the weight column in ink. Here the waist is the
-    // measure that settles it, and the last row is the one being read.
-    // Compounded with `.tally` to win over the plate by specificity.
-    .tally.logbook
-      td:last-child
-        color: var(--ink-soft)
-        font-weight: 400
-
-      &.readings
-        tbody td:nth-child(2)
-          color: var(--ink)
-          font-weight: 700
-
-        tr[data-last='true'] td
-          color: var(--ink)
-
-        tr[data-last='true'] td:nth-child(2)
-          color: var(--signal-ink)
-          font-weight: 800
 
     .session-block
       margin-top: var(--space-m)
 
     .session-head
+      @include typography.caps
+
       display: flex
       align-items: baseline
       justify-content: space-between
       gap: var(--space-s)
       margin-bottom: var(--space-xs)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
       color: var(--ink)
 
     .runs
       flex: none
       color: var(--ink-dim)
-
-  @include breakpoints.wide
-    .journal-page
-      // The binding runs the full height of the open manual: a rule that stops
-      // under the shortest column reads as a broken border, not as a spread.
-      .columns
-        grid-template-columns: 1fr 1fr
-        gap: var(--space-2xl)
-
-      .column + .column
-        padding-top: 0
-        padding-left: var(--space-2xl)
-        border-top: 0
-        border-left: 1px solid var(--rule-soft)
-
-      .heading
-        font-size: 1.6rem

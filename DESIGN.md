@@ -71,13 +71,15 @@ typography:
 rounded:
   none: "0"
 spacing:
-  s1: "4px"
-  s2: "8px"
-  s3: "12px"
-  s4: "16px"
-  s5: "22px"
-  s6: "30px"
-  s7: "42px"
+  4xs: "2px"
+  3xs: "4px"
+  2xs: "6px"
+  xs: "8px"
+  s: "12px"
+  m: "16px"
+  l: "22px"
+  xl: "30px"
+  2xl: "42px"
 components:
   button-primary:
     backgroundColor: "{colors.ink}"
@@ -215,7 +217,7 @@ The figures are drawn in their own values, and they live in the token file rathe
 
 The plate is the layout. `.app-shell` is `100dvh` with safe-area padding; `.plate` is a flex column with `max-height: 100%` and `min-height: 0`, so the figure gives up space on a short screen instead of pushing the head band and the action off the bottom. The body scrolls **inside** the frame; the plate itself never grows past the screen.
 
-Vertical rhythm comes from a single seven-step scale — 4, 8, 12, 16, 22, 30, 42 px — with 22px as the plate's own inset and 16px as the gap above the primary action. There is no grid and no container width: a plate is a single column, and the only horizontal division is the head band's `space-between` and the ledger row's baseline-aligned flex.
+Vertical rhythm comes from a single scale, `--space-4xs` to `--space-2xl` — 2, 4, 6, 8, 12, 16, 22, 30, 42 px — with 22px as the plate's own inset and 16px as the gap above the primary action. There is no grid and no container width: a plate is a single column, and the only horizontal division is the head band's `space-between` and the ledger row's baseline-aligned flex.
 
 Responsive behaviour is a change of composition, not of scale alone. On a wide screen the plate splits into two columns via `display: contents` and explicit `order`, so the figure sits beside the text rather than above it. Type scales fluidly through `clamp()` keyed to viewport width, because the reading distance changes with the device: a phone on the floor at one metre and a desktop screen across a mat are both nominal.
 

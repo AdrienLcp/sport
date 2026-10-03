@@ -2,29 +2,17 @@
 // one column on a phone. Every control is a ledger line, a tick or a ruled
 // field — nothing a printed manual would not already hold.
 
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/focus'
+@use '../../presentation/styles/spread'
+@use '../../presentation/styles/tick'
+@use '../../presentation/styles/typography'
 
 @layer components
   .settings-page
-    .columns
-      display: grid
-      gap: var(--space-l)
-
-    .column
-      min-width: 0
-      display: flex
-      flex-direction: column
-      gap: var(--space-xl)
-
-      & + .column
-        padding-top: var(--space-l)
-        border-top: 1px solid var(--rule-soft)
+    @include spread.columns($gap: var(--space-xl))
 
     .page-heading
-      font-size: 1.35rem
-      font-weight: 800
-      letter-spacing: var(--track-tight)
-      line-height: 1.1
+      @include typography.heading
 
     .setting
       display: flex
@@ -38,12 +26,10 @@
         margin-top: var(--space-xs)
 
     .heading
+      @include typography.caps
+
       padding-bottom: var(--space-xs)
-      border-bottom: 1px solid var(--rule-soft)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      border-bottom: var(--hairline-soft)
       color: var(--ink-dim)
 
     .ledger.register
@@ -51,34 +37,27 @@
 
     // A switch is the market list's tick: a square that inks, a label beside it.
     .switch
+      @include focus.ring
+
       display: flex
       align-items: center
       gap: var(--space-s)
-      min-height: 44px
+      min-height: var(--target)
       cursor: pointer
       -webkit-tap-highlight-color: transparent
 
       .tick
-        flex: none
-        width: 14px
-        height: 14px
-        box-shadow: inset 0 0 0 1px var(--rule)
-        transition: background 160ms var(--ease-out), box-shadow 160ms var(--ease-out)
+        @include tick.tick
 
       .switch-label
-        font-size: 0.95rem
+        font-size: var(--text-legend)
         color: var(--ink-soft)
 
       &[data-selected] .tick
-        background: var(--ink)
-        box-shadow: inset 0 0 0 1px var(--ink)
+        @include tick.tick-on
 
       &[data-selected] .switch-label
         color: var(--ink)
-
-      &[data-focus-visible]
-        outline: 2px solid var(--signal)
-        outline-offset: 3px
 
       &[data-disabled]
         cursor: default
@@ -88,7 +67,7 @@
 
       &[data-hovered]:not([data-disabled])
         .tick
-          box-shadow: inset 0 0 0 1px var(--ink-dim)
+          box-shadow: var(--frame-dim)
 
     .days
       min-width: 0
@@ -97,12 +76,10 @@
       border: 0
 
       legend
+        @include typography.caps
+
         margin-bottom: var(--space-xs)
         padding: 0
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: var(--track-caps)
-        text-transform: uppercase
         color: var(--ink-dim)
 
       &:disabled legend
@@ -111,29 +88,25 @@
     .day-row
       display: grid
       grid-template-columns: repeat(7, minmax(0, 1fr))
-      gap: 4px
+      gap: var(--space-3xs)
 
     // A day is a framed cell: outlined when free, inked when a reminder falls on it.
     .day
-      min-height: 44px
+      @include typography.numeral
+      @include focus.ring
+
+      min-height: var(--target)
       padding: 0
-      box-shadow: inset 0 0 0 1px var(--rule)
+      box-shadow: var(--frame)
       color: var(--ink-dim)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: 0.06em
       text-transform: uppercase
-      transition: background 160ms var(--ease-out), color 160ms var(--ease-out)
+      transition: background var(--transition-fast) var(--ease-out), color var(--transition-fast) var(--ease-out)
       -webkit-tap-highlight-color: transparent
 
       &[data-selected]
         background: var(--ink)
         color: var(--ground)
         box-shadow: none
-
-      &[data-focus-visible]
-        outline: 2px solid var(--signal)
-        outline-offset: 2px
 
       &[data-disabled]
         color: var(--ink-spent)
@@ -152,17 +125,15 @@
       justify-content: space-between
       gap: var(--space-s)
       margin-top: var(--space-xs)
-      border-bottom: 2px solid var(--rule)
-      transition: border-color 180ms var(--ease-out)
+      border-bottom: var(--field-rule)
+      transition: border-color var(--transition-fast) var(--ease-out)
 
       &:focus-within
         border-bottom-color: var(--signal)
 
       .time-label
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: var(--track-caps)
-        text-transform: uppercase
+        @include typography.caps
+
         color: var(--ink-dim)
 
       input
@@ -172,7 +143,7 @@
         border: 0
         color: var(--ink)
         font: inherit
-        font-size: 1.7rem
+        font-size: var(--text-field-inline)
         font-weight: 800
         font-variant-numeric: tabular-nums
         letter-spacing: var(--track-tight)
@@ -194,19 +165,4 @@
 
       dd
         color: var(--ink-soft)
-        line-height: 1.45
-
-  @include breakpoints.wide
-    .settings-page
-      .columns
-        grid-template-columns: 1fr 1fr
-        gap: var(--space-2xl)
-
-      .column + .column
-        padding-top: 0
-        padding-left: var(--space-2xl)
-        border-top: 0
-        border-left: 1px solid var(--rule-soft)
-
-      .page-heading
-        font-size: 1.6rem
+        line-height: var(--leading-note)

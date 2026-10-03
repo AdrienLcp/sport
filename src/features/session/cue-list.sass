@@ -1,4 +1,6 @@
 @use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/focus'
+@use '../../presentation/styles/typography'
 
 @layer components
   // The block under the legend: a ruled toggle, then either the cues or the
@@ -9,40 +11,35 @@
     flex-direction: column
     min-height: 0
     margin-top: var(--space-s)
-    border-top: 1px solid var(--rule-soft)
+    border-top: var(--hairline-soft)
 
   // A ledger line that opens: the label on the left, the state on the right,
   // tall enough for a thumb. Bold ink once open, like a live line.
   .cue-toggle
+    @include typography.caps
+    @include focus.ring-inset
+
     flex: none
     display: flex
     align-items: center
     justify-content: space-between
     gap: var(--space-s)
-    min-height: 44px
+    min-height: var(--target)
     padding: 0
-    font-size: var(--text-head)
-    font-weight: 700
-    letter-spacing: var(--track-caps)
     text-align: left
-    text-transform: uppercase
     color: var(--ink-dim)
     cursor: pointer
     -webkit-tap-highlight-color: transparent
     touch-action: manipulation
-    transition: color 160ms var(--ease-out)
+    transition: color var(--transition-fast) var(--ease-out)
 
     .state
       flex: none
-      letter-spacing: 0.1em
+      letter-spacing: var(--track-index)
 
     &[data-hovered],
     &[data-selected]
       color: var(--ink)
-
-    &[data-focus-visible]
-      outline: 2px solid var(--signal)
-      outline-offset: -2px
 
   // The term takes the head band's capitals so the eye finds a line by its
   // label; the answer is prose, one step quieter than the count above it.
@@ -50,19 +47,17 @@
     display: grid
     grid-template-columns: max-content 1fr
     align-content: start
-    gap: 3px var(--space-s)
-    font-size: 0.84rem
+    gap: var(--space-3xs) var(--space-s)
+    font-size: var(--text-note)
     line-height: 1.35
 
     .cue
       display: contents
 
     dt
+      @include typography.term
+
       padding-top: 0.2em
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: 0.12em
-      text-transform: uppercase
       color: var(--ink-dim)
 
     dd
@@ -74,13 +69,13 @@
     display: grid
     gap: var(--space-xs)
     padding-left: 1.4em
-    font-size: 0.86rem
+    font-size: var(--text-ledger)
     line-height: 1.4
     color: var(--ink-soft)
     list-style: decimal
 
     li
-      max-width: 62ch
+      max-width: var(--measure)
       padding-left: 0.2em
       text-wrap: pretty
 
@@ -120,8 +115,7 @@
             overscroll-behavior: contain
 
           > .cue-list
-            gap: 2px var(--space-xs)
-            font-size: 0.8rem
+            gap: var(--space-4xs) var(--space-xs)
 
           > .setup-steps
-            font-size: 0.82rem
+            font-size: var(--text-note)

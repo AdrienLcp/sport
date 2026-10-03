@@ -1,12 +1,12 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   // Says the register is a choice: without it the five lines read as a
   // timetable, and a reader never found out he could pick another session.
   .title-plate .register-label
+    @include typography.caps
+
     margin-top: var(--space-xs)
-    font-size: var(--text-head)
-    font-weight: 700
-    letter-spacing: var(--track-caps)
-    text-transform: uppercase
     color: var(--ink-dim)
 
     + .ledger

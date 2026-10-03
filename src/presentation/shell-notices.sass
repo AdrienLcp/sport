@@ -1,5 +1,8 @@
 // A slip tipped in above the plate: framed like it, never floating over it.
 
+@use 'styles/focus'
+@use 'styles/typography'
+
 @layer components
   .shell-notice
     width: 100%
@@ -9,14 +12,14 @@
     justify-content: space-between
     gap: var(--space-3xs) var(--space-m)
     padding: 0 var(--space-m)
-    box-shadow: inset 0 0 0 1px var(--rule)
+    box-shadow: var(--frame)
     font-size: var(--text-ledger)
     color: var(--ink-soft)
 
     // The specimen is stamped the way a printer marks a sample copy: the one
     // band carrying the signal, so nobody mistakes its numbers for theirs.
     &[data-tone='specimen']
-      box-shadow: inset 0 0 0 1px var(--signal)
+      box-shadow: var(--frame-signal)
 
       b
         color: var(--signal-ink)
@@ -27,32 +30,28 @@
     .notice-text
       min-width: 0
       flex: 1 1 10rem
-      padding: 10px 0
+      padding: var(--space-xs) 0
 
     .notice-actions
       display: flex
       gap: var(--space-m)
 
     .notice-action
-      min-height: 44px
+      @include typography.caps
+      @include focus.ring
+
+      min-height: var(--target)
       padding: 0
       color: var(--ink)
-      font-size: var(--text-head)
       font-weight: 800
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
       text-decoration: underline
       text-decoration-color: var(--rule)
-      text-underline-offset: 5px
+      text-underline-offset: var(--underline-offset)
       -webkit-tap-highlight-color: transparent
 
       &.quiet
         color: var(--ink-dim)
         text-decoration: none
-
-      &[data-focus-visible]
-        outline: 2px solid var(--signal)
-        outline-offset: 3px
 
       &[data-hovered]
         text-decoration-color: var(--ink)

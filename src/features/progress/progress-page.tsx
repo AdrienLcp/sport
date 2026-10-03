@@ -264,7 +264,7 @@ const WeeklyCharts: React.FC<WeeklyChartsProps> = ({ weeks }) => {
 
       <details className='numbers'>
         <summary>{translate('progress.numbers.title')}</summary>
-        <table className='tally'>
+        <table className='tally logbook'>
           <thead>
             <tr>
               <th>{translate('progress.numbers.week')}</th>

@@ -1,0 +1,30 @@
+@use '@adrienlcp/styles/breakpoints'
+
+/// A register page's columns: stacked and ruled apart on a phone, the two pages
+/// of an open manual on a desk. The binding runs the full height of the spread:
+/// a rule that stops under the shortest column reads as a broken border.
+@mixin columns($gap)
+  .columns
+    display: grid
+    gap: var(--space-l)
+
+  .column
+    min-width: 0
+    display: flex
+    flex-direction: column
+    gap: $gap
+
+    & + .column
+      padding-top: var(--space-l)
+      border-top: var(--hairline-soft)
+
+  @include breakpoints.wide
+    .columns
+      grid-template-columns: 1fr 1fr
+      gap: var(--space-2xl)
+
+    .column + .column
+      padding-top: 0
+      padding-left: var(--space-2xl)
+      border-top: 0
+      border-left: var(--hairline-soft)

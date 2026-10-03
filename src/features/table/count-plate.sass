@@ -1,4 +1,5 @@
 @use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/typography'
 
 @layer components
   .count-plate
@@ -16,7 +17,7 @@
         letter-spacing: var(--track-tight)
 
     .unit
-      font-size: 1.15rem
+      font-size: var(--text-figure)
       font-weight: 700
       color: var(--ink)
 
@@ -38,7 +39,7 @@
         color: var(--ink-dim)
 
     .prior
-      font-size: 0.85rem
+      font-size: var(--text-ledger)
       color: var(--ink-dim)
 
       b
@@ -51,8 +52,8 @@
       li
         display: flex
         align-items: stretch
-        gap: 6px
-        border-bottom: 1px solid var(--rule-faint)
+        gap: var(--space-2xs)
+        border-bottom: var(--hairline-faint)
 
         &:last-child
           border-bottom: 0
@@ -64,16 +65,16 @@
       min-width: 0
       display: flex
       align-items: baseline
-      gap: 6px
-      min-height: 48px
+      gap: var(--space-2xs)
+      min-height: var(--target-row)
       padding: var(--space-xs) 0
       text-align: left
-      transition: color 160ms var(--ease-out)
+      transition: color var(--transition-fast) var(--ease-out)
 
     .source-name
       flex: 1 1 auto
       min-width: 0
-      font-size: 1rem
+      font-size: var(--text-prose)
       color: var(--ink-soft)
 
     // Never the thing that shrinks: a portion clipped to "10…" is the one word
@@ -81,21 +82,21 @@
     .portion
       flex: none
       white-space: nowrap
-      font-size: 0.8rem
+      font-size: var(--text-note)
       color: var(--ink-dim)
 
     .taps
       flex: none
-      font-size: 0.85rem
+      font-size: var(--text-ledger)
       font-weight: 800
-      letter-spacing: 0.04em
+      letter-spacing: var(--track-numeral)
       color: var(--ink)
 
     .yield
       flex: none
       min-width: 3.2em
       text-align: right
-      font-size: 0.9rem
+      font-size: var(--text-tally)
       color: var(--ink-dim)
 
     .sources li[data-counted='true']
@@ -112,12 +113,12 @@
     // shifts.
     .less
       flex: none
-      width: 44px
+      width: var(--target)
       display: grid
       place-items: center
-      font-size: 1.2rem
+      font-size: var(--text-figure)
       color: var(--ink-dim)
-      transition: color 160ms var(--ease-out)
+      transition: color var(--transition-fast) var(--ease-out)
 
       &[data-hovered]
         color: var(--ink)

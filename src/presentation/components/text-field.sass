@@ -1,3 +1,5 @@
+@use '../styles/typography'
+
 @layer components
   // A grid item defaults to min-width:auto, so a 2.1rem input keeps its ~20ch
   // intrinsic width and pushes the whole plate off a phone.
@@ -5,11 +7,9 @@
     min-width: 0
 
     label
+      @include typography.caps
+
       display: block
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
       color: var(--ink-dim)
 
     .input-row
@@ -19,8 +19,8 @@
       display: flex
       align-items: baseline
       gap: var(--space-s)
-      border-bottom: 2px solid var(--rule)
-      transition: border-color 180ms var(--ease-out)
+      border-bottom: var(--field-rule)
+      transition: border-color var(--transition-fast) var(--ease-out)
 
       &:focus-within
         border-bottom-color: var(--signal)
@@ -36,7 +36,7 @@
       color: var(--ink)
       font: inherit
       font-variant-numeric: tabular-nums
-      font-size: 2.1rem
+      font-size: var(--text-field)
       font-weight: 800
       letter-spacing: var(--track-tight)
 
@@ -45,15 +45,14 @@
         font-weight: 400
 
     .unit
+      @include typography.caps
+
       flex: none
       font-size: var(--text-legend)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
       color: var(--ink-dim)
 
     .hint
       margin-top: var(--space-xs)
-      font-size: 0.8rem
-      line-height: 1.45
+      font-size: var(--text-note)
+      line-height: var(--leading-note)
       color: var(--ink-dim)

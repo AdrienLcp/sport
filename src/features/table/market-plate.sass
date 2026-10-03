@@ -1,3 +1,6 @@
+@use '../../presentation/styles/tick'
+@use '../../presentation/styles/typography'
+
 @layer components
   .market-plate
     .list-head
@@ -7,19 +10,17 @@
       gap: var(--space-s)
 
     .tick-count b
-      font-size: 1.15rem
+      font-size: var(--text-figure)
 
     .clear
+      @include typography.caps
+
       flex: none
-      // A 44px target that does not make the header row 44px tall.
-      padding: 14px 0
-      margin: -14px 0
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      // A full target that does not make the header row as tall as one.
+      padding: var(--target-reach) 0
+      margin: calc(-1 * var(--target-reach)) 0
       color: var(--ink-dim)
-      transition: color 160ms var(--ease-out)
+      transition: color var(--transition-fast) var(--ease-out)
 
       &[data-hovered]
         color: var(--ink)
@@ -37,12 +38,10 @@
       margin-top: var(--space-xs)
 
     .aisle-name
+      @include typography.caps
+
       padding-bottom: var(--space-xs)
-      border-bottom: 1px solid var(--rule-soft)
-      font-size: var(--text-head)
-      font-weight: 700
-      letter-spacing: var(--track-caps)
-      text-transform: uppercase
+      border-bottom: var(--hairline-soft)
       color: var(--ink-dim)
 
     .item
@@ -50,35 +49,30 @@
       align-items: center
       gap: var(--space-s)
       width: 100%
-      min-height: 44px
+      min-height: var(--target)
       text-align: left
 
     // Got it or not reads from the square and from the struck label, the way
     // the ledger reads a movement that is done. No check glyph is invented.
     .tick
-      flex: none
-      width: 14px
-      height: 14px
-      box-shadow: inset 0 0 0 1px var(--rule)
-      transition: background 160ms var(--ease-out), box-shadow 160ms var(--ease-out)
+      @include tick.tick
 
     .item-label
       min-width: 0
-      font-size: 0.95rem
+      font-size: var(--text-legend)
       color: var(--ink-soft)
-      transition: color 160ms var(--ease-out)
+      transition: color var(--transition-fast) var(--ease-out)
 
     .item[data-hovered]
       .tick
-        box-shadow: inset 0 0 0 1px var(--ink-dim)
+        box-shadow: var(--frame-dim)
 
       .item-label
         color: var(--ink)
 
     .items li[data-state='done']
       .tick
-        background: var(--ink)
-        box-shadow: inset 0 0 0 1px var(--ink)
+        @include tick.tick-on
 
       .item-label
         color: var(--ink-spent)

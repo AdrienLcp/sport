@@ -9,7 +9,7 @@
     height: 100dvh
     display: grid
     grid-template-rows: auto minmax(0, 1fr)
-    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left))
+    padding: max(var(--space-xs), env(safe-area-inset-top)) max(var(--space-xs), env(safe-area-inset-right)) max(var(--space-xs), env(safe-area-inset-bottom)) max(var(--space-xs), env(safe-area-inset-left))
 
     .notices
       display: grid
@@ -28,7 +28,7 @@
 
       .notices
         justify-self: center
-        width: min(1080px, 100%)
+        width: min(var(--plate-width), 100%)
 
       .stage
         place-items: center
