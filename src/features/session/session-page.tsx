@@ -10,6 +10,7 @@ import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
 import { useChildPage } from '@/infrastructure/router/navigation'
 import { readRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import { useToday } from '@/presentation/clock/use-today'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 
 import { CooldownPlate } from './cooldown-plate'
 import { DonePlate } from './done-plate'
@@ -169,16 +170,19 @@ export const SessionPage: React.FC = () => {
   }
 
   return (
-    <SessionRun
-      childPage={childPage}
-      done={turn.done}
-      due={turn.due}
-      key={picked.id}
-      onClose={moveOn}
-      onPick={setPicked}
-      session={picked}
-      today={today}
-      week={turn.week}
-    />
+    <>
+      {childPage === null && <ScreenTitle screen='app' />}
+      <SessionRun
+        childPage={childPage}
+        done={turn.done}
+        due={turn.due}
+        key={picked.id}
+        onClose={moveOn}
+        onPick={setPicked}
+        session={picked}
+        today={today}
+        week={turn.week}
+      />
+    </>
   )
 }

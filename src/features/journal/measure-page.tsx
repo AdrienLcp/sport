@@ -10,6 +10,7 @@ import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { TextField } from '@/presentation/components/text-field'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import './measure-page.sass'
@@ -49,6 +50,7 @@ export const MeasurePage: React.FC = () => {
 
   return (
     <Plate className='measure-page'>
+      <ScreenTitle screen='measure' />
       <PlateHead
         rank={
           existing === undefined

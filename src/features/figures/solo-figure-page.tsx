@@ -6,6 +6,7 @@ import {
   useMediaSearchParam
 } from '@/infrastructure/router/navigation'
 import { FigureFrame } from '@/presentation/components/plate'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { Figure } from './figure'
@@ -79,6 +80,7 @@ export const SoloFigurePage: React.FC = () => {
   if (media !== null) {
     return (
       <FigureFrame className='solo-figure-page'>
+        <ScreenTitle screen='figure' />
         <SoloMedia key={media} src={media} />
       </FigureFrame>
     )
@@ -87,6 +89,7 @@ export const SoloFigurePage: React.FC = () => {
   if (figureId === null) {
     return (
       <p className='missing-figure'>
+        <ScreenTitle screen='figure' />
         {translate('figure.missing', { id: requested })}
       </p>
     )
@@ -94,6 +97,7 @@ export const SoloFigurePage: React.FC = () => {
 
   return (
     <FigureFrame className='solo-figure-page'>
+      <ScreenTitle screen='figure' />
       <Figure id={figureId} key={round} />
     </FigureFrame>
   )

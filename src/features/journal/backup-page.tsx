@@ -19,6 +19,7 @@ import { settingsPathFor, useGoBack } from '@/infrastructure/router/navigation'
 import { ActionButton } from '@/presentation/components/action'
 import { FileTrigger } from '@/presentation/components/file-trigger'
 import { Plate, PlateHead } from '@/presentation/components/plate'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -106,6 +107,7 @@ export const BackupPage: React.FC = () => {
 
     return (
       <Plate className='backup-page'>
+        <ScreenTitle screen='backup' />
         <PlateHead
           rank={
             incoming.savedAt === ''
@@ -150,6 +152,7 @@ export const BackupPage: React.FC = () => {
 
   return (
     <Plate className='backup-page'>
+      <ScreenTitle screen='backup' />
       <PlateHead rank={here.savedAt} title={translate('backup.head')} />
 
       <div className='body'>

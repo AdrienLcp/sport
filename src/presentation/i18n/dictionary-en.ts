@@ -62,6 +62,21 @@ export const EN_DICTIONARY = defineDictionary({
     },
     week: 'Week {week}'
   },
+  documentTitle: {
+    app: 'Séance',
+    backup: 'Backup — Séance',
+    contactSheet: 'Contact sheet — Séance',
+    decomposition: 'Decomposition — Séance',
+    erratum: 'Erratum — Séance',
+    figure: 'Figure — Séance',
+    journal: 'Journal — Séance',
+    measure: 'Reading — Séance',
+    progress: 'Progress — Séance',
+    report: 'Report — Séance',
+    settings: 'Settings — Séance',
+    specimen: 'Specimen — Séance',
+    table: 'Table — Séance'
+  },
   erratum: {
     crash: {
       headline: 'This plate came out wrong.',

@@ -66,6 +66,21 @@ export const FR_DICTIONARY = defineDictionary({
     },
     week: 'Semaine {week}'
   },
+  documentTitle: {
+    app: 'Séance',
+    backup: 'Sauvegarde — Séance',
+    contactSheet: 'Planche contact — Séance',
+    decomposition: 'Décomposition — Séance',
+    erratum: 'Erratum — Séance',
+    figure: 'Figure — Séance',
+    journal: 'Journal — Séance',
+    measure: 'Relevé — Séance',
+    progress: 'Progrès — Séance',
+    report: 'Compte rendu — Séance',
+    settings: 'Réglages — Séance',
+    specimen: 'Spécimen — Séance',
+    table: 'Table — Séance'
+  },
   erratum: {
     crash: {
       headline: 'Cette planche s’est mal imprimée.',

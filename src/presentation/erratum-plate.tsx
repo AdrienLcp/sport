@@ -1,5 +1,7 @@
 import type React from 'react'
 
+import { ScreenTitle } from '@/presentation/head/screen-title'
+
 import { ActionButton, ActionLink } from './components/action'
 import { Plate, PlateHead } from './components/plate'
 import { useTranslate } from './i18n/i18n-provider'
@@ -35,6 +37,7 @@ export const ErratumPlate: React.FC<ErratumPlateProps> = ({
 
   return (
     <Plate className='erratum-plate'>
+      <ScreenTitle screen='erratum' />
       <PlateHead rank={path} title={translate('erratum.head')} />
 
       {failure.kind === 'crash' ? (

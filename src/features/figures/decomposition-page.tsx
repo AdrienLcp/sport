@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { FIGURE_IDS } from '@/features/program/program-types'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useLocalize } from '@/presentation/i18n/i18n-provider'
 
 import { Body, Stage } from './figure'
@@ -30,6 +31,7 @@ export const DecompositionPage: React.FC = () => {
 
   return (
     <div className='decomposition-page'>
+      <ScreenTitle screen='decomposition' />
       {FIGURE_IDS.map((id) => {
         const still = POSES[id]
         const motion = motionFor(id)

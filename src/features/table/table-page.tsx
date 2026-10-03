@@ -14,6 +14,7 @@ import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Link } from '@/presentation/components/link'
 import { Plate } from '@/presentation/components/plate'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import type { PlainTranslationKey } from '@/presentation/i18n/translation'
 
@@ -94,6 +95,7 @@ export const TablePage: React.FC = () => {
 
   return (
     <Plate className='table-page'>
+      <ScreenTitle screen='table' />
       {plate === 'count' ? (
         <CountPlate
           day={day}

@@ -14,6 +14,7 @@ import {
 import { useToday } from '@/presentation/clock/use-today'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useI18n } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -67,6 +68,7 @@ const ReportPlate: React.FC<ReportPlateProps> = ({ fallbackPath, scope }) => {
 
   return (
     <Plate className='report-page'>
+      <ScreenTitle screen='report' />
       <PlateHead
         rank={scope === 'evening' ? translate('report.tonight') : today}
         title={translate('report.head')}

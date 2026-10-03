@@ -4,6 +4,7 @@ import { homePathFor, useGoBack } from '@/infrastructure/router/navigation'
 import { ActionButton } from '@/presentation/components/action'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { DataSection } from './data-section'
@@ -26,6 +27,7 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <Plate className='settings-page'>
+      <ScreenTitle screen='settings' />
       <PlateHead title={translate('settings.head')} />
 
       <div className='body register'>

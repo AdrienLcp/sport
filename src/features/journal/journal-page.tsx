@@ -20,6 +20,7 @@ import { ActionButton, ActionLink } from '@/presentation/components/action'
 import { LineChart } from '@/presentation/components/charts/line-chart'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 
@@ -147,6 +148,7 @@ export const JournalPage: React.FC = () => {
 
   return (
     <Plate className='journal-page'>
+      <ScreenTitle screen='journal' />
       <PlateHead
         rank={translate('common.week', { week: String(weekOf(log)) })}
         title={translate('journal.title')}

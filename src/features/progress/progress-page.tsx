@@ -30,6 +30,7 @@ import { LineChart } from '@/presentation/components/charts/line-chart'
 import { zeroBand } from '@/presentation/components/charts/value-band'
 import { Plate, PlateHead } from '@/presentation/components/plate'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
 import type { Translate } from '@/presentation/i18n/translation'
@@ -381,6 +382,7 @@ export const ProgressPage: React.FC = () => {
 
   return (
     <Plate className='progress-page'>
+      <ScreenTitle screen='progress' />
       <PlateHead
         rank={translate('progress.rank', { weeks: PROGRESS_WEEKS })}
         title={translate('progress.head')}

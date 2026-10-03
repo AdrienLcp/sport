@@ -2,6 +2,7 @@ import type React from 'react'
 
 import { FIGURE_IDS } from '@/features/program/program-types'
 import { FigureFrame } from '@/presentation/components/plate'
+import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useLocalize } from '@/presentation/i18n/i18n-provider'
 
 import { Figure } from './figure'
@@ -19,6 +20,7 @@ export const ContactSheetPage: React.FC = () => {
 
   return (
     <div className='contact-sheet-page'>
+      <ScreenTitle screen='contactSheet' />
       {FIGURE_IDS.map((id) => (
         <FigureFrame className='cell' element='figure' key={id}>
           <Figure id={id} />
