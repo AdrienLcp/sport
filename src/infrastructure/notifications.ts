@@ -1,5 +1,7 @@
 import { Result } from '@adrienlcp/result'
 
+import { hasServiceWorker } from '@/infrastructure/browser'
+
 export type NotificationPermissionState = NotificationPermission | 'unsupported'
 
 export const notificationPermission = (): NotificationPermissionState =>
@@ -21,7 +23,7 @@ export const requestNotificationPermission = async (): Promise<
 /** The service worker, once it controls the page; `null` in a browser without one. */
 const readyRegistration =
   async (): Promise<ServiceWorkerRegistration | null> => {
-    if (!('serviceWorker' in navigator)) return null
+    if (!hasServiceWorker()) return null
     const waited = await Promise.race([
       navigator.serviceWorker.ready,
       new Promise<null>((resolve) => {
@@ -90,7 +92,7 @@ export const wakeCapabilities = (): WakeCapabilities => ({
     'showTrigger' in Notification.prototype &&
     'TimestampTrigger' in window,
   canWakePeriodically:
-    'serviceWorker' in navigator &&
+    hasServiceWorker() &&
     'ServiceWorkerRegistration' in window &&
     'periodicSync' in ServiceWorkerRegistration.prototype
 })

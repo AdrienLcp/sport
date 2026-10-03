@@ -6,6 +6,7 @@ import {
   isReadingSpecimen,
   switchProfile
 } from '@/features/specimen/use-specimen'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { applyUpdate, useAppUpdate } from '@/infrastructure/pwa/app-update'
 import {
   promptInstall,
@@ -54,9 +55,7 @@ export const ShellNotices: React.FC = () => {
   const declineInstall = () => {
     setIsInstallDeclined(true)
     const written = writeStoredText({ key: INSTALL_DECLINED_KEY, text: 'yes' })
-    if (written.status === 'failure') {
-      console.warn(`The install choice could not be saved (${written.error}).`)
-    }
+    warnOnFailure(written, 'The install choice could not be saved')
   }
 
   return (

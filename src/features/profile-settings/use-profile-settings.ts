@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import {
   readProfileSettings,
   writeProfileSettings
@@ -12,16 +13,13 @@ import {
 
 export const readProfileSettingsOrEmpty = (): ProfileSettings => {
   const read = readProfileSettings()
-  if (read.status === 'success') return read.data
-  console.warn(`The profile settings could not be read (${read.error}).`)
-  return EMPTY_PROFILE_SETTINGS
+  warnOnFailure(read, 'The profile settings could not be read')
+  return read.status === 'success' ? read.data : EMPTY_PROFILE_SETTINGS
 }
 
 export const saveProfileSettings = (settings: ProfileSettings): void => {
   const written = writeProfileSettings(settings)
-  if (written.status === 'failure') {
-    console.warn(`The profile settings could not be saved (${written.error}).`)
-  }
+  warnOnFailure(written, 'The profile settings could not be saved')
 }
 
 export const useProfileSettings = (): readonly [

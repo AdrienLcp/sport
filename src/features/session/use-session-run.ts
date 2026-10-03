@@ -8,6 +8,7 @@ import {
 } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
 import { noteSessionRun } from '@/features/reminders/reminder-device'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import {
   clearRunSnapshot,
   readRunSnapshot,
@@ -26,10 +27,8 @@ const restoreRun = ({
   session: Session
 }): RunState => {
   const read = readRunSnapshot()
-  if (read.status === 'failure') {
-    console.warn(`The interrupted session could not be read (${read.error}).`)
-    return INITIAL_RUN
-  }
+  warnOnFailure(read, 'The interrupted session could not be read')
+  if (read.status === 'failure') return INITIAL_RUN
 
   const snapshot = read.data
   if (
@@ -47,15 +46,6 @@ const restoreRun = ({
     side: snapshot.side,
     stage: snapshot.stage,
     step: snapshot.step
-  }
-}
-
-const warnOnFailure = (
-  outcome: { status: 'failure'; error: string } | { status: 'success' },
-  what: string
-): void => {
-  if (outcome.status === 'failure') {
-    console.warn(`${what} (${outcome.error}).`)
   }
 }
 

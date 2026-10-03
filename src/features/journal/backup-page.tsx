@@ -14,6 +14,7 @@ import { readTableOrEmpty, saveTable } from '@/features/table/use-table'
 import type { IsoDay } from '@/helpers/days'
 import { downloadTextFile, readFileText } from '@/infrastructure/browser'
 import { today } from '@/infrastructure/clock'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { settingsPathFor, useGoBack } from '@/infrastructure/router/navigation'
 import { ActionButton } from '@/presentation/components/action'
 import { FileTrigger } from '@/presentation/components/file-trigger'
@@ -90,9 +91,7 @@ export const BackupPage: React.FC = () => {
       text: serializeBackup(backup),
       type: 'application/json'
     })
-    if (saved.status === 'failure') {
-      console.warn(`The backup file could not be written (${saved.error}).`)
-    }
+    warnOnFailure(saved, 'The backup file could not be written')
   }
 
   const replaceWith = (backup: Backup) => {

@@ -1,6 +1,7 @@
 import type { IsoDay } from '@/helpers/days'
 import { loadPage } from '@/infrastructure/browser'
 import { today } from '@/infrastructure/clock'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { writeProfileSettings } from '@/infrastructure/storage/profile-settings-storage'
 import { clearRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import {
@@ -12,13 +13,6 @@ import { writeTable } from '@/infrastructure/storage/table-storage'
 import { writeTrainingLog } from '@/infrastructure/storage/training-log-storage'
 
 import { makeSpecimen } from './specimen-data'
-
-const warnOnFailure = (
-  outcome: { status: 'failure'; error: string } | { status: 'success' },
-  what: string
-): void => {
-  if (outcome.status === 'failure') console.warn(`${what} (${outcome.error}).`)
-}
 
 /** Prints a fresh specimen under its own keys; the reader's are never read or written. */
 export const printSpecimen = (today: IsoDay): void => {

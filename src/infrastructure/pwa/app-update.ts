@@ -1,6 +1,8 @@
 import { registerSW } from 'virtual:pwa-register'
 import { useSyncExternalStore } from 'react'
 
+import { hasServiceWorker, reloadPage } from '@/infrastructure/browser'
+
 /**
  * The service worker's life seen from the page: a new printing waiting, and
  * the one moment the reader accepts it. Never applied behind their back — a
@@ -24,7 +26,7 @@ const setState = (next: Partial<UpdateState>) => {
 const UPDATE_CHECK_INTERVAL = 60 * 60 * 1000
 
 export const startServiceWorker = (): void => {
-  if (!('serviceWorker' in navigator)) return
+  if (!hasServiceWorker()) return
   applyWaiting = registerSW({
     onNeedRefresh: () => setState({ isUpdateWaiting: true }),
     onOfflineReady: () => setState({ isOfflineReady: true }),
@@ -45,11 +47,9 @@ export const startServiceWorker = (): void => {
  * printing with its slip still showing.
  */
 export const applyUpdate = (): void => {
-  navigator.serviceWorker.addEventListener(
-    'controllerchange',
-    () => window.location.reload(),
-    { once: true }
-  )
+  navigator.serviceWorker.addEventListener('controllerchange', reloadPage, {
+    once: true
+  })
   void applyWaiting?.(true)
 }
 

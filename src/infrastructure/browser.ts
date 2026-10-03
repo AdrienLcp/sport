@@ -40,6 +40,9 @@ export const reloadPage = (): void => {
   window.location.reload()
 }
 
+/** Whether this browser can run the app's service worker at all. */
+export const hasServiceWorker = (): boolean => 'serviceWorker' in navigator
+
 /** The languages the browser says the reader reads, most preferred first. */
 export const preferredLocales = (): readonly string[] => navigator.languages
 

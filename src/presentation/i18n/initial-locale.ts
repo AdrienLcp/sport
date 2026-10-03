@@ -1,14 +1,14 @@
 import type { Locale } from '@/helpers/localized-text'
 import { preferredLocales } from '@/infrastructure/browser'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { readStoredLocale } from '@/infrastructure/storage/locale-storage'
 
 import { i18n } from './i18n'
 
 const storedLocaleOrNone = (): Locale | null => {
   const read = readStoredLocale()
-  if (read.status === 'success') return read.data
-  console.warn(`The stored language could not be read (${read.error}).`)
-  return null
+  warnOnFailure(read, 'The stored language could not be read')
+  return read.status === 'success' ? read.data : null
 }
 
 /**

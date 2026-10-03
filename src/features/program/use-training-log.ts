@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import {
   readTrainingLog,
   writeTrainingLog
@@ -13,17 +14,14 @@ import { EMPTY_LOG, type Log } from './training-log'
  */
 export const readTrainingLogOrEmpty = (): Log => {
   const read = readTrainingLog()
-  if (read.status === 'success') return read.data
-  console.warn(`The training log could not be read (${read.error}).`)
-  return EMPTY_LOG
+  warnOnFailure(read, 'The training log could not be read')
+  return read.status === 'success' ? read.data : EMPTY_LOG
 }
 
 /** A refused write loses the log, never the session on screen. */
 export const saveTrainingLog = (log: Log): void => {
   const written = writeTrainingLog(log)
-  if (written.status === 'failure') {
-    console.warn(`The training log could not be saved (${written.error}).`)
-  }
+  warnOnFailure(written, 'The training log could not be saved')
 }
 
 /** The log as the page opened it, and the way to change it on screen and on disk. */

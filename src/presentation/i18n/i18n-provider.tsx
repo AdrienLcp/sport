@@ -7,6 +7,7 @@ import {
   type LocalizedText,
   textIn
 } from '@/helpers/localized-text'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { writeStoredLocale } from '@/infrastructure/storage/locale-storage'
 import { I18nProvider as AriaI18nProvider } from '@/presentation/components/i18n-provider'
 
@@ -45,9 +46,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
 
   const setLocale = (next: Locale) => {
     const written = writeStoredLocale(next)
-    if (written.status === 'failure') {
-      console.warn(`The language could not be saved (${written.error}).`)
-    }
+    warnOnFailure(written, 'The language could not be saved')
     document.documentElement.lang = next
     setLocaleState(next)
   }

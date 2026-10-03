@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { withoutSessions } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { clearRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import { ActionButton } from '@/presentation/components/action'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
@@ -23,12 +24,10 @@ export const LogWipe: React.FC = () => {
 
   const wipe = () => {
     keepLog(withoutSessions(log))
-    const cleared = clearRunSnapshot()
-    if (cleared.status === 'failure') {
-      console.warn(
-        `The interrupted session could not be cleared (${cleared.error}).`
-      )
-    }
+    warnOnFailure(
+      clearRunSnapshot(),
+      'The interrupted session could not be cleared'
+    )
     setStep('cleared')
   }
 

@@ -1,3 +1,4 @@
+import { warnOnFailure } from '@/infrastructure/diagnostics'
 import {
   type NotificationContent,
   scheduleAhead,
@@ -28,21 +29,14 @@ export type ReminderCopy = {
 /** How far ahead a browser able to schedule notifications is handed them. */
 const SCHEDULE_AHEAD_DAYS = 14
 
-const warnOnFailure = (
-  outcome: { status: 'failure'; error: string } | { status: 'success' },
-  what: string
-): void => {
-  if (outcome.status === 'failure') console.warn(`${what} (${outcome.error}).`)
-}
-
 /** A schedule this device cannot read is the default one: off. */
 export const readReminderSchedule = async (): Promise<ReminderSchedule> => {
   const read = await readDeviceValue('reminder-schedule')
-  if (read.status === 'failure') {
-    console.warn(`The reminder schedule could not be read (${read.error}).`)
+  warnOnFailure(read, 'The reminder schedule could not be read')
+  if (read.status === 'failure' || read.data === undefined) {
     return DEFAULT_SCHEDULE
   }
-  return read.data === undefined ? DEFAULT_SCHEDULE : parseSchedule(read.data)
+  return parseSchedule(read.data)
 }
 
 /**
@@ -161,10 +155,8 @@ export const remindIfOwed = async ({
     isSilent: !schedule.withSound,
     tag: 'reminder'
   })
-  if (shown.status === 'failure') {
-    console.warn(`The reminder could not be shown (${shown.error}).`)
-    return
-  }
+  warnOnFailure(shown, 'The reminder could not be shown')
+  if (shown.status === 'failure') return
   await noteShown(now)
 }
 
