@@ -63,7 +63,7 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit && tsc --noEmit -p src/service-worker",
-    "validate": "pnpm build && pnpm lint:ci && pnpm spell && pnpm test"
+    "validate": "pnpm lint:ci && pnpm spell && pnpm build && pnpm test"
   },
   "type": "module",
   "version": "0.1.0"
