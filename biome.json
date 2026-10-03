@@ -3,5 +3,31 @@
   "extends": ["@adrienlcp/biome-config", "@adrienlcp/biome-config/react"],
   "files": {
     "includes": ["!**/dev-dist"]
-  }
+  },
+  "linter": {
+    "rules": {
+      "style": {
+        "noRestrictedGlobals": {
+          "level": "error",
+          "options": {
+            "deniedGlobals": {
+              "Date": "Read the time through infrastructure/clock.ts, parse or build a Date through infrastructure/dates.ts."
+            }
+          }
+        }
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/infrastructure/clock.ts", "**/infrastructure/dates.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedGlobals": "off"
+          }
+        }
+      }
+    }
+  ]
 }
