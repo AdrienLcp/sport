@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { zonedNow } from '@/infrastructure/clock'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { reminderCopyOf } from './reminder-copy'
@@ -32,7 +33,7 @@ export const useReminderSchedule = (): readonly [
     setSchedule(next)
     void saveReminderSchedule({
       copy: reminderCopyOf(translate),
-      now: Temporal.Now.zonedDateTimeISO(),
+      now: zonedNow(),
       schedule: next
     })
   }

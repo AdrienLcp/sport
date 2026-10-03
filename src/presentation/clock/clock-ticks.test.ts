@@ -2,10 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { msUntilNextMinute, subscribeToClockTicks } from './clock-ticks'
 
+const HALF_MINUTE_BEFORE_MIDNIGHT = Temporal.Instant.from(
+  '2026-10-02T23:59:30Z'
+).epochMilliseconds
+
 describe('clock ticks', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date(2026, 9, 2, 23, 59, 30))
+    vi.useFakeTimers({ now: HALF_MINUTE_BEFORE_MIDNIGHT })
   })
 
   afterEach(() => {

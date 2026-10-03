@@ -1,5 +1,6 @@
-import { type IsoDay, todayIsoDay } from '@/helpers/days'
+import type { IsoDay } from '@/helpers/days'
 import { loadPage } from '@/infrastructure/browser'
+import { today } from '@/infrastructure/clock'
 import { writeProfileSettings } from '@/infrastructure/storage/profile-settings-storage'
 import { clearRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import {
@@ -49,7 +50,7 @@ export const switchProfile = ({
   profile: StorageProfile
 }): void => {
   if (profile === 'specimen') {
-    printSpecimen(todayIsoDay())
+    printSpecimen(today().toString())
   }
   warnOnFailure(
     writeActiveProfile(profile),

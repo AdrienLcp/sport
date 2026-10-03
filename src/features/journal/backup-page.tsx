@@ -11,8 +11,9 @@ import {
   saveTrainingLog
 } from '@/features/program/use-training-log'
 import { readTableOrEmpty, saveTable } from '@/features/table/use-table'
-import { type IsoDay, todayIsoDay } from '@/helpers/days'
+import type { IsoDay } from '@/helpers/days'
 import { downloadTextFile, readFileText } from '@/infrastructure/browser'
+import { today } from '@/infrastructure/clock'
 import { settingsPathFor, useGoBack } from '@/infrastructure/router/navigation'
 import { ActionButton } from '@/presentation/components/action'
 import { FileTrigger } from '@/presentation/components/file-trigger'
@@ -70,7 +71,7 @@ const Counts: React.FC<CountsProps> = ({ backup }) => {
 export const BackupPage: React.FC = () => {
   const translate = useTranslate()
   const goBack = useGoBack(settingsPathFor())
-  const [here] = useState(() => gatherHere(todayIsoDay()))
+  const [here] = useState(() => gatherHere(today().toString()))
   const [incoming, setIncoming] = useState<Backup | null>(null)
   const [isRejected, setIsRejected] = useState(false)
 
@@ -83,7 +84,7 @@ export const BackupPage: React.FC = () => {
   }
 
   const exportHere = () => {
-    const backup = gatherHere(todayIsoDay())
+    const backup = gatherHere(today().toString())
     const saved = downloadTextFile({
       name: backupFileName(backup),
       text: serializeBackup(backup),

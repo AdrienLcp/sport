@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent } from 'react'
 
+import { zonedNow } from '@/infrastructure/clock'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { reminderCopyOf } from './reminder-copy'
@@ -27,7 +28,7 @@ export const useReminderClock = (): void => {
   const fire = useEffectEvent(async () => {
     await remindIfOwed({
       copy: reminderCopyOf(translate),
-      now: Temporal.Now.zonedDateTimeISO()
+      now: zonedNow()
     })
   })
 
@@ -38,7 +39,7 @@ export const useReminderClock = (): void => {
     const arm = async () => {
       const schedule = await readReminderSchedule()
       if (isStopped) return
-      const now = Temporal.Now.zonedDateTimeISO()
+      const now = zonedNow()
       const next = nextReminder(schedule, now)
       const wait =
         next === null
@@ -52,7 +53,7 @@ export const useReminderClock = (): void => {
             }, wait)
     }
 
-    void acknowledgeTodaysReminder(Temporal.Now.zonedDateTimeISO()).then(arm)
+    void acknowledgeTodaysReminder(zonedNow()).then(arm)
     return () => {
       isStopped = true
       window.clearTimeout(timer)

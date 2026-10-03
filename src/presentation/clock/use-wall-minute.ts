@@ -1,9 +1,12 @@
 import { useSyncExternalStore } from 'react'
 
+import { zonedNow } from '@/infrastructure/clock'
+
 import { subscribeToClockTicks } from './clock-ticks'
 
 const wallMinute = (): string =>
-  Temporal.Now.plainDateTimeISO()
+  zonedNow()
+    .toPlainDateTime()
     .round({ roundingMode: 'floor', smallestUnit: 'minute' })
     .toString()
 

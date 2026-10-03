@@ -1,6 +1,8 @@
 import { usePrefersReducedMotion } from '@adrienlcp/browser/react'
 import { useEffect, useState } from 'react'
 
+import { nowMs } from '@/infrastructure/clock'
+
 /**
  * Seconds since `resetKey` last changed, while `isRunning`. Read from the wall
  * clock rather than accumulated per frame, so a backgrounded tab comes back
@@ -16,14 +18,14 @@ export const useElapsed = (isRunning: boolean, resetKey: string): number => {
   useEffect(() => {
     if (!isRunning) return
 
-    const startedAt = Date.now()
+    const startedAt = nowMs()
 
     if (isReduced) {
       const timer = window.setInterval(
         () =>
           setTick({
             key: resetKey,
-            seconds: Math.floor((Date.now() - startedAt) / 1000)
+            seconds: Math.floor((nowMs() - startedAt) / 1000)
           }),
         250
       )
@@ -32,7 +34,7 @@ export const useElapsed = (isRunning: boolean, resetKey: string): number => {
 
     const read = () => ({
       key: resetKey,
-      seconds: (Date.now() - startedAt) / 1000
+      seconds: (nowMs() - startedAt) / 1000
     })
     let frame = 0
     const step = () => {

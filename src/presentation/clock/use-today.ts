@@ -1,8 +1,11 @@
 import { useSyncExternalStore } from 'react'
 
-import { type IsoDay, todayIsoDay } from '@/helpers/days'
+import type { IsoDay } from '@/helpers/days'
+import { today } from '@/infrastructure/clock'
 
 import { subscribeToClockTicks } from './clock-ticks'
+
+const todayIsoDay = (): IsoDay => today().toString()
 
 /**
  * The local calendar day, read again at every minute and whenever the page is

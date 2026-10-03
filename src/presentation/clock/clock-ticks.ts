@@ -1,3 +1,5 @@
+import { nowMs } from '@/infrastructure/clock'
+
 const MINUTE_MS = 60_000
 
 /** A phone woken from sleep, a tab brought back: the page is seen again. */
@@ -22,7 +24,7 @@ export const subscribeToClockTicks = (
     timer = setTimeout(() => {
       onTick()
       armNextMinute()
-    }, msUntilNextMinute(Date.now()))
+    }, msUntilNextMinute(nowMs()))
   }
 
   const tickNow = () => {

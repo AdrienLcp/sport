@@ -5,9 +5,6 @@
  */
 export type IsoDay = string
 
-/** The device's calendar day, now. */
-export const todayIsoDay = (): IsoDay => Temporal.Now.plainDateISO().toString()
-
 export const plainDayOf = (day: IsoDay): Temporal.PlainDate =>
   Temporal.PlainDate.from(day)
 

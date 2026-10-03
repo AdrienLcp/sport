@@ -13,6 +13,7 @@ import { NavigationRoute, registerRoute } from 'workbox-routing'
 
 import { parseSchedule } from '../features/reminders/reminder-schedule'
 import { isRecord } from '../helpers/records'
+import { zonedNow } from '../infrastructure/clock'
 import {
   readDeviceValue,
   writeDeviceValue
@@ -54,7 +55,7 @@ const valueOrNull = async (
  * show it once.
  */
 const remindIfOwed = async (): Promise<void> => {
-  const now = Temporal.Now.zonedDateTimeISO()
+  const now = zonedNow()
   const reminder = owedReminder({
     copy: await valueOrNull('reminder-copy'),
     lastSessionDay: await valueOrNull('last-session-day'),
