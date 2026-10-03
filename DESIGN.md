@@ -138,7 +138,7 @@ components:
 
 ## Overview
 
-**Creative North Star: "La planche de manuel de gymnastique"**
+**Creative North Star: "The gymnastics manual plate"**
 
 Not a fitness dashboard. A printed plate from a gymnastics manual — one movement per page, framed by an engraved hairline, turned rather than scrolled. The metaphor is not decoration: it decides what may exist. A printed plate has no catalogue, no progress ring, no badge, no flame, and no clock. When this system needed a chronometer, it did not add one; it took the rule that was already ruled under the title and let it withdraw. That substitution is the whole method in one gesture.
 
@@ -160,16 +160,16 @@ The palette is two inks and one signal, and the discipline is that there is no t
 A warm two-ink palette on printing black, with a single cinnabar signal held in reserve for rules and points.
 
 ### Primary
-- **Cinabre** (`#e2411e`): the only signal in the world, and it is spent sparingly — the rest-state chrono rule, the active marker, the focus ring, the caret. It carries no body text. Measured 4.5:1 on ground, which is the floor for a 2px rule and below what small text needs, which is why a second value exists for that case.
-- **Cinabre de labeur** (`#f05a31`): the working variant, 5.7:1, used when the signal must carry small text — a ledger state, a count against target. It exists so the signal never has to be read at 4.5:1 in a dark room.
+- **Cinnabar** (`#e2411e`): the only signal in the world, and it is spent sparingly — the rest-state chrono rule, the active marker, the focus ring, the caret. It carries no body text. Measured 4.5:1 on ground, which is the floor for a 2px rule and below what small text needs, which is why a second value exists for that case.
+- **Working cinnabar** (`#f05a31`): the working variant, 5.7:1, used when the signal must carry small text — a ledger state, a count against target. It exists so the signal never has to be read at 4.5:1 in a dark room.
 
 ### Neutral
-- **Noir d'imprimerie** (`#14120f`): the ground. Warm, never pure black; `color-scheme: dark` is declared so browser-drawn surfaces follow.
+- **Printer's black** (`#14120f`): the ground. Warm, never pure black; `color-scheme: dark` is declared so browser-drawn surfaces follow.
 - **The day printing** swaps ground and ink — cream paper `#f3eee2`, printer's black `#1a1712` (15.4:1) — and re-steps every other value against the paper: prose `#453e33` (9.1:1), spent `#655c4f` (5.7:1), done `#746a5c` (4.6:1), and a deeper cinnabar, `#c7361a` for rules (4.6:1) and `#ad2f10` for small text (5.7:1). The rules darken instead of lightening. Both printings are written in `oklch()` in `_tokens.sass`, each value with its measured ratio.
-- **Crème** (`#e8e2d4`): the ink, 14.5:1 (AAA). Headings, figures, numbers read in action, and the fill of the primary action.
-- **Crème de prose** (`#b5ac9a`): 8.3:1 (AAA). Running prose and cues — long text that must stay comfortable, not loud.
-- **Crème éteinte** (`#9c9080`): 6.0:1 (AA). Secondary labels, ledger rows at rest, ranks in the head band.
-- **Crème dépensée** (`#8a8071`): 4.8:1 (AA). A movement already done. The strike-through carries the state; this value only stops it from competing.
+- **Cream** (`#e8e2d4`): the ink, 14.5:1 (AAA). Headings, figures, numbers read in action, and the fill of the primary action.
+- **Prose cream** (`#b5ac9a`): 8.3:1 (AAA). Running prose and cues — long text that must stay comfortable, not loud.
+- **Dimmed cream** (`#9c9080`): 6.0:1 (AA). Secondary labels, ledger rows at rest, ranks in the head band.
+- **Spent cream** (`#8a8071`): 4.8:1 (AA). A movement already done. The strike-through carries the state; this value only stops it from competing.
 
 ### Tertiary — the figure's own inks
 The figures are drawn in their own values, and they live in the token file rather than on the plate, because the contact sheet and the decomposition strip draw the same figures outside it.
@@ -282,7 +282,7 @@ A 1px absolutely-positioned bar sitting exactly on the head band's bottom border
 Drawn SVG, one movement per figure, looping without end — unless the movement does not move. A pure hold has no entry in `MOTIONS` and the plate stands still: the plank, the side plank, the hollow, and every one of the eleven stretches. A still figure here is the system working, not a figure that failed to start. Depth is carried by **stroke weight**: torso 8, thigh 5.5, shin 4.2, far side 4.2. Props and floor in `fig-prop`. Under `prefers-reduced-motion` the figure does not freeze — it prints the arrival pose behind the working pose as a broken construction line, which is what a real manual does.
 
 ### The cue block
-Under the legend of a set or warm-up plate: a ruled toggle line (« Le geste en détail · 4 étapes »), then a two-column list — the term in head-band capitals (Bouge, Fixe, Serre, Rythme, Souffle, Appui, Arrêt), the answer in `ink-soft` prose. The toggle swaps the list for the numbered how-to **in the same place**, so the plate never grows. On a phone the block scrolls inside itself under a figure that keeps at least `clamp(120px, 21vh, 190px)`, and « Ensuite » steps aside: the register and the action never move. The « Rythme » line and the figure's cycle read the same `Tempo`.
+Under the legend of a set or warm-up plate: a ruled toggle line (« The movement in detail · 4 steps »), then a two-column list — the term in head-band capitals (Moves, Still, Squeeze, Tempo, Breathe, Support, Stop), the answer in `ink-soft` prose. The toggle swaps the list for the numbered how-to **in the same place**, so the plate never grows. On a phone the block scrolls inside itself under a figure that keeps at least `clamp(120px, 21vh, 190px)`, and « Next » steps aside: the register and the action never move. The « Tempo » line and the figure's cycle read the same `Tempo`.
 
 ### The erratum
 What a printed manual tips in when a page came out wrong: a plate with no figure, the band reading « Erratum » with the failing address as its rank, a headline, one line of prose saying nothing noted is lost, the raw reason in a `facts` list, then the one full-width action back to the session and a ghost reload. It carries no cinnabar: an error is not a state to confirm. The same plate, without reason or reload, answers an unknown address.

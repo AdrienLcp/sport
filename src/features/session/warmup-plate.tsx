@@ -30,7 +30,7 @@ type WarmupPlateProps = {
  * share of three minutes ran out, and a beginner still counting his hip circles
  * lost the plate under him (first real session, September 2026). One number
  * only: the reps to do, or — for a real hold — the seconds, whose clock waits
- * for « Démarrer » and never turns the plate.
+ * for « Start » and never turns the plate.
  */
 export const WarmupPlate: React.FC<WarmupPlateProps> = ({
   index,

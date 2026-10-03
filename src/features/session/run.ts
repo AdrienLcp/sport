@@ -67,7 +67,7 @@ export const INITIAL_RUN: RunState = {
 /**
  * The cool-down read as a flat list of plates. A stretch held per side is two
  * plates and not one: the app ships no sound and no vibration, so a single
- * sixty-second plate has no way to say « change de côté » halfway through, and
+ * sixty-second plate has no way to say « switch sides » halfway through, and
  * a reader face down in a pigeon is not watching a number.
  */
 export type Stop = {

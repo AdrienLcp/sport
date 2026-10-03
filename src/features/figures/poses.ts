@@ -532,7 +532,7 @@ export const POSES: Record<FigureId, Pose> = {
   /* ---------------------------------------------------------------- *
    * The stretches. Every one of them is a pure hold, so none carries a
    * motion: the law is already written next door, where plank, side plank
-   * and hollow are absent from MOTIONS on purpose. Chat-vache is the one
+   * and hollow are absent from MOTIONS on purpose. Cat-cow is the one
    * cool-down drill that genuinely cycles, and it already has its figure.
    * ---------------------------------------------------------------- */
 

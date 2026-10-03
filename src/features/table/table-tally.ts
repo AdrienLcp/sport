@@ -97,7 +97,7 @@ export const runUpTo = (
     .map(([stored, count]) => ({ day: stored, protein: proteinOf(count) }))
 
 /** Ids the catalogue no longer holds are forgotten: counted, they push a
-    tally past the list's own length and "la liste est faite", which compares
+    tally past the list's own length and "the list is done", which compares
     the two, never lights up again. */
 export const inCatalogue = (ticked: readonly string[]): readonly string[] =>
   ticked.filter((id) => MARKET_IDS.has(id))

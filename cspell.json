@@ -9,7 +9,21 @@
     "public"
   ],
   "import": ["@cspell/dict-fr-fr/cspell-ext.json"],
-  "language": "en,en-GB,fr",
+  "language": "en,en-GB",
+  "overrides": [
+    {
+      "filename": [
+        "cspell.json",
+        "src/features/figures/figure-labels.ts",
+        "src/features/figures/figure-names.ts",
+        "src/features/program/content/*.ts",
+        "src/features/table/table-catalogue.ts",
+        "src/presentation/i18n/dictionary-fr.ts"
+      ],
+      "language": "en,en-GB,fr",
+      "words": ["Ischio", "marchées", "Répét"]
+    }
+  ],
   "version": "0.2",
   "words": [
     "adrien",
@@ -18,6 +32,7 @@
     "beforeinstallprompt",
     "bezier",
     "biomejs",
+    "chrono",
     "chronophotography",
     "counterpose",
     "counterposes",
@@ -27,15 +42,14 @@
     "esbuild",
     "esnext",
     "figcaption",
+    "Français",
     "glute",
     "glutes",
     "gridline",
     "indexeddb",
-    "Ischio",
     "Lacourpaille",
     "linecap",
     "linejoin",
-    "marchées",
     "Midstance",
     "minmax",
     "monday",
@@ -47,7 +61,6 @@
     "precache",
     "precached",
     "precaching",
-    "Répét",
     "seedable",
     "skyr",
     "stylesheet",
