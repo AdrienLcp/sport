@@ -517,6 +517,15 @@ export const FR_DICTIONARY = defineDictionary({
       title: 'Cible de protéines'
     },
     reminders: {
+      dayCell: {
+        friday: 'Ve',
+        monday: 'Lu',
+        saturday: 'Sa',
+        sunday: 'Di',
+        thursday: 'Je',
+        tuesday: 'Ma',
+        wednesday: 'Me'
+      },
       days: 'Jours',
       enable: 'Me rappeler la séance',
       permission: {
@@ -551,7 +560,7 @@ export const FR_DICTIONARY = defineDictionary({
       time: 'Heure',
       title: 'Rappels',
       weekday: defineTranslation('{day:date}', {
-        date: { day: { weekday: 'short' } }
+        date: { day: { weekday: 'long' } }
       })
     },
     theme: {

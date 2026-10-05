@@ -502,6 +502,15 @@ export const EN_DICTIONARY = defineDictionary({
       title: 'Protein target'
     },
     reminders: {
+      dayCell: {
+        friday: 'Fr',
+        monday: 'Mo',
+        saturday: 'Sa',
+        sunday: 'Su',
+        thursday: 'Th',
+        tuesday: 'Tu',
+        wednesday: 'We'
+      },
       days: 'Days',
       enable: 'Remind me to train',
       permission: {
@@ -535,7 +544,7 @@ export const EN_DICTIONARY = defineDictionary({
       time: 'Time',
       title: 'Reminders',
       weekday: defineTranslation('{day:date}', {
-        date: { day: { weekday: 'short' } }
+        date: { day: { weekday: 'long' } }
       })
     },
     theme: {

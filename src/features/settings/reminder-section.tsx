@@ -20,13 +20,27 @@ import { ActionButton } from '@/presentation/components/action'
 import { Switch } from '@/presentation/components/switch'
 import { ToggleButton } from '@/presentation/components/toggle-button'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
-import type { Translate } from '@/presentation/i18n/translation'
+import type {
+  PlainTranslationKey,
+  Translate
+} from '@/presentation/i18n/translation'
 
 /** 2024 opened on a Monday, so its first week spells the days out in ISO order. */
 const weekdayName = (translate: Translate, day: Weekday): string =>
   translate('settings.reminders.weekday', {
     day: Temporal.PlainDate.from({ day, month: 1, year: 2024 })
   })
+
+/** Two letters, the calendar's own abbreviation: a cell a seventh of a phone wide holds them whole. */
+const DAY_CELL_KEYS = {
+  1: 'settings.reminders.dayCell.monday',
+  2: 'settings.reminders.dayCell.tuesday',
+  3: 'settings.reminders.dayCell.wednesday',
+  4: 'settings.reminders.dayCell.thursday',
+  5: 'settings.reminders.dayCell.friday',
+  6: 'settings.reminders.dayCell.saturday',
+  7: 'settings.reminders.dayCell.sunday'
+} as const satisfies Record<Weekday, PlainTranslationKey>
 
 type TestOutcome = 'denied' | 'failed' | 'sent' | 'unsupported' | null
 
@@ -89,13 +103,14 @@ const ReminderControls: React.FC<ReminderControlsProps> = ({
         <div className='day-row'>
           {WEEKDAYS_FROM_MONDAY.map((day) => (
             <ToggleButton
+              aria-label={weekdayName(translate, day)}
               className='day'
               isDisabled={!schedule.isEnabled}
               isSelected={schedule.days.includes(day)}
               key={day}
               onChange={() => keep(toggleDay(schedule, day))}
             >
-              {weekdayName(translate, day)}
+              {translate(DAY_CELL_KEYS[day])}
             </ToggleButton>
           ))}
         </div>
