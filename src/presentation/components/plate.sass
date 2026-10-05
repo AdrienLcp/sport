@@ -6,8 +6,8 @@
 // figure, the ledger and the action together, and they only win because they
 // come after every rule they override.
 
+@use '@adrienlcp/styles/accessibility'
 @use '@adrienlcp/styles/breakpoints'
-@use '../styles/focus'
 @use '../styles/typography'
 
 @layer components
@@ -21,7 +21,7 @@
     max-height: 100%
     padding: var(--space-l) var(--space-l) var(--space-m)
     // An engraved double frame: hairline, gap, hairline. Not a card border.
-    box-shadow: var(--frame), inset 0 0 0 7px var(--ground), inset 0 0 0 calc(7px + var(--stroke-hair)) var(--rule-soft)
+    box-shadow: var(--inset-hairline), inset 0 0 0 7px var(--ground), inset 0 0 0 calc(7px + var(--stroke-hair)) var(--rule-soft)
 
     // ---------- the head band, and the ruled line that is the chrono ----------
 
@@ -181,7 +181,7 @@
     // The same lines, picked by a tap: the front door's five sessions.
     .register
       > .choice
-        @include focus.ring-inset
+        @include accessibility.ring-inset
 
         min-height: var(--target-row)
         align-items: center
@@ -210,7 +210,7 @@
       i
         flex: 1 1 auto
         height: 6px
-        box-shadow: var(--frame)
+        box-shadow: var(--inset-hairline)
 
         &[data-on='true']
           background: var(--ink)
@@ -288,13 +288,13 @@
         background: transparent
         color: var(--ink-dim)
         font-size: var(--text-ledger)
-        box-shadow: var(--frame)
+        box-shadow: var(--inset-hairline)
         transition: color var(--transition-fast) var(--ease-out), box-shadow var(--transition-fast) var(--ease-out)
 
         &[data-hovered]
           color: var(--ink)
           background: transparent
-          box-shadow: var(--frame-dim)
+          box-shadow: var(--inset-hairline-dim)
 
     // ---------- title, verdict ----------
 

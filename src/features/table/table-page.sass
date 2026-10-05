@@ -2,12 +2,12 @@
 // in the pot, what to buy. No dashboard, no ring, no streak — the only figure
 // that means anything is the one the day actually reached.
 
-@use '../../presentation/styles/spread'
+@use '@adrienlcp/styles/spread'
 @use '../../presentation/styles/typography'
 
 @layer components
   .table-page
-    @include spread.columns($gap: var(--space-xs))
+    @include spread.columns($gap: var(--space-xs), $rule: var(--hairline-soft))
 
     .columns
       flex: 1 1 auto

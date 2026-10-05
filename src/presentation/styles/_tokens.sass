@@ -11,6 +11,8 @@
 // Sass reads a custom property's value raw, `//` included: every note sits on
 // the line above its token, never after it.
 
+@use '@adrienlcp/styles/tokens'
+
 @mixin night-printing
   // printer's black
   --ground: oklch(18.3% 0.007 78.1)
@@ -87,6 +89,7 @@
 
 @layer tokens
   :root
+    @include tokens.defaults
     @include day-printing
 
     // Read from a metre away, on the floor, tired: the scale grows with width.
@@ -137,8 +140,7 @@
     --measure-wide: 74ch
     --plate-width: 1080px
 
-    // A thumb's target, and the reach a smaller control borrows to make one.
-    --target: 44px
+    // A row a thumb can hit, and the reach a smaller control borrows to make one.
     --target-row: 46px
     --target-reach: 14px
     --tick: 14px
@@ -146,28 +148,19 @@
     --ghost-inset: 17px
     --swatch: 26px
 
-    --stroke-hair: 1px
-    --stroke-mark: 1.5px
-    --stroke-bold: 2px
-    --outline-thin: 2px
-
-    --hairline: var(--stroke-hair) solid var(--rule)
     --hairline-mid: var(--stroke-hair) solid var(--rule-mid)
     --hairline-soft: var(--stroke-hair) solid var(--rule-soft)
     --hairline-faint: var(--stroke-hair) solid var(--rule-faint)
     --field-rule: var(--stroke-bold) solid var(--rule)
 
     // A frame drawn inside the box, so it never moves the layout.
-    --frame: inset 0 0 0 var(--stroke-hair) var(--rule)
-    --frame-soft: inset 0 0 0 var(--stroke-hair) var(--rule-soft)
-    --frame-dim: inset 0 0 0 var(--stroke-hair) var(--ink-dim)
-    --frame-ink: inset 0 0 0 var(--stroke-hair) var(--ink)
-    --frame-signal: inset 0 0 0 var(--stroke-hair) var(--signal)
-    --frame-hollow: inset 0 0 0 var(--stroke-mark) var(--ink-dim)
+    --inset-hairline-soft: inset 0 0 0 var(--stroke-hair) var(--rule-soft)
+    --inset-hairline-dim: inset 0 0 0 var(--stroke-hair) var(--ink-dim)
+    --inset-hairline-ink: inset 0 0 0 var(--stroke-hair) var(--ink)
+    --inset-hairline-signal: inset 0 0 0 var(--stroke-hair) var(--signal)
+    --inset-hairline-hollow: inset 0 0 0 var(--stroke-thin) var(--ink-dim)
 
-    --ring: var(--outline-thin) solid var(--signal)
-    --ring-offset: 3px
-    --ring-inset: -2px
+    --focus: var(--signal)
     --underline-offset: 5px
 
     --transition-fast: 160ms

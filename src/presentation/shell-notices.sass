@@ -1,6 +1,6 @@
 // A slip tipped in above the plate: framed like it, never floating over it.
 
-@use 'styles/focus'
+@use '@adrienlcp/styles/accessibility'
 @use 'styles/typography'
 
 @layer components
@@ -12,14 +12,14 @@
     justify-content: space-between
     gap: var(--space-3xs) var(--space-m)
     padding: 0 var(--space-m)
-    box-shadow: var(--frame)
+    box-shadow: var(--inset-hairline)
     font-size: var(--text-ledger)
     color: var(--ink-soft)
 
     // The specimen is stamped the way a printer marks a sample copy: the one
     // band carrying the signal, so nobody mistakes its numbers for theirs.
     &[data-tone='specimen']
-      box-shadow: var(--frame-signal)
+      box-shadow: var(--inset-hairline-signal)
 
       b
         color: var(--signal-ink)
@@ -38,7 +38,7 @@
 
     .notice-action
       @include typography.caps
-      @include focus.ring
+      @include accessibility.ring
 
       min-height: var(--target)
       padding: 0

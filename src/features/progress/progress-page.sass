@@ -1,12 +1,12 @@
 // The curves. The journal's plate again, a register rather than a figure: two
 // columns on a desk, one on a phone, every chart with its numbers under it.
 
-@use '../../presentation/styles/spread'
+@use '@adrienlcp/styles/spread'
 @use '../../presentation/styles/typography'
 
 @layer components
   .progress-page
-    @include spread.columns($gap: var(--space-xl))
+    @include spread.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
 
     .chart-block
       display: flex
@@ -58,7 +58,7 @@
 
         &[data-tone='hollow']
           background: transparent
-          box-shadow: var(--frame-hollow)
+          box-shadow: var(--inset-hairline-hollow)
 
     // The grid inks a whole day in full ink, not the columns' spent ink.
     .grid-key i[data-tone='solid']

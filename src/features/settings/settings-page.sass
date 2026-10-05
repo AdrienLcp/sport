@@ -2,14 +2,14 @@
 // one column on a phone. Every control is a ledger line, a tick or a ruled
 // field — nothing a printed manual would not already hold.
 
-@use '../../presentation/styles/focus'
-@use '../../presentation/styles/spread'
+@use '@adrienlcp/styles/accessibility'
+@use '@adrienlcp/styles/spread'
 @use '../../presentation/styles/tick'
 @use '../../presentation/styles/typography'
 
 @layer components
   .settings-page
-    @include spread.columns($gap: var(--space-xl))
+    @include spread.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
 
     .page-heading
       @include typography.heading
@@ -37,7 +37,7 @@
 
     // A switch is the market list's tick: a square that inks, a label beside it.
     .switch
-      @include focus.ring
+      @include accessibility.ring
 
       display: flex
       align-items: center
@@ -67,7 +67,7 @@
 
       &[data-hovered]:not([data-disabled])
         .tick
-          box-shadow: var(--frame-dim)
+          box-shadow: var(--inset-hairline-dim)
 
     .days
       min-width: 0
@@ -93,11 +93,11 @@
     // A day is a framed cell: outlined when free, inked when a reminder falls on it.
     .day
       @include typography.numeral
-      @include focus.ring
+      @include accessibility.ring
 
       min-height: var(--target)
       padding: 0
-      box-shadow: var(--frame)
+      box-shadow: var(--inset-hairline)
       color: var(--ink-dim)
       text-transform: uppercase
       transition: background var(--transition-fast) var(--ease-out), color var(--transition-fast) var(--ease-out)

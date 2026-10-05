@@ -1,12 +1,12 @@
 // The journal. Same plate, but a register rather than a figure: the curve is
 // the shape, the rows under it are the data. Nothing here is a dashboard.
 
-@use '../../presentation/styles/spread'
+@use '@adrienlcp/styles/spread'
 @use '../../presentation/styles/typography'
 
 @layer components
   .journal-page
-    @include spread.columns($gap: var(--space-s))
+    @include spread.columns($gap: var(--space-s), $rule: var(--hairline-soft))
 
     .columns
       flex: 1 1 auto

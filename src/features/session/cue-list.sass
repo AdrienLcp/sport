@@ -1,5 +1,5 @@
+@use '@adrienlcp/styles/accessibility'
 @use '@adrienlcp/styles/breakpoints'
-@use '../../presentation/styles/focus'
 @use '../../presentation/styles/typography'
 
 @layer components
@@ -17,7 +17,7 @@
   // tall enough for a thumb. Bold ink once open, like a live line.
   .cue-toggle
     @include typography.caps
-    @include focus.ring-inset
+    @include accessibility.ring-inset
 
     flex: none
     display: flex
