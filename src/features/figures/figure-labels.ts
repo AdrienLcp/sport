@@ -4,8 +4,8 @@ import type { LocalizedText } from '@/helpers/localized-text'
 /** What the drawing says, for whoever cannot see it. */
 export const FIGURE_LABELS: Record<FigureId, LocalizedText> = {
   'arm-circle': {
-    en: 'Standing figure in profile, one straight arm drawing a full circle around the shoulder.',
-    fr: 'Silhouette debout de profil, bras tendu qui décrit un cercle complet autour de l’épaule.'
+    en: 'Standing figure in profile, one straight arm drawing a full circle around the shoulder, the other arm hanging still.',
+    fr: 'Silhouette debout de profil, un bras tendu qui décrit un cercle complet autour de l’épaule, l’autre bras immobile le long du corps.'
   },
   'calf-raise': {
     en: 'Detail of a leg standing on the flat floor, up on the ball of the foot, heel lifted.',
@@ -16,8 +16,12 @@ export const FIGURE_LABELS: Record<FigureId, LocalizedText> = {
     fr: 'Silhouette à quatre pattes, mains et genoux au sol, le dos qui s’arrondit vers le plafond tête rentrée, puis se creuse tête relevée.'
   },
   'external-rotation': {
-    en: 'Standing figure seen from the front, elbows pinned to the ribs and bent at a right angle, forearms opening outward.',
-    fr: 'Silhouette debout de face, coudes collés aux côtes et pliés à angle droit, avant-bras qui s’ouvrent vers l’extérieur.'
+    en: 'Standing figure seen from the front, elbows pinned to the ribs and bent at a right angle, forearms opening outward from in front of the belly.',
+    fr: 'Silhouette debout de face, coudes collés aux côtes et pliés à angle droit, avant-bras qui s’ouvrent vers l’extérieur depuis le devant du ventre.'
+  },
+  'external-rotation-side': {
+    en: 'The same standing figure in profile: upper arm along the body, elbow bent at a right angle, forearm pointing forward and shortening as it turns outward.',
+    fr: 'La même silhouette debout de profil : bras le long du corps, coude plié à angle droit, avant-bras pointé devant qui raccourcit en tournant vers l’extérieur.'
   },
   'glute-stretch': {
     en: 'Figure lying on the back, one ankle crossed over the opposite thigh, both hands drawing that thigh toward the chest.',
@@ -96,8 +100,8 @@ export const FIGURE_LABELS: Record<FigureId, LocalizedText> = {
     fr: 'Silhouette de profil : pompes sur les genoux, genoux au sol, hanches dans l’axe du dos.'
   },
   'push-up-narrow': {
-    en: 'Figure in profile: close-grip push-up at the bottom, elbows tight against the ribs.',
-    fr: 'Silhouette de profil : pompes mains serrées en position basse, coudes serrés contre le buste.'
+    en: 'Figure in profile: close-grip push-up, hands under the shoulders, going from arms straight to the bottom with the elbows folded back along the ribs.',
+    fr: 'Silhouette de profil : pompes mains serrées, mains sous les épaules, des bras tendus jusqu’en bas, coudes repliés vers l’arrière le long des côtes.'
   },
   'quad-stretch': {
     en: 'Standing figure in profile on one leg, the other heel drawn to the glutes, the hand holding the ankle.',
@@ -136,16 +140,16 @@ export const FIGURE_LABELS: Record<FigureId, LocalizedText> = {
     fr: 'Silhouette debout de profil contre un mur, un bras tendu en arrière à hauteur d’épaule, main posée au mur, buste tourné du côté opposé.'
   },
   'triceps-stretch': {
-    en: 'Standing figure seen from the front, one elbow raised beside the head and the hand dropped down the back, the other hand on that elbow.',
-    fr: 'Silhouette debout de face, un coude levé à côté de la tête et la main descendue dans le dos, l’autre main posée sur ce coude.'
+    en: 'Standing figure seen from the front, both arms raised: one hand dropped behind the head, the other arm over the head holding that elbow. It starts with the arms hanging.',
+    fr: 'Silhouette debout de face, les deux bras levés : une main descendue derrière la tête, l’autre bras par-dessus la tête tenant ce coude. Elle part bras le long du corps.'
   },
   walk: {
     en: 'Figure in profile walking briskly, long stride, arms swinging.',
     fr: 'Silhouette de profil en marche rapide, foulée ample, bras en balancier.'
   },
   'wrist-stretch': {
-    en: 'Standing figure in profile, one arm straight ahead, the other hand catching that hand and drawing it back.',
-    fr: 'Silhouette debout de profil, un bras tendu devant, l’autre main attrapant cette main pour la ramener en arrière.'
+    en: 'Standing figure in profile, one arm straight ahead at shoulder height with the fingers pointing up, the other hand over the fingers drawing them back.',
+    fr: 'Silhouette debout de profil, un bras tendu devant à hauteur d’épaule, doigts vers le haut, l’autre main sur les doigts qui les ramène vers soi.'
   },
   ytw: {
     en: 'Figure lying face down, chest and arms lifted off the floor, arms straight ahead in a Y.',

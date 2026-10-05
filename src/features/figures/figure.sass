@@ -1,3 +1,5 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   .figure-body
     .limb
@@ -23,6 +25,33 @@
 
   .figure-stage
     stroke: var(--fig-prop)
+
+  // Two views of one gesture, side by side and the same size, each named
+  // under its drawing in the head band's capitals.
+  .figure-views
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: var(--space-s)
+    width: 100%
+    height: 100%
+    min-height: 0
+
+  .figure-view
+    display: grid
+    grid-template-rows: minmax(0, 1fr) auto
+    justify-items: center
+    gap: var(--space-3xs)
+    min-width: 0
+    min-height: 0
+
+    svg
+      min-height: 0
+
+  .figure-view-label
+    @include typography.caps
+
+    padding-bottom: var(--space-xs)
+    color: var(--ink-dim)
 
   // The whole drawing is the replay target — a manual has no play button, so
   // the figure itself is the affordance and carries no chrome of its own.

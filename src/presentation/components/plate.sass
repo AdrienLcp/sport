@@ -496,15 +496,20 @@
       min-height: min(660px, 100%)
       padding: 0
 
+      // The row is held to the plate: a stretch printing seven steps under its
+      // figure grew the page past the frame and the browser window. Held, the
+      // figure gives up height first, and only then does the page scroll.
       &.spread
         display: grid
         grid-template-columns: 1fr 1.18fr
+        grid-template-rows: minmax(0, 1fr)
 
         .first-page,
         .second-page
           display: flex
           flex-direction: column
           min-height: 0
+          overflow-y: auto
           padding: var(--space-xl) var(--space-xl) var(--space-l)
 
         .first-page
@@ -520,7 +525,7 @@
         // Figure and legend centre as one block on the right page, the way a
         // plate and its caption sit together.
         .second-page
-          justify-content: center
+          justify-content: safe center
 
         .figure-frame
           flex: 0 1 auto

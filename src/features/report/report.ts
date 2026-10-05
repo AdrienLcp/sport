@@ -94,8 +94,7 @@ const sessionEntry = ({
     }),
     translate('report.document.done'),
     ...done,
-    translate('report.document.feeling'),
-    translate('report.document.adjustment')
+    translate('report.document.feeling')
   ].join('\n')
 }
 

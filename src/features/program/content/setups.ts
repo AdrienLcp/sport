@@ -256,13 +256,13 @@ export const PUSH_UP_KNEES_SETUP: Setup = [
 
 export const PUSH_UP_NARROW_SETUP: Setup = [
   {
-    en: 'Hands shoulder-width apart, right under the shoulders.',
-    fr: 'Mains à largeur d’épaules, juste sous les épaules.'
+    en: 'Hands on the floor right under the shoulders, shoulder-width apart: a hand’s width narrower than a normal push-up, never touching. Fingers pointing forward.',
+    fr: 'Mains au sol juste sous les épaules, écartées de la largeur des épaules : une main plus serrées qu’une pompe normale, sans se toucher. Doigts vers l’avant.'
   },
   PUSH_UP_BLOCK,
   {
-    en: 'Lower in 2 s, the elbows brushing the ribs, until the chest is a fist from the floor.',
-    fr: 'Descends en 2 s, les coudes frôlent les côtes, jusqu’à la poitrine à un poing du sol.'
+    en: 'Lower in 2 s, the elbows going back and brushing the ribs, until the chest is a fist from the floor — not resting on it.',
+    fr: 'Descends en 2 s, les coudes partent vers l’arrière en frôlant les côtes, jusqu’à la poitrine à un poing du sol — sans la poser.'
   },
   PUSH_UP_UP
 ]
@@ -528,5 +528,266 @@ export const SHOULDER_CIRCLE_SETUP: Setup = [
   {
     en: 'Shoulders kept away from the ears.',
     fr: 'Épaules loin des oreilles.'
+  }
+]
+
+export const QUAD_STRETCH_SETUP: Setup = [
+  {
+    en: 'Stand beside a wall, one hand flat on it for balance.',
+    fr: 'Debout à côté d’un mur, une main posée à plat dessus pour l’équilibre.'
+  },
+  {
+    en: 'Bend the other knee and bring the heel up behind you toward the buttock. Catch that ankle with the hand on the same side.',
+    fr: 'Plie l’autre genou et monte le talon derrière toi vers la fesse. Attrape cette cheville avec la main du même côté.'
+  },
+  {
+    en: 'Knees side by side, the bent knee pointing at the floor. Tuck the pelvis under and push the hips slightly forward.',
+    fr: 'Genoux côte à côte, le genou plié pointe vers le sol. Rentre le bassin et pousse les hanches légèrement en avant.'
+  },
+  {
+    en: 'You feel it along the front of the thigh. A gentle pull, never a pain in the knee.',
+    fr: 'Tu le sens sur le devant de la cuisse. Une traction douce, jamais de douleur au genou.'
+  },
+  {
+    en: 'Breathe slowly. Let the foot down gently, then the other leg.',
+    fr: 'Respire lentement. Repose le pied en douceur, puis l’autre jambe.'
+  }
+]
+
+export const HAMSTRING_STRETCH_SETUP: Setup = [
+  {
+    en: 'Sit on the mat, one leg straight out in front, toes up. Fold the other leg, its sole against the inside of the straight thigh.',
+    fr: 'Assis sur le tapis, une jambe tendue devant, orteils vers le haut. Plie l’autre jambe, plante du pied contre l’intérieur de la cuisse tendue.'
+  },
+  {
+    en: 'Sit tall, then lean forward from the hips with the back long, the hands sliding down the leg.',
+    fr: 'Grandis-toi, puis penche-toi depuis les hanches, dos long, les mains glissent le long de la jambe.'
+  },
+  {
+    en: 'Stop as soon as it pulls behind the thigh. The knee may stay a little bent.',
+    fr: 'Arrête-toi dès que ça tire derrière la cuisse. Le genou peut rester un peu fléchi.'
+  },
+  {
+    en: 'Do not reach for the toes by rounding the back: a rounded back stretches nothing.',
+    fr: 'Ne cherche pas les orteils en arrondissant le dos : un dos rond n’étire rien.'
+  },
+  {
+    en: 'Breathe out slowly and let it go a little further on each breath, never bouncing.',
+    fr: 'Souffle lentement et laisse aller un peu plus loin à chaque expiration, sans à-coups.'
+  }
+]
+
+export const GLUTE_STRETCH_SETUP: Setup = [
+  {
+    en: 'Lie on your back, knees bent, feet flat on the floor.',
+    fr: 'Allongé sur le dos, genoux pliés, pieds à plat au sol.'
+  },
+  {
+    en: 'Cross one ankle over the other thigh, just above the knee, and let that knee open out to the side.',
+    fr: 'Croise une cheville sur l’autre cuisse, juste au-dessus du genou, et laisse ce genou s’ouvrir vers l’extérieur.'
+  },
+  {
+    en: 'Lift the foot still on the floor and hold that thigh from behind with both hands.',
+    fr: 'Décolle le pied resté au sol et tiens cette cuisse par-derrière, à deux mains.'
+  },
+  {
+    en: 'Draw the thigh gently toward the chest until you feel it deep in the buttock of the crossed leg.',
+    fr: 'Ramène doucement la cuisse vers la poitrine jusqu’à sentir l’étirement au fond de la fesse de la jambe croisée.'
+  },
+  {
+    en: 'Head and shoulders stay on the mat. Breathe slowly.',
+    fr: 'Tête et épaules restent posées. Respire lentement.'
+  }
+]
+
+export const PEC_DOOR_SETUP: Setup = [
+  {
+    en: 'Stand in a doorway, side-on to the frame.',
+    fr: 'Debout dans l’encadrement d’une porte, de côté par rapport au montant.'
+  },
+  {
+    en: 'Put the forearm flat against the frame, elbow bent, the elbow a hand lower than the shoulder — never level with it or above.',
+    fr: 'Pose l’avant-bras à plat contre le montant, coude plié, le coude une main plus bas que l’épaule — jamais à sa hauteur ni au-dessus.'
+  },
+  {
+    en: 'Take a small step forward with the leg on that side and let the chest come forward, without arching the lower back.',
+    fr: 'Fais un petit pas en avant avec la jambe de ce côté et laisse la poitrine avancer, sans cambrer.'
+  },
+  {
+    en: 'Stop at the first stretch across the front of the chest. Nothing should be felt inside the shoulder joint.',
+    fr: 'Arrête-toi à la première sensation d’étirement sur le devant de la poitrine. Rien ne doit se sentir dans l’articulation de l’épaule.'
+  },
+  {
+    en: 'Breathe slowly. Step back to come out.',
+    fr: 'Respire lentement. Recule d’un pas pour sortir.'
+  }
+]
+
+export const TRICEPS_STRETCH_SETUP: Setup = [
+  {
+    en: 'Stand or sit tall. Raise one arm straight up beside the ear, passing in front of you — never out to the side.',
+    fr: 'Debout ou assis bien droit. Lève un bras tendu à côté de l’oreille, en passant par devant — jamais par le côté.'
+  },
+  {
+    en: 'Bend that elbow: the hand drops behind the head, between the shoulder blades, and the elbow points at the ceiling.',
+    fr: 'Plie ce coude : la main descend derrière la tête, entre les omoplates, et le coude pointe vers le plafond.'
+  },
+  {
+    en: 'Bring the other hand over the top of the head and rest it on that elbow.',
+    fr: 'Passe l’autre main par-dessus la tête et pose-la sur ce coude.'
+  },
+  {
+    en: 'With that hand, guide the elbow gently a little back and down, until it pulls at the back of the upper arm.',
+    fr: 'Avec cette main, guide doucement le coude un peu vers l’arrière et vers le bas, jusqu’à ce que ça tire à l’arrière du bras.'
+  },
+  {
+    en: 'Light pressure: the hand guides, it does not push. Stop at the first pull; the shoulder itself feels nothing.',
+    fr: 'Pression légère : la main guide, elle ne pousse pas. Arrête-toi à la première tension ; l’épaule elle-même ne sent rien.'
+  },
+  {
+    en: 'Breathe slowly, ribs down, back not arched. Then lower the arm in front of you and do the other arm.',
+    fr: 'Respire lentement, côtes basses, dos non cambré. Puis redescends le bras par devant et fais l’autre bras.'
+  }
+]
+
+export const WRIST_STRETCH_SETUP: Setup = [
+  {
+    en: 'Standing or sitting, hold one arm straight out in front at shoulder height, elbow straight.',
+    fr: 'Debout ou assis, tends un bras devant toi à hauteur d’épaule, coude tendu.'
+  },
+  {
+    en: 'Turn the palm away from you, fingers pointing at the ceiling, as if signalling stop.',
+    fr: 'Tourne la paume vers l’avant, doigts vers le plafond, comme pour faire signe de s’arrêter.'
+  },
+  {
+    en: 'With the other hand, take the fingers and draw them gently back toward you.',
+    fr: 'Avec l’autre main, prends les doigts et ramène-les doucement vers toi.'
+  },
+  {
+    en: 'You feel it under the forearm, from the wrist toward the elbow. Gentle, never a pain in the wrist.',
+    fr: 'Tu le sens sous l’avant-bras, du poignet vers le coude. Doux, jamais de douleur au poignet.'
+  },
+  {
+    en: 'Breathe slowly. Halfway through, change wrists.',
+    fr: 'Respire lentement. À mi-temps, change de poignet.'
+  }
+]
+
+export const PIGEON_SETUP: Setup = [
+  {
+    en: 'Start on all fours. Bring one knee forward behind the hand on that side and lay the shin across the mat, foot toward the other hand.',
+    fr: 'Pars à quatre pattes. Avance un genou derrière la main de ce côté et pose le tibia en travers du tapis, pied vers l’autre main.'
+  },
+  {
+    en: 'Slide the other leg straight back, knee and top of the foot on the mat.',
+    fr: 'Fais glisser l’autre jambe tendue vers l’arrière, genou et dessus du pied au sol.'
+  },
+  {
+    en: 'Hips square to the front. If the front hip does not reach the floor, slide a cushion under it.',
+    fr: 'Hanches face à l’avant. Si la hanche avant ne touche pas le sol, glisse un coussin dessous.'
+  },
+  {
+    en: 'Upright on the hands first, then lower the chest over the front leg as far as is comfortable.',
+    fr: 'D’abord droit sur les mains, puis descends le buste au-dessus de la jambe avant, aussi loin que c’est confortable.'
+  },
+  {
+    en: 'You feel it deep in the buttock of the front leg. Nothing in the knee: if it does, bring the foot closer to you.',
+    fr: 'Tu le sens au fond de la fesse de la jambe avant. Rien dans le genou : sinon, ramène le pied vers toi.'
+  },
+  {
+    en: 'Long, slow breaths: each one out lets you sink a little.',
+    fr: 'Respire longuement : chaque expiration te laisse descendre un peu.'
+  }
+]
+
+export const THORACIC_WALL_SETUP: Setup = [
+  {
+    en: 'Stand side-on to a wall, an arm’s length away.',
+    fr: 'Debout de côté à un mur, à une longueur de bras.'
+  },
+  {
+    en: 'Put the hand flat on the wall slightly behind you, arm straight, the hand a little lower than the shoulder.',
+    fr: 'Pose la main à plat au mur un peu derrière toi, bras tendu, la main un peu plus bas que l’épaule.'
+  },
+  {
+    en: 'Feet still, slowly turn the chest and the head away from the wall.',
+    fr: 'Pieds immobiles, tourne lentement la poitrine et la tête du côté opposé au mur.'
+  },
+  {
+    en: 'Stop at the first stretch across the chest. Nothing deep in the shoulder joint.',
+    fr: 'Arrête-toi à la première sensation d’étirement sur la poitrine. Rien au fond de l’articulation de l’épaule.'
+  },
+  {
+    en: 'Breathe slowly. Turn back toward the wall to come out.',
+    fr: 'Respire lentement. Reviens vers le mur pour sortir.'
+  }
+]
+
+export const HIP_FLEXOR_LUNGE_SETUP: Setup = [
+  {
+    en: 'Kneel on one knee, the other foot flat in front, both knees at a right angle. A cushion under the back knee if needed.',
+    fr: 'À genoux sur un genou, l’autre pied à plat devant, les deux genoux à angle droit. Un coussin sous le genou arrière si besoin.'
+  },
+  {
+    en: 'Trunk upright, hands resting on the front thigh.',
+    fr: 'Buste droit, mains posées sur la cuisse avant.'
+  },
+  {
+    en: 'Tuck the pelvis under: glutes tight, belly button toward the ribs.',
+    fr: 'Rentre le bassin : fessiers serrés, nombril vers les côtes.'
+  },
+  {
+    en: 'Keeping that, shift the hips gently forward until it pulls at the front of the hip of the back leg.',
+    fr: 'En gardant ça, avance doucement les hanches jusqu’à ce que ça tire à l’avant de la hanche de la jambe arrière.'
+  },
+  {
+    en: 'The lower back stays flat and the front knee stays above the ankle. Breathe slowly.',
+    fr: 'Le bas du dos reste plat et le genou avant reste au-dessus de la cheville. Respire lentement.'
+  }
+]
+
+export const LAT_STRETCH_SETUP: Setup = [
+  {
+    en: 'Kneel, knees hip-width apart, hips above the knees.',
+    fr: 'À genoux, genoux écartés de la largeur des hanches, hanches au-dessus des genoux.'
+  },
+  {
+    en: 'Lean forward and walk the hands ahead along the floor until the arms are long and the chest sinks toward the floor.',
+    fr: 'Penche-toi et avance les mains au sol devant toi jusqu’à ce que les bras soient allongés et que la poitrine descende vers le sol.'
+  },
+  {
+    en: 'The hips stay above the knees: do not sit back on the heels.',
+    fr: 'Les hanches restent au-dessus des genoux : ne t’assieds pas sur les talons.'
+  },
+  {
+    en: 'Walk both hands toward the left: you feel it along the right flank, from the hip to the armpit. On the next plate, toward the right.',
+    fr: 'Promène les deux mains vers la gauche : tu le sens le long du flanc droit, de la hanche à l’aisselle. À la planche suivante, vers la droite.'
+  },
+  {
+    en: 'Let the chest sink and breathe into the stretched side.',
+    fr: 'Laisse la poitrine descendre et respire dans le côté étiré.'
+  }
+]
+
+export const NECK_STRETCH_SETUP: Setup = [
+  {
+    en: 'Stand or sit tall, shoulders low and relaxed.',
+    fr: 'Debout ou assis bien droit, épaules basses et relâchées.'
+  },
+  {
+    en: 'Lower the chin toward the chest.',
+    fr: 'Descends le menton vers la poitrine.'
+  },
+  {
+    en: 'Rest both hands on the back of the head, elbows pointing forward and close together — not spread wide.',
+    fr: 'Pose les deux mains sur l’arrière du crâne, coudes pointés vers l’avant et rapprochés — pas écartés.'
+  },
+  {
+    en: 'Let the weight of the hands do it, never pull. You feel it at the back of the neck, down between the shoulder blades.',
+    fr: 'Laisse le poids des mains faire, ne tire jamais. Tu le sens à l’arrière de la nuque, jusqu’entre les omoplates.'
+  },
+  {
+    en: 'Breathe slowly. Raise the head slowly to come out.',
+    fr: 'Respire lentement. Relève la tête lentement pour sortir.'
   }
 ]

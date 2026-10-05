@@ -64,6 +64,19 @@
       color: var(--ink-soft)
       text-wrap: pretty
 
+  // A stretch's one-line summary, standing where the toggle stands on a set:
+  // the steps follow it, always open, because a stretch is read once before
+  // its clock starts.
+  .cue-summary
+    padding-block: var(--space-xs)
+    font-size: var(--text-note)
+    line-height: var(--leading-note)
+    color: var(--ink)
+    text-wrap: pretty
+
+    + .setup-steps
+      padding-bottom: var(--space-s)
+
   // The how-to, numbered as a manual numbers its steps.
   .setup-steps
     display: grid
@@ -83,39 +96,62 @@
         font-weight: 700
         color: var(--ink-dim)
 
-  // A phone cannot hold the figure, the count, seven cues and the five-line
-  // register at once. The register and the action never leave, so the cue
-  // block is what gives: it scrolls inside itself, under a figure that keeps a
-  // size worth looking at, its toggle always in reach. « Next » goes too —
-  // on a phone the register right under it already names the next line.
+  // A phone cannot hold the figure, the count, the cues and the five-line
+  // register at once, and the cues are what a beginner came to read: squeezed
+  // into what the register left, they shrank to one line or to nothing (session
+  // B, October 2026). The plate scrolls as one page instead — figure, count and
+  // cues first, the register after — while the head band and its chrono stay
+  // pinned to the top and the action to the bottom. « Next » goes: the register
+  // already names the next line.
   @include breakpoints.narrow
-    .plate.spread
-      &:has(.cue-block)
-        .figure-frame
-          min-height: clamp(120px, 21vh, 190px)
+    .plate.spread:has(.cue-block)
+      overflow-y: auto
+      overscroll-behavior: contain
+      padding: 0 var(--space-m)
 
-        .next-up
-          display: none
+      // Full bleed so the scrolled page passes under it, redrawing the strip of
+      // the engraved frame it covers: outer hairline, gap, inner hairline.
+      .plate-head
+        --outer: linear-gradient(var(--rule), var(--rule))
+        --inner: linear-gradient(var(--rule-soft), var(--rule-soft))
+        --line: var(--stroke-hair)
+        --gap: calc(7px + var(--stroke-hair))
 
-      .movement:has(> .cue-block)
-        flex: 0 1 auto
-        min-height: 0
-        display: flex
-        flex-direction: column
+        position: sticky
+        top: 0
+        z-index: 1
+        margin-inline: calc(-1 * var(--space-m))
+        padding: var(--space-m) var(--space-m) var(--space-xs)
+        background: var(--outer) 0 0 / 100% var(--line), var(--outer) 0 0 / var(--line) 100%, var(--outer) 100% 0 / var(--line) 100%, var(--inner) var(--gap) var(--gap) / calc(100% - 2 * var(--gap)) var(--line), var(--inner) var(--gap) var(--gap) / var(--line) 100%, var(--inner) calc(100% - var(--gap)) var(--gap) / var(--line) 100%, var(--ground)
+        background-repeat: no-repeat
+        background-clip: border-box
 
-        > .cue-block
-          flex: 0 1 auto
-          min-height: 5.5em
+        // The band's own rule, kept to the text column as on every plate.
+        border-bottom: 0
 
-          > .cue-list,
-          > .setup-steps
-            flex: 0 1 auto
-            min-height: 0
-            overflow-y: auto
-            overscroll-behavior: contain
+        &::after
+          content: ''
+          position: absolute
+          inset: auto var(--space-m) 0
+          border-bottom: var(--hairline-mid)
 
-          > .cue-list
-            gap: var(--space-4xs) var(--space-xs)
+        .chrono
+          inset-inline: var(--space-m)
+          bottom: 0
+          z-index: 1
 
-          > .setup-steps
-            font-size: var(--text-note)
+      .figure-frame
+        flex: none
+        height: clamp(150px, 26vh, 220px)
+
+      .next-up
+        display: none
+
+      > .first-page > .action
+        position: sticky
+        bottom: 0
+        z-index: 1
+        box-shadow: 0 var(--space-s) 0 var(--ground), 0 calc(-1 * var(--space-s)) 0 var(--ground)
+
+      .exits
+        padding-bottom: var(--space-s)

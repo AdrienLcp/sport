@@ -162,6 +162,7 @@ export const B_WARMUP: readonly WarmupDrill[] = [
       en: 'External rotations, elbow in',
       fr: 'Rotations externes, coude au corps'
     },
+    profile: 'external-rotation-side',
     setup: EXTERNAL_ROTATION_SETUP
   },
   {

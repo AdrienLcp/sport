@@ -97,8 +97,10 @@ export const FR_DICTIONARY = defineDictionary({
     }
   },
   figure: {
+    front: 'De face',
     missing: 'Aucune figure « {id} ».',
-    replay: 'Revoir le geste'
+    replay: 'Revoir le geste',
+    side: 'De profil'
   },
   format: {
     decimal: defineTranslation('{value:number}', {
@@ -298,12 +300,11 @@ export const FR_DICTIONARY = defineDictionary({
   report: {
     copy: 'Copier le compte rendu',
     document: {
-      adjustment: '- La prochaine fois :',
       centimetres: defineTranslation('{value:number} cm', {
         number: { value: { maximumFractionDigits: 1 } }
       }),
       done: '- Fait :',
-      feeling: '- Ressenti :',
+      feeling: '- Ressenti : (à écrire avant d’envoyer)',
       grams: defineTranslation('{value:number} g', {
         number: { value: { maximumFractionDigits: 1 } }
       }),
@@ -436,7 +437,6 @@ export const FR_DICTIONARY = defineDictionary({
       fewer: 'Une répétition de moins',
       lastWeek: 'la semaine dernière : <b>{beat}</b>',
       more: 'Une répétition de plus',
-      overtime: '+',
       perSide: 'par côté',
       restThenRound: 'Repos, puis tour {round}',
       round: 'Tour',

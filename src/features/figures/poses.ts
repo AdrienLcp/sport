@@ -8,8 +8,10 @@ export type Segment = readonly [Point, Point]
  * so every plate in this manual shares its line weights, its head size and its
  * ground — and correcting a pose means moving a joint.
  *
- * Side view throughout. The near side carries full cream, the far side a spent
- * cream that sits behind it: remove the far limbs and the figure goes flat.
+ * Side view almost throughout. The near side carries full cream, the far side a
+ * spent cream that sits behind it: remove the far limbs and the figure goes
+ * flat. The few plates seen from the front give the body its width — `collar`
+ * and `pelvis`, where an arm and a leg hang — which a profile never needs.
  *
  * Joints are optional because a detail plate is a real plate: when a movement
  * lives entirely in the ankle, the manual cuts the body off at the thigh rather
@@ -24,16 +26,28 @@ export type Pose = {
    */
   readonly spine?: Point
   readonly hip: Point
+  /**
+   * The outer end of the collarbone, where the near arm hangs: drawn only on a
+   * plate seen from the front. Absent, the arm hangs from the shoulder.
+   */
+  readonly collar?: Point
+  /** Where the near leg hangs, on a plate seen from the front. Absent, the hip. */
+  readonly pelvis?: Point
   readonly elbow?: Point
   readonly wrist?: Point
+  /** The fingertips, when the hand's angle is the movement. */
+  readonly hand?: Point
   readonly knee: Point
   readonly ankle: Point
   /** Ball of the foot, when the foot's angle is part of the movement. */
   readonly toe?: Point
   readonly heel?: Point
   readonly far?: {
+    readonly collar?: Point
+    readonly pelvis?: Point
     readonly elbow?: Point
     readonly wrist?: Point
+    readonly hand?: Point
     readonly knee?: Point
     readonly ankle?: Point
     readonly toe?: Point
@@ -54,9 +68,9 @@ export const POSES: Record<FigureId, Pose> = {
     elbow: [80, 47],
     far: {
       ankle: [106, 132],
-      elbow: [82, 51],
+      elbow: [103, 67],
       knee: [107, 110],
-      wrist: [61, 52]
+      wrist: [104, 86]
     },
     head: [100, 34],
     hip: [104, 86],
@@ -99,25 +113,54 @@ export const POSES: Record<FigureId, Pose> = {
     wrist: [58, 132]
   },
 
-  /* Seen from the front, alone among the profiles: the rotation happens around
-     the length of the upper arm, and a side view can only draw it as a stub
-     that twitches. Elbows pinned at the ribs, forearms closed in front. */
+  /* Seen from the front: the rotation happens around the length of the upper
+     arm, and only a front view shows the hand travelling. Without the shoulder
+     and hip bars the arms hung from the neck in a V and the legs read as a
+     stride: on a phone it was a man walking (session B, October 2026). The
+     plate prints the end of the opening, forearms about fifty degrees out —
+     foreshortened, because they still point half at the reader. */
   'external-rotation': {
-    ankle: [90, 132],
+    ankle: [92, 132],
+    collar: [88, 51],
     elbow: [88, 72],
     far: {
-      ankle: [110, 132],
+      ankle: [108, 132],
+      collar: [112, 51],
       elbow: [112, 72],
-      knee: [108, 110],
-      toe: [116, 134],
-      wrist: [98, 76]
+      knee: [107, 111],
+      pelvis: [106, 89],
+      toe: [114, 134],
+      wrist: [127, 72]
     },
-    head: [100, 32],
+    head: [100, 35],
     hip: [100, 88],
-    knee: [92, 110],
+    knee: [93, 111],
+    pelvis: [94, 89],
     shoulder: [100, 50],
-    toe: [84, 134],
-    wrist: [102, 76]
+    toe: [86, 134],
+    wrist: [73, 72]
+  },
+
+  /* The same rep in profile, printed beside the front view: the one thing a
+     front view cannot say is that the elbow is bent square and the forearm
+     points forward. Opening, the forearm turns toward the reader and shortens;
+     nothing else on the body moves. */
+  'external-rotation-side': {
+    ankle: [102, 132],
+    elbow: [96, 67],
+    far: {
+      ankle: [104, 132],
+      elbow: [97, 67],
+      knee: [105, 110],
+      toe: [116, 133],
+      wrist: [109, 68]
+    },
+    head: [103, 34],
+    hip: [102, 86],
+    knee: [103, 110],
+    shoulder: [102, 48],
+    toe: [114, 133],
+    wrist: [108, 68]
   },
 
   /* On the back, the near ankle crossed over the far thigh, both hands clasped
@@ -331,33 +374,36 @@ export const POSES: Record<FigureId, Pose> = {
   },
 
   /* Chin drawn to the chest, hands resting on the back of the skull — resting,
-     never pulling. A tucked chin genuinely shortens the neck on the page, so the
+     never pulling — elbows forward in front of the face. Spread wide, the elbows
+     would put the arms out in a cross and turned out, the lax shoulder's armed
+     position. A tucked chin genuinely shortens the neck on the page, so the
      head sits closer to the shoulder here than on any other plate. */
   'neck-stretch': {
     ankle: [92, 132],
-    elbow: [80, 52],
+    elbow: [116, 47],
     far: {
       ankle: [98, 132],
-      elbow: [86, 54],
+      elbow: [114, 50],
       knee: [100, 110],
       toe: [112, 133],
-      wrist: [102, 34]
+      wrist: [101, 37]
     },
     head: [106, 40],
     hip: [96, 86],
     knee: [94, 110],
     shoulder: [98, 48],
     toe: [106, 133],
-    wrist: [98, 36]
+    wrist: [100, 35]
   },
 
-  /* Facing away from the doorframe, forearm flat up the jamb, chest turned off
-     it. The lintel is drawn because a bare vertical is a wall, and the wall is
+  /* Facing away from the doorframe, forearm flat up the jamb with the elbow a
+     hand below the shoulder — never level with it, the lax shoulder's armed
+     position — chest turned off it. The lintel is drawn because a bare vertical is a wall, and the wall is
      already another plate: two stretches a reader cannot tell apart are one
      stretch badly drawn. */
   'pec-door': {
     ankle: [88, 132],
-    elbow: [116, 44],
+    elbow: [116, 55],
     far: {
       ankle: [108, 132],
       elbow: [86, 64],
@@ -380,7 +426,7 @@ export const POSES: Record<FigureId, Pose> = {
     ],
     shoulder: [96, 47],
     toe: [74, 133],
-    wrist: [130, 30]
+    wrist: [130, 41]
   },
 
   /* Front shin folded in, back leg long behind, trunk down over the front hip.
@@ -510,30 +556,34 @@ export const POSES: Record<FigureId, Pose> = {
     wrist: [58, 132]
   },
 
-  /* The bottom of a narrow push-up: the elbow rides high and brushes the ribs,
-     which is the only thing a side view can say about hand width. */
+  /* The bottom of a narrow push-up, chest a fist from the floor. The hands sit
+     under the shoulders and the elbows fold back along the ribs, toward the
+     feet: that is the only thing a side view can say about hand width. The
+     first cut put the hands a forearm ahead of the shoulders and the elbow above
+     them, which is a body falling forward, not a push-up. The body is the top
+     plank turned about the toes, so its line stays straight. */
   'push-up-narrow': {
-    ankle: [182, 130],
-    elbow: [62, 108],
+    ankle: [175, 126],
+    elbow: [82, 119],
     far: {
-      ankle: [180, 133],
-      elbow: [68, 110],
-      knee: [156, 129],
-      wrist: [64, 133]
+      ankle: [177, 129],
+      elbow: [83, 118],
+      knee: [148, 126],
+      wrist: [71, 133]
     },
-    head: [70, 110],
-    hip: [132, 122],
-    knee: [158, 126],
-    shoulder: [86, 116],
-    toe: [190, 134],
-    wrist: [58, 132]
+    head: [48, 113],
+    hip: [119, 120],
+    knee: [147, 123],
+    shoulder: [63, 114],
+    toe: [186, 132],
+    wrist: [67, 132]
   },
 
   /* ---------------------------------------------------------------- *
-   * The stretches. Every one of them is a pure hold, so none carries a
-   * motion: the law is already written next door, where plank, side plank
-   * and hollow are absent from MOTIONS on purpose. Cat-cow is the one
-   * cool-down drill that genuinely cycles, and it already has its figure.
+   * The stretches. Each prints the stretch itself; its counterpose is where
+   * the body starts, and the plate shows the way in a few times before
+   * resting here. A hold alone did not teach the hold: « I understood
+   * nothing, and the figure doesn't move » (session B, October 2026).
    * ---------------------------------------------------------------- */
 
   /* Standing on the far leg, the near heel drawn up to the buttock, the hand on
@@ -715,24 +765,30 @@ export const POSES: Record<FigureId, Pose> = {
   },
 
   /* Seen from the front, for the reason the arm circle states: an arm overhead
-     runs straight through the head in profile. Elbow beside the ear, hand down
-     the spine, the other hand on that elbow. */
+     runs straight through the head in profile. The stretched arm is the far
+     one, in spent ink, because its forearm goes behind the head: drawn first,
+     the head and the neck cover it as the body covers it. The near arm comes
+     over the top of the head and its hand holds that elbow. */
   'triceps-stretch': {
     ankle: [92, 132],
-    elbow: [90, 32],
+    collar: [88, 51],
+    elbow: [88, 28],
     far: {
       ankle: [108, 132],
-      elbow: [118, 42],
-      knee: [106, 110],
+      collar: [112, 51],
+      elbow: [112, 28],
+      knee: [107, 111],
+      pelvis: [106, 89],
       toe: [114, 134],
-      wrist: [98, 34]
+      wrist: [101, 47]
     },
-    head: [100, 31],
-    hip: [100, 86],
-    knee: [94, 110],
-    shoulder: [100, 48],
+    head: [100, 35],
+    hip: [100, 88],
+    knee: [93, 111],
+    pelvis: [94, 89],
+    shoulder: [100, 50],
     toe: [86, 134],
-    wrist: [104, 42]
+    wrist: [109, 25]
   },
 
   walk: {
@@ -752,25 +808,28 @@ export const POSES: Record<FigureId, Pose> = {
     wrist: [74, 80]
   },
 
-  /* The skeleton has no finger, so the palms-down version — fingers pointing
-     back at the knees — cannot be drawn without inventing a joint. This one can:
-     the arm out front, elbow locked, the other hand drawing the hand back. */
+  /* The arm straight out front at shoulder height, fingers up, the other hand
+     over the fingers drawing them back. Without a hand the plate showed two arms
+     reaching forward and nothing about a wrist, so the skeleton grew one: the
+     wrist bending back is the whole stretch. */
   'wrist-stretch': {
     ankle: [94, 132],
-    elbow: [116, 54],
+    elbow: [116, 49],
     far: {
       ankle: [100, 132],
-      elbow: [112, 62],
+      elbow: [115, 56],
+      hand: [139, 37],
       knee: [102, 110],
       toe: [114, 133],
-      wrist: [130, 56]
+      wrist: [132, 46]
     },
-    head: [92, 32],
+    hand: [136, 38],
+    head: [99, 33],
     hip: [98, 86],
     knee: [96, 110],
     shoulder: [96, 48],
     toe: [108, 133],
-    wrist: [134, 62]
+    wrist: [136, 50]
   },
 
   /* Prone, chest and arms off the floor. The arms have to climb steeply or they
@@ -810,7 +869,13 @@ export const JOINT_IDS = [
   'far.knee',
   'far.ankle',
   'far.toe',
-  'far.heel'
+  'far.heel',
+  'collar',
+  'pelvis',
+  'hand',
+  'far.collar',
+  'far.pelvis',
+  'far.hand'
 ] as const
 
 export type JointId = (typeof JOINT_IDS)[number]
@@ -823,22 +888,32 @@ export type Bone = {
   readonly far: boolean
 }
 
-/** Far side first: the near limbs are drawn over it, which is the depth. */
+/**
+ * Far side first: the near limbs are drawn over it, which is the depth. The
+ * girdle — collarbones and pelvis — is one bar in full ink on both sides: a
+ * shoulder line half spent reads as broken, not as far.
+ */
 export const BONES: readonly Bone[] = [
-  { far: true, from: 'hip', to: 'far.knee' },
+  { far: true, from: 'far.pelvis', to: 'far.knee' },
   { far: true, from: 'far.knee', to: 'far.ankle' },
   { far: true, from: 'far.ankle', to: 'far.toe' },
   { far: true, from: 'far.ankle', to: 'far.heel' },
-  { far: true, from: 'shoulder', to: 'far.elbow' },
+  { far: true, from: 'far.collar', to: 'far.elbow' },
   { far: true, from: 'far.elbow', to: 'far.wrist' },
+  { far: true, from: 'far.wrist', to: 'far.hand' },
+  { far: false, from: 'hip', to: 'pelvis' },
+  { far: false, from: 'hip', to: 'far.pelvis' },
+  { far: false, from: 'shoulder', to: 'collar' },
+  { far: false, from: 'shoulder', to: 'far.collar' },
   { far: false, from: 'hip', to: 'spine' },
   { far: false, from: 'spine', to: 'shoulder' },
-  { far: false, from: 'hip', to: 'knee' },
+  { far: false, from: 'pelvis', to: 'knee' },
   { far: false, from: 'knee', to: 'ankle' },
   { far: false, from: 'ankle', to: 'toe' },
   { far: false, from: 'ankle', to: 'heel' },
-  { far: false, from: 'shoulder', to: 'elbow' },
+  { far: false, from: 'collar', to: 'elbow' },
   { far: false, from: 'elbow', to: 'wrist' },
+  { far: false, from: 'wrist', to: 'hand' },
   { far: false, from: 'shoulder', to: 'head' }
 ]
 
@@ -857,17 +932,23 @@ export const jointsOf = (pose: Pose): Joints => {
     (pose.shoulder === undefined ? undefined : halfway(pose.hip, pose.shoulder))
   return {
     ankle: pose.ankle,
+    collar: pose.collar ?? pose.shoulder,
     elbow: pose.elbow,
     'far.ankle': far.ankle,
+    'far.collar': far.collar ?? pose.shoulder,
     'far.elbow': far.elbow,
+    'far.hand': far.hand,
     'far.heel': far.heel,
     'far.knee': far.knee,
+    'far.pelvis': far.pelvis ?? pose.hip,
     'far.toe': far.toe,
     'far.wrist': far.wrist,
+    hand: pose.hand,
     head: pose.head,
     heel: pose.heel,
     hip: pose.hip,
     knee: pose.knee,
+    pelvis: pose.pelvis ?? pose.hip,
     shoulder: pose.shoulder,
     spine,
     toe: pose.toe,

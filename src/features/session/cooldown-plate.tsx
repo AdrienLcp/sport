@@ -13,7 +13,10 @@ import { FigureFrame, Plate, PlateHead } from '@/presentation/components/plate'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { cooldownStops, ledgerState } from './run'
+import { useClockTones } from './use-clock-tones'
 import { formatCount, useElapsed } from './use-elapsed'
+
+import './cue-list.sass'
 
 type CooldownPlateProps = {
   /** The circuit is already behind: leaving the cool-down closes a whole
@@ -27,8 +30,10 @@ type CooldownPlateProps = {
 /**
  * One stretch, one plate, the spread of a set. The duration comes from the
  * programme rather than a share of three minutes, the chrono waits for a hand
- * — dropping into a pigeon takes ten seconds of a thirty-second hold — and the
- * figure does not move, because a held stretch is a pure hold.
+ * — dropping into a pigeon takes ten seconds of a thirty-second hold. The
+ * figure shows the way into the stretch a few times, then rests on it, and the
+ * steps to get there stay printed under the count: a stretch is read once,
+ * before the clock starts, and has no toggle to find.
  */
 export const CooldownPlate: React.FC<CooldownPlateProps> = ({
   onDone,
@@ -95,6 +100,8 @@ const StretchPlate: React.FC<StretchPlateProps> = ({
   const isRunning = isHeld && isStarted
   const elapsed = useElapsed(isRunning, `cooldown-${position}`)
   const remaining = seconds === undefined ? 0 : seconds - elapsed
+
+  useClockTones(isRunning, remaining)
 
   const finish = useEffectEvent(onDone)
 
@@ -216,7 +223,14 @@ const StretchPlate: React.FC<StretchPlateProps> = ({
               </span>
             )}
           </p>
-          <p className='guard'>{localize(drill.cue)}</p>
+          <div className='cue-block'>
+            <p className='cue-summary'>{localize(drill.cue)}</p>
+            <ol className='setup-steps'>
+              {drill.setup.map((step) => (
+                <li key={step.en}>{localize(step)}</li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </Plate>

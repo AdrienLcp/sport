@@ -1,3 +1,17 @@
+import {
+  CAT_COW_SETUP,
+  GLUTE_STRETCH_SETUP,
+  HAMSTRING_STRETCH_SETUP,
+  HIP_FLEXOR_LUNGE_SETUP,
+  LAT_STRETCH_SETUP,
+  NECK_STRETCH_SETUP,
+  PEC_DOOR_SETUP,
+  PIGEON_SETUP,
+  QUAD_STRETCH_SETUP,
+  THORACIC_WALL_SETUP,
+  TRICEPS_STRETCH_SETUP,
+  WRIST_STRETCH_SETUP
+} from '@programme/setups'
 import { A_WARMUP, B_WARMUP, D_WARMUP } from '@programme/warmups'
 
 import type { Session } from '@/features/program/program-types'
@@ -16,7 +30,8 @@ const HAMSTRING_STRETCH = {
   figure: 'hamstring-stretch',
   name: { en: 'Hamstrings', fr: 'Ischio-jambiers' },
   perSide: true,
-  seconds: 30
+  seconds: 30,
+  setup: HAMSTRING_STRETCH_SETUP
 } as const
 
 /**
@@ -62,7 +77,8 @@ export const BLOCK_1: readonly Session[] = [
         figure: 'quad-stretch',
         name: { en: 'Quadriceps', fr: 'Quadriceps' },
         perSide: true,
-        seconds: 30
+        seconds: 30,
+        setup: QUAD_STRETCH_SETUP
       },
       HAMSTRING_STRETCH,
       {
@@ -74,7 +90,8 @@ export const BLOCK_1: readonly Session[] = [
         figure: 'glute-stretch',
         name: { en: 'Glutes', fr: 'Fessiers' },
         perSide: true,
-        seconds: 30
+        seconds: 30,
+        setup: GLUTE_STRETCH_SETUP
       }
     ],
     id: 'A',
@@ -115,8 +132,8 @@ export const BLOCK_1: readonly Session[] = [
     cooldown: [
       {
         cue: {
-          en: 'Forearm flat against the doorframe, elbow at shoulder height, then bring the chest forward without arching.',
-          fr: 'Avant-bras à plat contre le montant, coude à hauteur d’épaule, puis on avance le buste sans cambrer.'
+          en: 'Forearm flat against the doorframe, elbow a little below the shoulder, then bring the chest forward without arching.',
+          fr: 'Avant-bras à plat contre le montant, coude un peu sous l’épaule, puis on avance le buste sans cambrer.'
         },
         detail: { en: '30 s per side', fr: '30 s par côté' },
         figure: 'pec-door',
@@ -126,28 +143,31 @@ export const BLOCK_1: readonly Session[] = [
         },
         name: { en: 'Doorframe chest stretch', fr: 'Pectoraux au chambranle' },
         perSide: true,
-        seconds: 30
+        seconds: 30,
+        setup: PEC_DOOR_SETUP
       },
       {
         cue: {
-          en: 'Elbow to the ceiling, the hand slides down the spine. The other hand guides the elbow, it does not crush it.',
-          fr: 'Coude vers le plafond, la main descend le long de la colonne. L’autre main guide le coude, elle ne l’écrase pas.'
+          en: 'Arm up, elbow bent: the hand drops behind the head. The other hand guides that elbow gently back. Felt at the back of the upper arm.',
+          fr: 'Bras levé, coude plié : la main descend derrière la tête. L’autre main guide doucement ce coude vers l’arrière. Ça tire à l’arrière du bras.'
         },
         detail: { en: '30 s per arm', fr: '30 s par bras' },
         figure: 'triceps-stretch',
         name: { en: 'Triceps', fr: 'Triceps' },
         perSide: true,
-        seconds: 30
+        seconds: 30,
+        setup: TRICEPS_STRETCH_SETUP
       },
       {
         cue: {
-          en: 'Arm straight, elbow locked, draw the hand back with the fingers up. One wrist, then the other.',
-          fr: 'Bras tendu, coude verrouillé, on ramène la main vers soi doigts vers le haut. Un poignet, puis l’autre.'
+          en: 'Arm straight in front, fingers up: the other hand draws them gently toward you. Felt under the forearm. One wrist, then the other.',
+          fr: 'Bras tendu devant, doigts vers le haut : l’autre main les ramène doucement vers toi. Ça tire sous l’avant-bras. Un poignet, puis l’autre.'
         },
         detail: { en: '30 s', fr: '30 s' },
         figure: 'wrist-stretch',
         name: { en: 'Wrists', fr: 'Poignets' },
-        seconds: 30
+        seconds: 30,
+        setup: WRIST_STRETCH_SETUP
       }
     ],
     id: 'B',
@@ -187,12 +207,13 @@ export const BLOCK_1: readonly Session[] = [
         figure: 'pigeon',
         name: { en: 'Pigeon', fr: 'Pigeon' },
         perSide: true,
-        seconds: 60
+        seconds: 60,
+        setup: PIGEON_SETUP
       },
       {
         cue: {
-          en: 'Hand flat on the wall, arm straight at shoulder height, then turn the chest away from it.',
-          fr: 'Main à plat au mur, bras tendu à hauteur d’épaule, puis on tourne le buste du côté opposé.'
+          en: 'Hand flat on the wall, arm straight a little below shoulder height, then turn the chest away from it.',
+          fr: 'Main à plat au mur, bras tendu un peu sous l’épaule, puis on tourne le buste du côté opposé.'
         },
         detail: { en: '45 s per side', fr: '45 s par côté' },
         figure: 'thoracic-wall',
@@ -201,7 +222,8 @@ export const BLOCK_1: readonly Session[] = [
           fr: 'Ouverture thoracique, bras au mur'
         },
         perSide: true,
-        seconds: 45
+        seconds: 45,
+        setup: THORACIC_WALL_SETUP
       },
       {
         cue: {
@@ -215,13 +237,15 @@ export const BLOCK_1: readonly Session[] = [
           fr: 'Fléchisseurs de hanche en fente'
         },
         perSide: true,
-        seconds: 45
+        seconds: 45,
+        setup: HIP_FLEXOR_LUNGE_SETUP
       },
       {
         cue: CAT_COW_CUE,
         detail: { en: '10 each way', fr: '10 allers-retours' },
         figure: 'cat-cow',
-        name: { en: 'Cat-cow', fr: 'Chat-vache' }
+        name: { en: 'Cat-cow', fr: 'Chat-vache' },
+        setup: CAT_COW_SETUP
       }
     ],
     id: 'C',
@@ -264,24 +288,26 @@ export const BLOCK_1: readonly Session[] = [
     cooldown: [
       {
         cue: {
-          en: 'Kneeling, hips over the knees, chest toward the floor, arms long in front. Walk the hands to one side: that flank opens.',
-          fr: 'À genoux, hanches au-dessus des genoux, poitrine vers le sol, bras allongés devant. On promène les mains d’un côté : c’est ce flanc-là qui s’ouvre.'
+          en: 'Kneeling, hips over the knees, chest toward the floor, arms long in front. Walk the hands to one side: the other flank opens.',
+          fr: 'À genoux, hanches au-dessus des genoux, poitrine vers le sol, bras allongés devant. On promène les mains d’un côté : c’est l’autre flanc qui s’ouvre.'
         },
         detail: { en: '30 s per side', fr: '30 s par côté' },
         figure: 'lat-stretch',
         name: { en: 'Lats', fr: 'Dorsaux' },
         perSide: true,
-        seconds: 30
+        seconds: 30,
+        setup: LAT_STRETCH_SETUP
       },
       {
         cue: {
-          en: 'Chin toward the chest, hands resting on the head without pulling. Their weight is enough.',
-          fr: 'Menton vers la poitrine, mains posées sur le crâne sans tirer. Leur poids suffit.'
+          en: 'Chin toward the chest, hands resting on the head, elbows forward, without pulling. Their weight is enough.',
+          fr: 'Menton vers la poitrine, mains posées sur le crâne, coudes vers l’avant, sans tirer. Leur poids suffit.'
         },
         detail: { en: '30 s', fr: '30 s' },
         figure: 'neck-stretch',
         name: { en: 'Neck', fr: 'Nuque' },
-        seconds: 30
+        seconds: 30,
+        setup: NECK_STRETCH_SETUP
       },
       HAMSTRING_STRETCH
     ],

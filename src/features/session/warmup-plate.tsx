@@ -12,6 +12,7 @@ import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 import { CueList } from './cue-list'
 import { ledgerState } from './run'
 import { TimeUp } from './time-up'
+import { useClockTones } from './use-clock-tones'
 import { useElapsed } from './use-elapsed'
 
 type WarmupPlateProps = {
@@ -54,6 +55,11 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
         ? String(dose.count)
         : `${dose.count} ${localize(dose.per)}`
 
+  useClockTones(
+    isHold && isRunning,
+    drill?.dose.kind === 'hold' ? drill.dose.seconds - elapsed : 0
+  )
+
   if (drill === undefined) return null
 
   const { dose } = drill
@@ -63,9 +69,7 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
       ? dose.count
       : !isRunning
         ? dose.seconds
-        : remaining > 0
-          ? Math.ceil(remaining)
-          : Math.floor(-remaining)
+        : Math.max(0, Math.ceil(remaining))
   const isOvertime = isHold && isRunning && remaining <= 0
   const unit =
     dose.kind === 'hold'
@@ -148,16 +152,17 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
 
       <div className='second-page'>
         <FigureFrame isTurning>
-          <Figure id={drill.figure} tempo={drill.tempo} />
+          <Figure
+            id={drill.figure}
+            profile={drill.profile}
+            tempo={drill.tempo}
+          />
         </FigureFrame>
 
         <div className='movement turning'>
           <h1 className='caption'>{localize(drill.name)}</h1>
           <p className='legend' data-overtime={isOvertime || undefined}>
-            <span className='count'>
-              {isOvertime ? translate('session.set.overtime') : ''}
-              {shown}
-            </span>
+            <span className='count'>{shown}</span>
             <span>{unit}</span>
           </p>
           <TimeUp isUp={isOvertime} />

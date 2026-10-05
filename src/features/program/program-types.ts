@@ -34,6 +34,7 @@ export const FIGURE_IDS = [
   'arm-circle',
   'shoulder-roll',
   'external-rotation',
+  'external-rotation-side',
   'scapular-push-up',
   'hip-circle',
   'quad-stretch',
@@ -174,7 +175,14 @@ export type Dose =
  */
 export type WarmupDrill = {
   readonly name: LocalizedText
+  /** Seen from the front when `profile` is given; the plate then prints both. */
   readonly figure: FigureId
+  /**
+   * The same gesture seen from the side, printed beside `figure` and in step
+   * with it, for a rotation that no single view can show: the front view
+   * carries the hand travelling, the profile the bent elbow behind it.
+   */
+  readonly profile?: FigureId
   readonly dose: Dose
   readonly cues: Cues
   readonly setup: Setup
@@ -193,7 +201,15 @@ export type WarmupDrill = {
  */
 export type CooldownDrill = Drill & {
   readonly figure: FigureId
+  /** The stretch in one line: the summary under the count. */
   readonly cue: LocalizedText
+  /**
+   * How to get into it, step by step, always on the plate: where to stand or
+   * sit, which arm, what the other hand does, where it should pull and how
+   * hard. A one-line cue left a beginner with « I understood nothing » in front
+   * of the triceps and the wrists (session B, October 2026).
+   */
+  readonly setup: Setup
   /**
    * The hold for one side, in seconds. Absent when the drill is counted rather
    * than held: the plate then carries no chrono and waits for the hand.

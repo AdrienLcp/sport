@@ -10,6 +10,7 @@ import { Plate, PlateHead } from '@/presentation/components/plate'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { roundOf, roundsOf, stationAt } from './run'
+import { useClockTones } from './use-clock-tones'
 import { formatCount, useElapsed } from './use-elapsed'
 
 import './rest-plate.sass'
@@ -42,6 +43,7 @@ export const RestPlate: React.FC<RestPlateProps> = ({
   const localize = useLocalize()
   const elapsed = useElapsed(true, `rest-${step}`)
   const remaining = seconds - elapsed
+  useClockTones(true, remaining)
   const station = stationAt(session, step)
   const movement = MOVEMENTS[movementOf(station, log)]
   const target = targetFor(station.effort, week)

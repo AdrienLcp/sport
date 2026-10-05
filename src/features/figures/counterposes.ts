@@ -23,7 +23,9 @@ import type { Pose } from './poses'
  *
  * Plank, side plank and hollow are missing on purpose. They are holds, the
  * movement does not move, and a figure that breathes to look alive would be
- * teaching a rep that does not exist.
+ * teaching a rep that does not exist. The stretches are holds too, but getting
+ * into one is a gesture a beginner has to be shown: their counterpose is where
+ * the body starts, and the plate rests on the stretch once it has shown the way.
  */
 export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
   /* Half a revolution on: the arm out behind. With the two crossings it makes a
@@ -33,9 +35,9 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     elbow: [124, 49],
     far: {
       ankle: [106, 132],
-      elbow: [122, 53],
+      elbow: [103, 67],
       knee: [107, 110],
-      wrist: [143, 56]
+      wrist: [104, 86]
     },
     head: [100, 34],
     hip: [104, 86],
@@ -75,24 +77,89 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     wrist: [58, 132]
   },
 
-  /* Forearms opened out, thumbs leading. They run at full length here and
-     foreshortened at the start: that shortening is the rotation. */
+  /* The start: forearms in front of the belly, hands a little inward. From the
+     front they point half at the reader and print short; opening, each hand
+     slides straight out past its elbow, which is what a rotation looks like
+     face on. */
   'external-rotation': {
-    ankle: [90, 132],
+    ankle: [92, 132],
+    collar: [88, 51],
     elbow: [88, 72],
     far: {
-      ankle: [110, 132],
+      ankle: [108, 132],
+      collar: [112, 51],
       elbow: [112, 72],
-      knee: [108, 110],
-      toe: [116, 134],
-      wrist: [134, 70]
+      knee: [107, 111],
+      pelvis: [106, 89],
+      toe: [114, 134],
+      wrist: [105, 73]
     },
-    head: [100, 32],
+    head: [100, 35],
     hip: [100, 88],
-    knee: [92, 110],
+    knee: [93, 111],
+    pelvis: [94, 89],
     shoulder: [100, 50],
-    toe: [84, 134],
-    wrist: [66, 70]
+    toe: [86, 134],
+    wrist: [95, 73]
+  },
+
+  /* The start in profile: the forearm straight out front, longest here because
+     it points along the page. */
+  'external-rotation-side': {
+    ankle: [102, 132],
+    elbow: [96, 67],
+    far: {
+      ankle: [104, 132],
+      elbow: [97, 67],
+      knee: [105, 110],
+      toe: [116, 133],
+      wrist: [116, 68]
+    },
+    head: [103, 34],
+    hip: [102, 86],
+    knee: [103, 110],
+    shoulder: [102, 48],
+    toe: [114, 133],
+    wrist: [115, 68]
+  },
+
+  /* On the back, both feet flat, the near ankle already crossed over the far
+     knee, arms along the body. The far foot then leaves the floor and both
+     hands bring that thigh in. */
+  'glute-stretch': {
+    ankle: [104, 108],
+    elbow: [74, 131],
+    far: {
+      ankle: [124, 132],
+      elbow: [74, 132],
+      knee: [106, 112],
+      wrist: [94, 133]
+    },
+    head: [34, 124],
+    hip: [88, 131],
+    knee: [113, 119],
+    shoulder: [50, 129],
+    toe: [93, 104],
+    wrist: [94, 132]
+  },
+
+  /* Sitting tall over the long leg, hands resting on the thigh. The fold
+     starts at the hips and the hands slide toward the foot. */
+  'hamstring-stretch': {
+    ankle: [120, 126],
+    elbow: [78, 111],
+    far: {
+      ankle: [86, 131],
+      elbow: [80, 112],
+      knee: [88, 116],
+      wrist: [96, 121]
+    },
+    head: [76, 78],
+    hip: [70, 128],
+    knee: [96, 130],
+    shoulder: [74, 92],
+    toe: [130, 116],
+    wrist: [94, 120]
   },
 
   /* The knee carried out to the side, the thigh pointing at the reader and so
@@ -112,6 +179,27 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     shoulder: [102, 48],
     toe: [72, 118],
     wrist: [98, 84]
+  },
+
+  /* Half-kneeling with the hips still back over the back knee, trunk
+     upright, hands on the front thigh. The whole stretch is the hips moving
+     forward from here; the trunk only rides along. */
+  'hip-flexor-lunge': {
+    ankle: [128, 128],
+    elbow: [104, 83],
+    far: {
+      ankle: [66, 130],
+      elbow: [100, 85],
+      knee: [92, 126],
+      toe: [54, 133],
+      wrist: [108, 103]
+    },
+    head: [90, 50],
+    hip: [94, 100],
+    knee: [118, 106],
+    shoulder: [92, 64],
+    toe: [142, 132],
+    wrist: [112, 101]
   },
 
   /* Hips down on the floor. Shoulders and heels are the two contacts and never
@@ -162,6 +250,23 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     wrist: [124, 56]
   },
 
+  /* Kneeling upright, arms hanging. The trunk then folds forward from the
+     hips and the arms reach long along the floor; the hips stay over the knees. */
+  'lat-stretch': {
+    ankle: [84, 133],
+    elbow: [113, 89],
+    far: {
+      elbow: [114, 89],
+      wrist: [115, 108]
+    },
+    head: [113, 55],
+    hip: [110, 106],
+    knee: [110, 131],
+    shoulder: [112, 69],
+    toe: [72, 134],
+    wrist: [114, 108]
+  },
+
   /* Standing, feet together: the back leg has swung home under the hip. */
   'lunge-back': {
     ankle: [120, 132],
@@ -197,6 +302,66 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     shoulder: [66, 92],
     toe: [186, 132],
     wrist: [58, 132]
+  },
+
+  /* Standing tall, head level, arms hanging. The hands come up to rest on the
+     back of the head and the chin drops toward the chest. */
+  'neck-stretch': {
+    ankle: [92, 132],
+    elbow: [99, 67],
+    far: {
+      ankle: [98, 132],
+      elbow: [100, 67],
+      knee: [100, 110],
+      toe: [112, 133],
+      wrist: [102, 86]
+    },
+    head: [100, 33],
+    hip: [96, 86],
+    knee: [94, 110],
+    shoulder: [98, 48],
+    toe: [106, 133],
+    wrist: [100, 86]
+  },
+
+  /* The forearm already on the jamb, the chest still level with the
+     doorway. Only the chest travels: it moves forward, away from the frame. */
+  'pec-door': {
+    ankle: [88, 132],
+    elbow: [121, 57],
+    far: {
+      ankle: [108, 132],
+      elbow: [102, 66],
+      knee: [104, 108],
+      toe: [94, 133],
+      wrist: [104, 85]
+    },
+    head: [103, 33],
+    hip: [98, 84],
+    knee: [92, 108],
+    shoulder: [104, 48],
+    toe: [74, 133],
+    wrist: [130, 41]
+  },
+
+  /* Legs already placed, trunk upright over the front hip, hands resting on the
+     front leg. The chest then lowers over that leg. */
+  pigeon: {
+    ankle: [102, 130],
+    elbow: [110, 101],
+    far: {
+      ankle: [48, 131],
+      elbow: [112, 101],
+      knee: [74, 126],
+      toe: [36, 134],
+      wrist: [120, 121]
+    },
+    head: [108, 67],
+    hip: [100, 116],
+    knee: [124, 124],
+    shoulder: [104, 81],
+    toe: [90, 134],
+    wrist: [115, 120]
   },
 
   /* The bottom: chest near the floor, elbow driven back toward the feet and
@@ -276,23 +441,44 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     wrist: [58, 132]
   },
 
-  /* This plate prints the bottom, so its counterpose is the top: arms locked,
-     elbows tucked in along the ribs on the way up. */
+  /* This plate prints the bottom, so its counterpose is the top: one plank from
+     heels to head, arms locked straight down from the shoulders, hands right
+     under them. */
   'push-up-narrow': {
-    ankle: [182, 126],
-    elbow: [66, 113],
+    ankle: [176, 124],
+    elbow: [68, 112],
     far: {
-      ankle: [180, 129],
-      elbow: [70, 115],
-      knee: [155, 121],
-      wrist: [64, 133]
+      ankle: [178, 127],
+      elbow: [70, 113],
+      knee: [150, 119],
+      wrist: [71, 133]
     },
-    head: [66, 90],
-    hip: [130, 110],
-    knee: [157, 118],
-    shoulder: [82, 96],
-    toe: [190, 133],
-    wrist: [58, 132]
+    head: [54, 88],
+    hip: [122, 108],
+    knee: [149, 116],
+    shoulder: [68, 92],
+    toe: [186, 132],
+    wrist: [67, 132]
+  },
+
+  /* Standing on both feet, arms hanging. The near heel then rises behind
+     to the buttock and the hand meets the ankle there. */
+  'quad-stretch': {
+    ankle: [106, 132],
+    elbow: [103, 66],
+    far: {
+      ankle: [110, 133],
+      elbow: [110, 66],
+      knee: [108, 109],
+      toe: [124, 134],
+      wrist: [112, 86]
+    },
+    head: [102, 32],
+    hip: [104, 84],
+    knee: [104, 109],
+    shoulder: [104, 47],
+    toe: [118, 134],
+    wrist: [104, 85]
   },
 
   /* Standing tall on the one leg. The free leg comes down from behind and the
@@ -409,6 +595,52 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     wrist: [144, 39]
   },
 
+  /* The hand already flat on the wall behind, the chest still square. The
+     stretch is the chest and the free arm turning away; the hand on the wall
+     never moves. */
+  'thoracic-wall': {
+    ankle: [88, 132],
+    elbow: [115, 50],
+    far: {
+      ankle: [108, 132],
+      elbow: [98, 66],
+      knee: [104, 108],
+      toe: [94, 133],
+      wrist: [100, 85]
+    },
+    head: [94, 32],
+    hip: [98, 84],
+    knee: [92, 108],
+    shoulder: [96, 47],
+    toe: [74, 133],
+    wrist: [133, 52]
+  },
+
+  /* Standing face on, both arms hanging. Each upper arm then rises straight up
+     past the reader: face on it shortens to nothing and grows again above the
+     shoulder, never swinging out to the side. */
+  'triceps-stretch': {
+    ankle: [92, 132],
+    collar: [88, 51],
+    elbow: [88, 74],
+    far: {
+      ankle: [108, 132],
+      collar: [112, 51],
+      elbow: [112, 74],
+      knee: [107, 111],
+      pelvis: [106, 89],
+      toe: [114, 134],
+      wrist: [112, 95]
+    },
+    head: [100, 35],
+    hip: [100, 88],
+    knee: [93, 111],
+    pelvis: [94, 89],
+    shoulder: [100, 50],
+    toe: [86, 134],
+    wrist: [88, 95]
+  },
+
   /* The opposite stride. Legs and arms both swap sides, which is the only way
      a walk reads as a walk and not as a limp. */
   walk: {
@@ -429,6 +661,28 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
        degrees round the ankle, straight through the floor on the way. */
     toe: [76, 134],
     wrist: [128, 58]
+  },
+
+  /* Standing, arms hanging, hands relaxed. The near arm rises straight out
+     front as the fingers turn up, and the other hand comes over them. */
+  'wrist-stretch': {
+    ankle: [94, 132],
+    elbow: [97, 67],
+    far: {
+      ankle: [100, 132],
+      elbow: [98, 67],
+      hand: [101, 98],
+      knee: [102, 110],
+      toe: [114, 133],
+      wrist: [99, 86]
+    },
+    hand: [101, 98],
+    head: [99, 33],
+    hip: [98, 86],
+    knee: [96, 110],
+    shoulder: [96, 48],
+    toe: [108, 133],
+    wrist: [98, 86]
   },
 
   /* Arms back down on the floor. Only the arms and the chest travel; the legs
@@ -488,25 +742,25 @@ export const PASSINGS: Partial<Record<FigureId, readonly [Pose, Pose]>> = {
       elbow: [95, 69],
       far: {
         ankle: [106, 132],
-        elbow: [99, 68],
+        elbow: [103, 67],
         knee: [107, 110],
-        wrist: [97, 89]
+        wrist: [104, 86]
       },
       head: [100, 34],
       hip: [104, 86],
       knee: [102, 110],
       shoulder: [102, 48],
       toe: [88, 133],
-      wrist: [92, 91]
+      wrist: [88, 90]
     },
     {
       ankle: [100, 132],
       elbow: [96, 27],
       far: {
         ankle: [106, 132],
-        elbow: [101, 29],
+        elbow: [103, 67],
         knee: [107, 110],
-        wrist: [97, 8]
+        wrist: [104, 86]
       },
       head: [100, 34],
       hip: [104, 86],
@@ -517,46 +771,6 @@ export const PASSINGS: Partial<Record<FigureId, readonly [Pose, Pose]>> = {
     }
   ],
 
-  /* Halfway round, both forearms pointing straight at the reader and so drawn
-     as stubs. Without them the hand takes the short way between the two
-     drawings, which is a swing down past the hip — a movement the elbow is
-     pinned precisely to prevent. */
-  'external-rotation': [
-    {
-      ankle: [90, 132],
-      elbow: [88, 72],
-      far: {
-        ankle: [110, 132],
-        elbow: [112, 72],
-        knee: [108, 110],
-        toe: [116, 134],
-        wrist: [112, 77]
-      },
-      head: [100, 32],
-      hip: [100, 88],
-      knee: [92, 110],
-      shoulder: [100, 50],
-      toe: [84, 134],
-      wrist: [88, 77]
-    },
-    {
-      ankle: [90, 132],
-      elbow: [88, 72],
-      far: {
-        ankle: [110, 132],
-        elbow: [112, 72],
-        knee: [108, 110],
-        toe: [116, 134],
-        wrist: [112, 78]
-      },
-      head: [100, 32],
-      hip: [100, 88],
-      knee: [92, 110],
-      shoulder: [100, 50],
-      toe: [84, 134],
-      wrist: [88, 78]
-    }
-  ],
   /* Both feet down between two steps, arms at the sides: without it the two
      knees would trade places in the air and the figure would float. */
   'knee-march': [MARCH_STANCE, MARCH_STANCE],

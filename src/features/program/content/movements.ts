@@ -299,8 +299,12 @@ export const MOVEMENTS: Record<MovementId, Movement> = {
     cues: {
       ...PUSH_UP_CUES,
       moves: {
-        en: 'Hands shoulder-width; the elbows brush the ribs.',
-        fr: 'Mains à largeur d’épaules, coudes qui frôlent le buste.'
+        en: 'The elbows bend back, brushing the ribs, until the chest is a fist from the floor.',
+        fr: 'Les coudes plient vers l’arrière en frôlant les côtes, jusqu’à la poitrine à un poing du sol.'
+      },
+      still: {
+        en: 'Hands under the shoulders, shoulder-width apart, fingers forward. Body in one block.',
+        fr: 'Mains sous les épaules, écartées de la largeur des épaules, doigts vers l’avant. Corps d’un bloc.'
       }
     },
     figure: 'push-up-narrow',

@@ -93,8 +93,10 @@ export const EN_DICTIONARY = defineDictionary({
     }
   },
   figure: {
+    front: 'Front',
     missing: 'No figure “{id}”.',
-    replay: 'Watch the movement again'
+    replay: 'Watch the movement again',
+    side: 'Side'
   },
   format: {
     decimal: defineTranslation('{value:number}', {
@@ -288,12 +290,11 @@ export const EN_DICTIONARY = defineDictionary({
   report: {
     copy: 'Copy the report',
     document: {
-      adjustment: '- Next time:',
       centimetres: defineTranslation('{value:number} cm', {
         number: { value: { maximumFractionDigits: 1 } }
       }),
       done: '- Done:',
-      feeling: '- How it felt:',
+      feeling: '- How it felt: (write it before sending)',
       grams: defineTranslation('{value:number} g', {
         number: { value: { maximumFractionDigits: 1 } }
       }),
@@ -423,7 +424,6 @@ export const EN_DICTIONARY = defineDictionary({
       fewer: 'One rep fewer',
       lastWeek: 'last week: <b>{beat}</b>',
       more: 'One rep more',
-      overtime: '+',
       perSide: 'per side',
       restThenRound: 'Rest, then round {round}',
       round: 'Round',

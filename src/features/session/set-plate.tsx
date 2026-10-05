@@ -25,6 +25,7 @@ import { bold, RichText } from '@/presentation/i18n/rich-text'
 import { CueList } from './cue-list'
 import { indexOf, ledgerState, roundOf, roundsOf, stationAt } from './run'
 import { TimeUp } from './time-up'
+import { useClockTones } from './use-clock-tones'
 import { useElapsed } from './use-elapsed'
 
 import './set-plate.sass'
@@ -102,15 +103,14 @@ export const SetPlate: React.FC<SetPlateProps> = ({
       ? Math.floor(elapsed)
       : !isRunning
         ? target
-        : remaining > 0
-          ? Math.ceil(remaining)
-          : Math.floor(elapsed - target)
+        : Math.max(0, Math.ceil(remaining))
     : count
 
   const unit = timed
     ? translate('common.unit.seconds')
     : translate(count === 1 ? 'common.unit.rep' : 'common.unit.reps')
   const isOvertime = timed && !isCalibration && isRunning && remaining <= 0
+  useClockTones(isRunning && !isCalibration, remaining)
 
   const next = session.circuit[index + 1]
   const nextLabel =
@@ -120,8 +120,13 @@ export const SetPlate: React.FC<SetPlateProps> = ({
         ? translate('session.set.restThenRound', { round: String(round + 1) })
         : translate('session.set.stretches')
 
-  const finish = () =>
-    onDone(timed ? Math.max(0, Math.round(elapsed)) : count, elapsed)
+  // Past the target, the clock measures the reach for the phone, not the hold:
+  // the double tone already said the time was done, and the log keeps the target.
+  const heldSeconds = isCalibration
+    ? Math.round(elapsed)
+    : Math.min(target, Math.round(elapsed))
+
+  const finish = () => onDone(timed ? Math.max(0, heldSeconds) : count, elapsed)
 
   const ledgerLabel = (
     position: number,
@@ -237,10 +242,7 @@ export const SetPlate: React.FC<SetPlateProps> = ({
           <h1 className='caption'>{localize(movement.name)}</h1>
           <p className='legend' data-overtime={isOvertime || undefined}>
             {timed ? (
-              <span className='count'>
-                {isOvertime ? translate('session.set.overtime') : ''}
-                {shown}
-              </span>
+              <span className='count'>{shown}</span>
             ) : (
               <>
                 <Button

@@ -29,6 +29,12 @@ export const allFigureNames = (): ReadonlyMap<FigureId, LocalizedText> => {
   for (const session of BLOCK_1) {
     for (const drill of session.warmup) {
       if (!names.has(drill.figure)) names.set(drill.figure, drill.name)
+      if (drill.profile !== undefined && !names.has(drill.profile)) {
+        names.set(drill.profile, {
+          en: `${drill.name.en} (side)`,
+          fr: `${drill.name.fr} (profil)`
+        })
+      }
     }
     for (const held of session.cooldown) {
       if (!isFree(held) && !names.has(held.figure)) {

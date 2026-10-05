@@ -114,10 +114,37 @@ const ease = (t: number): number => {
   return (1 - Math.cos(Math.PI * t)) / 2
 }
 
-export const interpolate = (from: Pose, to: Pose, t: number): Joints => {
+/** Out of a standstill, arriving at speed: the first half of `ease`, stretched. */
+const easeIn = (t: number): number => 1 - Math.cos((Math.PI * t) / 2)
+
+/** Leaving at speed, into a standstill. */
+const easeOut = (t: number): number => Math.sin((Math.PI * t) / 2)
+
+const linear = (t: number): number => t
+
+export type Curve = (t: number) => number
+
+/**
+ * A bone that swaps for its exact opposite is pointing through the page: an
+ * upper arm raised in front, seen face on, shortens to nothing and grows again
+ * above the shoulder. Turning it would swing it out to the side instead — the
+ * one road the lax shoulder must not be shown — so it travels straight through
+ * its own root, which is what the eye sees.
+ */
+const THROUGH_THE_PAGE = (170 / 180) * Math.PI
+
+const isThroughThePage = (from: number, to: number): boolean =>
+  Math.abs(turn(from, to, 1) - from) >= THROUGH_THE_PAGE
+
+export const interpolate = (
+  from: Pose,
+  to: Pose,
+  t: number,
+  curve: Curve = ease
+): Joints => {
   const start = jointsOf(from)
   const end = jointsOf(to)
-  const eased = ease(t)
+  const eased = curve(t)
 
   const rootStart = start[ROOT]
   const rootEnd = end[ROOT]
@@ -140,14 +167,28 @@ export const interpolate = (from: Pose, to: Pose, t: number): Joints => {
     if (startParent === undefined || startChild === undefined) continue
     if (endParent === undefined || endChild === undefined) continue
 
-    const angle = turn(
-      angleOf(startParent, startChild),
-      angleOf(endParent, endChild),
-      eased
-    )
+    const leaves = angleOf(startParent, startChild)
+    const arrives = angleOf(endParent, endChild)
     const was = lengthOf(startParent, startChild)
     const becomes = lengthOf(endParent, endChild)
-    built[bone.to] = polar(parent, angle, was + (becomes - was) * eased)
+
+    if (isThroughThePage(leaves, arrives)) {
+      built[bone.to] = [
+        parent[0] +
+          (startChild[0] - startParent[0]) * (1 - eased) +
+          (endChild[0] - endParent[0]) * eased,
+        parent[1] +
+          (startChild[1] - startParent[1]) * (1 - eased) +
+          (endChild[1] - endParent[1]) * eased
+      ]
+      continue
+    }
+
+    built[bone.to] = polar(
+      parent,
+      turn(leaves, arrives, eased),
+      was + (becomes - was) * eased
+    )
   }
 
   /*
@@ -183,12 +224,27 @@ export type Beat = {
   readonly travel: number
   /** Seconds motionless on arrival — the pause that makes a rep a rep. */
   readonly hold: number
+  /**
+   * The body passes through without stopping: it arrives and leaves at speed.
+   * Every beat used to start and end at rest, and an arm circle drawn in four
+   * quarters stopped four times a turn — a ratchet, not a circle.
+   */
+  readonly flows?: true
 }
 
 export type Motion = readonly Beat[]
 
 export const cycleSeconds = (motion: Motion): number => {
   return motion.reduce((total, each) => total + each.travel + each.hold, 0)
+}
+
+const curveOf = (here: Beat, next: Beat): Curve => {
+  const leavesMoving = here.flows === true && here.hold === 0
+  const arrivesMoving = next.flows === true
+  if (leavesMoving && arrivesMoving) return linear
+  if (leavesMoving) return easeOut
+  if (arrivesMoving) return easeIn
+  return ease
 }
 
 /**
@@ -208,7 +264,12 @@ export const sample = (motion: Motion, seconds: number): Joints => {
     left -= here.hold
 
     if (left < next.travel)
-      return interpolate(here.pose, next.pose, left / next.travel)
+      return interpolate(
+        here.pose,
+        next.pose,
+        left / next.travel,
+        curveOf(here, next)
+      )
     left -= next.travel
   }
 
@@ -254,11 +315,32 @@ const passing = (figure: FigureId, index: 0 | 1, travel: number): Beat => {
   if (drawn === undefined)
     throw new Error(`${figure} has no passing pose ${index}`)
   return {
+    flows: true,
     hold: 0,
     pose: { ...drawn, props: drawn.props ?? POSES[figure].props },
     travel
   }
 }
+
+/** A beat the body sweeps through, for a gesture that never stops: a circle. */
+const sweeping = (beat: Beat): Beat => ({ ...beat, flows: true, hold: 0 })
+
+/**
+ * Into the stretch: from where the body starts, the counterpose, to the hold
+ * the plate prints, slowly, and a long rest there — the way a beginner should
+ * enter it. The way back is quicker: it is only the next showing.
+ */
+const into = (figure: FigureId): Motion => [
+  counter(figure, 1.1, 0.8),
+  printed(figure, 2.2, 2.4)
+]
+
+/**
+ * The stretches show the way in a few times, then rest on the stretch: the
+ * figure becomes the plate a reader holds. Every other figure keeps
+ * demonstrating for as long as the plate is open (`figure.tsx`).
+ */
+const STRETCH_SHOWINGS = 3
 
 /**
  * Each cycle opens on the printed pose, so a figure at rest is the plate again.
@@ -267,38 +349,54 @@ const passing = (figure: FigureId, index: 0 | 1, travel: number): Beat => {
  *
  * The three pure holds — plank, side plank, hollow — are absent on purpose.
  * The movement does not move, so neither does the plate. So are the counted
- * strength movements: their cycle is the rep's tempo (`LOW_ENDS`).
+ * strength movements: their cycle is the rep's tempo (`LOW_ENDS`). The
+ * stretches are holds too, but their figure shows the way into the hold
+ * (`into`): the owner asked for it after a plate that did not move taught him
+ * nothing (session B, October 2026).
+ *
+ * A gesture drawn from two sides runs the same beats on both, so the two
+ * figures printed side by side move as one body.
  */
 export const MOTIONS: Partial<Record<FigureId, Motion>> = {
   'arm-circle': [
-    printed('arm-circle', 0.4, 0.08),
-    passing('arm-circle', 0, 0.4),
-    counter('arm-circle', 0.4, 0.08),
-    passing('arm-circle', 1, 0.4)
+    sweeping(printed('arm-circle', 0.55, 0)),
+    passing('arm-circle', 0, 0.55),
+    sweeping(counter('arm-circle', 0.55, 0)),
+    passing('arm-circle', 1, 0.55)
   ],
   'cat-cow': [printed('cat-cow', 1.3, 0.5), counter('cat-cow', 1.3, 0.5)],
   'external-rotation': [
-    printed('external-rotation', 0.5, 0.35),
-    passing('external-rotation', 0, 0.45),
-    counter('external-rotation', 0.5, 0.4),
-    passing('external-rotation', 1, 0.45)
+    printed('external-rotation', 1.2, 0.4),
+    counter('external-rotation', 1.2, 0.5)
   ],
+  'external-rotation-side': [
+    printed('external-rotation-side', 1.2, 0.4),
+    counter('external-rotation-side', 1.2, 0.5)
+  ],
+  'glute-stretch': into('glute-stretch'),
+  'hamstring-stretch': into('hamstring-stretch'),
   'hip-circle': [
     printed('hip-circle', 0.9, 0.3),
     counter('hip-circle', 0.9, 0.3)
   ],
+  'hip-flexor-lunge': into('hip-flexor-lunge'),
   'knee-march': [
     printed('knee-march', 0.3, 0.1),
     passing('knee-march', 0, 0.3),
     counter('knee-march', 0.3, 0.1),
     passing('knee-march', 1, 0.3)
   ],
+  'lat-stretch': into('lat-stretch'),
   'mountain-climber': [
     printed('mountain-climber', 0.15, 0.06),
     passing('mountain-climber', 0, 0.15),
     counter('mountain-climber', 0.15, 0.06),
     passing('mountain-climber', 1, 0.15)
   ],
+  'neck-stretch': into('neck-stretch'),
+  'pec-door': into('pec-door'),
+  pigeon: into('pigeon'),
+  'quad-stretch': into('quad-stretch'),
   'scapular-push-up': [
     printed('scapular-push-up', 0.7, 0.35),
     counter('scapular-push-up', 0.6, 0.3)
@@ -313,12 +411,40 @@ export const MOTIONS: Partial<Record<FigureId, Motion>> = {
     counter('shoulder-roll', 0.45, 0.1),
     passing('shoulder-roll', 1, 0.45)
   ],
+  'thoracic-wall': into('thoracic-wall'),
+  'triceps-stretch': into('triceps-stretch'),
   walk: [
     printed('walk', 0.22, 0.04),
     passing('walk', 0, 0.22),
     counter('walk', 0.22, 0.04),
     passing('walk', 1, 0.22)
-  ]
+  ],
+  'wrist-stretch': into('wrist-stretch')
+}
+
+const STRETCHES: ReadonlySet<FigureId> = new Set<FigureId>([
+  'glute-stretch',
+  'hamstring-stretch',
+  'hip-flexor-lunge',
+  'lat-stretch',
+  'neck-stretch',
+  'pec-door',
+  'pigeon',
+  'quad-stretch',
+  'thoracic-wall',
+  'triceps-stretch',
+  'wrist-stretch'
+])
+
+/**
+ * How long the figure plays before resting on its plate: forever, or a few
+ * showings of a stretch that end on the stretch itself rather than travelling
+ * back to where it started.
+ */
+export const playSecondsOf = (figure: FigureId, motion: Motion): number => {
+  if (!STRETCHES.has(figure)) return Infinity
+  const back = motion[0]?.travel ?? 0
+  return cycleSeconds(motion) * STRETCH_SHOWINGS - back
 }
 
 /**
@@ -400,17 +526,20 @@ export const posesOf = (
  * the far end of the gesture as a ghost behind the working pose, which is what
  * a paper manual does anyway.
  */
-export const ghostOf = (motion: Motion | undefined): Pose | undefined => {
+export const ghostOf = (
+  motion: Motion | undefined,
+  printedPose: Pose
+): Pose | undefined => {
   const [first, second] = motion ?? []
   if (motion === undefined || first === undefined || second === undefined) {
     return undefined
   }
 
-  const still = jointsOf(first.pose)
+  const still = jointsOf(printedPose)
   let furthest = second.pose
   let best = -1
 
-  for (const candidate of motion.slice(1)) {
+  for (const candidate of motion) {
     const joints = jointsOf(candidate.pose)
     const spread = JOINT_IDS.reduce((sum, key) => {
       const a = still[key]

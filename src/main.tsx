@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import { startServiceWorker } from '@/infrastructure/pwa/app-update'
 import { listenForInstallPrompt } from '@/infrastructure/pwa/install-prompt'
 import { routes } from '@/infrastructure/router/routes'
+import { wakeAudio } from '@/infrastructure/sound'
 import { I18nProvider } from '@/presentation/i18n/i18n-provider'
 import { applyInitialLocale } from '@/presentation/i18n/initial-locale'
 
@@ -19,6 +20,7 @@ if (container === null) {
 }
 
 listenForInstallPrompt()
+document.addEventListener('pointerdown', wakeAudio)
 startServiceWorker()
 const initialLocale = applyInitialLocale()
 const router = createBrowserRouter(routes)
