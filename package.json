@@ -18,7 +18,7 @@
   },
   "description": "Séance: a bodyweight training PWA drawn as a gymnastics manual — offline, installable, every number on the device.",
   "devDependencies": {
-    "@adrienlcp/biome-config": "^0.1.0",
+    "@adrienlcp/biome-config": "^0.2.0",
     "@adrienlcp/tsconfig": "^0.1.0",
     "@biomejs/biome": "2.5.14",
     "@cspell/dict-fr-fr": "^2.3.2",
