@@ -423,6 +423,7 @@ export const FR_DICTIONARY = defineDictionary({
     leftSide: 'Côté gauche',
     next: 'Ensuite',
     plateTitle: 'Planche {id} · {name}',
+    previousSet: 'Série précédente',
     rest: {
       name: 'Repos',
       nextSet: '{name} — {effort}',
@@ -440,6 +441,7 @@ export const FR_DICTIONARY = defineDictionary({
       restThenRound: 'Repos, puis tour {round}',
       round: 'Tour',
       stretches: 'Étirements',
+      timeUp: 'Temps atteint',
       toMeasure: 'à mesurer'
     },
     start: 'Démarrer',

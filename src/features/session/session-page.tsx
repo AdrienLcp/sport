@@ -12,9 +12,11 @@ import { readRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import { useToday } from '@/presentation/clock/use-today'
 import { ScreenTitle } from '@/presentation/head/screen-title'
 
+import { salvageAbandonedRun } from './abandoned-run'
 import { CooldownPlate } from './cooldown-plate'
 import { DonePlate } from './done-plate'
 import { RestPlate } from './rest-plate'
+import { canUndoSet } from './run'
 import { SetPlate } from './set-plate'
 import { TitlePlate } from './title-plate'
 import { useSessionRun } from './use-session-run'
@@ -73,6 +75,11 @@ const SessionRun: React.FC<SessionRunProps> = ({
           isCalibration={run.isCalibration}
           key={`${state.step}-${state.side}`}
           log={run.log}
+          onBack={
+            canUndoSet(state)
+              ? () => run.dispatch({ type: 'undoSet' })
+              : undefined
+          }
           onDone={(value, elapsed) =>
             run.dispatch({ elapsed, type: 'completeSet', value })
           }
@@ -87,6 +94,7 @@ const SessionRun: React.FC<SessionRunProps> = ({
       return (
         <RestPlate
           log={run.log}
+          onBack={() => run.dispatch({ type: 'undoSet' })}
           onDone={() => run.dispatch({ type: 'endRest' })}
           onStop={() => run.dispatch({ type: 'endCircuitEarly' })}
           seconds={state.restSeconds}
@@ -159,7 +167,10 @@ const openingSession = (due: Session, today: string): Session => {
  */
 export const SessionPage: React.FC = () => {
   const today = useToday()
-  const [turn, setTurn] = useState(readTurn)
+  const [turn, setTurn] = useState(() => {
+    salvageAbandonedRun(today)
+    return readTurn()
+  })
   const [picked, setPicked] = useState(() => openingSession(turn.due, today))
   const childPage = useChildPage()
 

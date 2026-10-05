@@ -17,6 +17,8 @@ import './rest-plate.sass'
 type RestPlateProps = {
   log: Log
   /** Called once the rest has run out, or when the reader skips it. */
+  /** Takes back the set that closed the round, and shows its plate again. */
+  onBack: () => void
   onDone: () => void
   onStop: () => void
   seconds: number
@@ -28,6 +30,7 @@ type RestPlateProps = {
 
 export const RestPlate: React.FC<RestPlateProps> = ({
   log,
+  onBack,
   onDone,
   onStop,
   seconds,
@@ -85,11 +88,18 @@ export const RestPlate: React.FC<RestPlateProps> = ({
         onPress={onDone}
         tone='ghost'
       />
-      <ActionButton
-        label={translate('session.stop')}
-        onPress={onStop}
-        tone='ghost'
-      />
+      <div className='exits'>
+        <ActionButton
+          label={translate('session.previousSet')}
+          onPress={onBack}
+          tone='ghost'
+        />
+        <ActionButton
+          label={translate('session.stop')}
+          onPress={onStop}
+          tone='ghost'
+        />
+      </div>
     </Plate>
   )
 }

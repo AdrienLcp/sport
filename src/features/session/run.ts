@@ -39,6 +39,8 @@ export type RunSnapshot = {
   readonly results: readonly SetResult[]
   /** Absent on every snapshot written before the early exit led to the stretches. */
   readonly isCutShort?: true
+  /** The programme week the run belongs to; absent on older snapshots. */
+  readonly week?: number
 }
 
 export type RunAction =
@@ -50,6 +52,7 @@ export type RunAction =
       readonly elapsed: number
     }
   | { readonly type: 'endRest' }
+  | { readonly type: 'undoSet' }
   | { readonly type: 'nextStretch' }
   | { readonly type: 'endCooldown' }
   | { readonly type: 'endCircuitEarly' }
@@ -66,9 +69,10 @@ export const INITIAL_RUN: RunState = {
 
 /**
  * The cool-down read as a flat list of plates. A stretch held per side is two
- * plates and not one: the app ships no sound and no vibration, so a single
- * sixty-second plate has no way to say « switch sides » halfway through, and
- * a reader face down in a pigeon is not watching a number.
+ * plates and not one: the app ships no sound, and a vibration is not offered
+ * by every phone, so a single sixty-second plate has no reliable way to say
+ * « switch sides » halfway through, and a reader face down in a pigeon is not
+ * watching a number.
  */
 export type Stop = {
   readonly index: number
@@ -113,6 +117,35 @@ export const stationAt = (session: Session, step: number): Station => {
 
 const totalSteps = (session: Session): number =>
   stationCount(session) * roundsOf(session)
+
+/**
+ * Whether a set plate or a rest plate can step back: a second side can return
+ * to its first, and any set already written down can be taken back.
+ */
+export const canUndoSet = (state: RunState): boolean =>
+  (state.stage === 'set' || state.stage === 'rest') &&
+  (state.side === 1 || state.results.length > 0)
+
+/**
+ * One set back: the second side of a hold returns to its first, otherwise the
+ * last set written down is taken back and its plate shown again, so a wrong
+ * count tapped through is corrected rather than kept.
+ */
+const undoSet = (state: RunState): RunState => {
+  if (!canUndoSet(state)) return state
+  if (state.side === 1) {
+    return { ...state, firstSide: undefined, side: 0, stage: 'set' }
+  }
+  return {
+    ...state,
+    firstSide: undefined,
+    restSeconds: 0,
+    results: state.results.slice(0, -1),
+    side: 0,
+    stage: 'set',
+    step: state.step - 1
+  }
+}
 
 /** What separates this set from the next: the rest the shape actually grants. */
 const restAfter = (session: Session, step: number, elapsed: number): number => {
@@ -201,6 +234,8 @@ export const runReducer = (
       })
     case 'endRest':
       return { ...state, restSeconds: 0, stage: 'set' }
+    case 'undoSet':
+      return undoSet(state)
     case 'nextStretch':
       return { ...state, step: state.step + 1 }
     // Ending the circuit early still leads to the stretches: a session cut

@@ -24,6 +24,7 @@ import { bold, RichText } from '@/presentation/i18n/rich-text'
 
 import { CueList } from './cue-list'
 import { indexOf, ledgerState, roundOf, roundsOf, stationAt } from './run'
+import { TimeUp } from './time-up'
 import { useElapsed } from './use-elapsed'
 
 import './set-plate.sass'
@@ -33,6 +34,8 @@ type SetPlateProps = {
   /** No history yet: no target, no number to beat, the count is measured. */
   isCalibration: boolean
   log: Log
+  /** Absent on the first set, where there is nothing to step back to. */
+  onBack?: () => void
   /** `value` is the reps counted or the whole seconds held. */
   onDone: (value: number, elapsed: number) => void
   onStop: () => void
@@ -47,6 +50,7 @@ export const SetPlate: React.FC<SetPlateProps> = ({
   day,
   isCalibration,
   log,
+  onBack,
   onDone,
   onStop,
   session,
@@ -209,6 +213,13 @@ export const SetPlate: React.FC<SetPlateProps> = ({
         )}
 
         <div className='exits'>
+          {onBack !== undefined && (
+            <ActionButton
+              label={translate('session.previousSet')}
+              onPress={onBack}
+              tone='ghost'
+            />
+          )}
           <ActionButton
             label={translate('session.stop')}
             onPress={onStop}
@@ -224,7 +235,7 @@ export const SetPlate: React.FC<SetPlateProps> = ({
 
         <div className='movement turning'>
           <h1 className='caption'>{localize(movement.name)}</h1>
-          <p className='legend'>
+          <p className='legend' data-overtime={isOvertime || undefined}>
             {timed ? (
               <span className='count'>
                 {isOvertime ? translate('session.set.overtime') : ''}
@@ -274,6 +285,7 @@ export const SetPlate: React.FC<SetPlateProps> = ({
               </span>
             )}
           </p>
+          <TimeUp isUp={isOvertime} />
           <CueList
             cues={movement.cues}
             setup={movement.setup}

@@ -410,6 +410,7 @@ export const EN_DICTIONARY = defineDictionary({
     leftSide: 'Left side',
     next: 'Next',
     plateTitle: 'Plate {id} · {name}',
+    previousSet: 'Previous set',
     rest: {
       name: 'Rest',
       nextSet: '{name} — {effort}',
@@ -427,6 +428,7 @@ export const EN_DICTIONARY = defineDictionary({
       restThenRound: 'Rest, then round {round}',
       round: 'Round',
       stretches: 'Stretches',
+      timeUp: 'Time reached',
       toMeasure: 'to measure'
     },
     start: 'Start',

@@ -11,6 +11,7 @@ import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 
 import { CueList } from './cue-list'
 import { ledgerState } from './run'
+import { TimeUp } from './time-up'
 import { useElapsed } from './use-elapsed'
 
 type WarmupPlateProps = {
@@ -152,13 +153,14 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
 
         <div className='movement turning'>
           <h1 className='caption'>{localize(drill.name)}</h1>
-          <p className='legend'>
+          <p className='legend' data-overtime={isOvertime || undefined}>
             <span className='count'>
               {isOvertime ? translate('session.set.overtime') : ''}
               {shown}
             </span>
             <span>{unit}</span>
           </p>
+          <TimeUp isUp={isOvertime} />
           <CueList
             cues={drill.cues}
             setup={drill.setup}

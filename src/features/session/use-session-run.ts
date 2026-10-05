@@ -16,7 +16,23 @@ import {
 } from '@/infrastructure/storage/session-run-storage'
 import { readActiveProfile } from '@/infrastructure/storage/storage-profile'
 
-import { INITIAL_RUN, type RunAction, type RunState, runReducer } from './run'
+import {
+  INITIAL_RUN,
+  type RunAction,
+  type RunSnapshot,
+  type RunState,
+  runReducer
+} from './run'
+
+const isResumable = ({
+  day,
+  session,
+  snapshot
+}: {
+  day: string
+  session: Session
+  snapshot: RunSnapshot
+}): boolean => snapshot.day === day && snapshot.sessionId === session.id
 
 /** Today's snapshot of this session, or the title plate. */
 const restoreRun = ({
@@ -31,11 +47,7 @@ const restoreRun = ({
   if (read.status === 'failure') return INITIAL_RUN
 
   const snapshot = read.data
-  if (
-    snapshot === null ||
-    snapshot.day !== day ||
-    snapshot.sessionId !== session.id
-  ) {
+  if (snapshot === null || !isResumable({ day, session, snapshot })) {
     return INITIAL_RUN
   }
   return {
@@ -89,11 +101,12 @@ export const useSessionRun = ({
         sessionId: session.id,
         side: state.side,
         stage: state.stage,
-        step: state.step
+        step: state.step,
+        week
       }),
       'The session could not be saved as it ran'
     )
-  }, [state, day, session.id])
+  }, [state, day, session.id, week])
 
   /**
    * Written down by the hand that leaves the session, not by an effect

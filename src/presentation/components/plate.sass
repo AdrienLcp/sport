@@ -123,15 +123,33 @@
 
         color: var(--signal-ink)
 
+      // Last week's number sits against the count, never pushed to the far
+      // edge: it is the only reward the plate shows, so it reads in full ink.
       .prev
-        margin-left: auto
         white-space: nowrap
 
         b
           @include typography.figure
 
-          color: var(--signal-ink)
           font-size: var(--text-to-beat)
+
+      // The time is reached: the whole legend turns over in ink, a block that
+      // reads from a metre where one changed digit would not. The page turn
+      // clips the column to its box, so the ink stays inside it and the text
+      // steps in from its edge instead.
+      &[data-overtime]
+        padding-inline: var(--space-s)
+        background: var(--ink)
+        color: var(--ground)
+        transition: background var(--transition-fast) var(--ease-out)
+
+        .count,
+        .side,
+        .prev b
+          color: var(--ground)
+
+    .time-up
+      @include accessibility.visually-hidden
 
     // ---------- the ledger: five lines, visible start to finish ----------
 

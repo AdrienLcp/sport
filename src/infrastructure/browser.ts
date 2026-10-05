@@ -49,6 +49,11 @@ export const reloadPage = (): void => {
 /** Whether this browser can run the app's service worker at all. */
 export const hasServiceWorker = (): boolean => 'serviceWorker' in navigator
 
+/** A short buzz where the device has one; nothing at all elsewhere, iOS included. */
+export const pulse = (): void => {
+  if ('vibrate' in navigator) navigator.vibrate(200)
+}
+
 /** The languages the browser says the reader reads, most preferred first. */
 export const preferredLocales = (): readonly string[] => navigator.languages
 
