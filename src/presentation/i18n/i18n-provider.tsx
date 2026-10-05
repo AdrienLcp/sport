@@ -7,6 +7,7 @@ import {
   type LocalizedText,
   textIn
 } from '@/helpers/localized-text'
+import { preferredLocales } from '@/infrastructure/browser'
 import { warnOnFailure } from '@/infrastructure/diagnostics'
 import { writeStoredLocale } from '@/infrastructure/storage/locale-storage'
 import { I18nProvider as AriaI18nProvider } from '@/presentation/components/i18n-provider'
@@ -53,7 +54,11 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
 
   return (
     <I18nContext
-      value={{ locale, setLocale, translate: i18n.translator(locale) }}
+      value={{
+        locale,
+        setLocale,
+        translate: i18n.translator(locale, preferredLocales())
+      }}
     >
       <AriaI18nProvider locale={REGIONAL_LOCALES[locale]}>
         {children}

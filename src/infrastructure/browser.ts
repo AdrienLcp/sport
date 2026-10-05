@@ -1,6 +1,6 @@
 import { Result } from '@adrienlcp/result'
 
-export { copyText, selectContents } from '@adrienlcp/browser'
+export { copyText, reloadPage, selectContents } from '@adrienlcp/browser'
 export {
   usePrefersReducedMotion,
   useScreenAwake
@@ -39,11 +39,6 @@ export const readFileText = async (
   } catch {
     return Result.failure('unreadable')
   }
-}
-
-/** A fresh load: the one recovery for a page whose code failed to arrive. */
-export const reloadPage = (): void => {
-  window.location.reload()
 }
 
 /** Whether this browser can run the app's service worker at all. */
