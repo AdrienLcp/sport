@@ -1,4 +1,3 @@
-import { useScreenAwake } from '@adrienlcp/browser/react'
 import type React from 'react'
 import { useState } from 'react'
 
@@ -7,6 +6,7 @@ import { sessionAtWeek } from '@/features/program/progression'
 import { doneThisWeek, dueSession, weekOf } from '@/features/program/schedule'
 import { SESSIONS } from '@/features/program/sessions'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
+import { useScreenAwake } from '@/infrastructure/browser'
 import { useChildPage } from '@/infrastructure/router/navigation'
 import { readRunSnapshot } from '@/infrastructure/storage/session-run-storage'
 import { useToday } from '@/presentation/clock/use-today'

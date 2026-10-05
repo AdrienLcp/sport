@@ -1,8 +1,8 @@
-import { usePrefersReducedMotion } from '@adrienlcp/browser/react'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import type { FigureId, Tempo } from '@/features/program/program-types'
+import { usePrefersReducedMotion } from '@/infrastructure/browser'
 import { Button } from '@/presentation/components/button'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'

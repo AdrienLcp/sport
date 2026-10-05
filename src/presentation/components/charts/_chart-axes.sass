@@ -1,5 +1,8 @@
 @use '../../styles/typography'
 
+/// The value axis column beside a plot, wide enough for its longest numeral.
+$width: 3.4em
+
 /// The value axis beside a plot: its numerals hang on the ticks, right-aligned.
 @mixin axis
   @include typography.numeral
@@ -13,5 +16,5 @@
 
   display: flex
   justify-content: space-between
-  margin: var(--space-xs) 0 0 calc(3.4em + var(--space-s))
+  margin: var(--space-xs) 0 0 calc(#{$width} + var(--space-s))
   color: var(--ink-dim)

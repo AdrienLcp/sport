@@ -1,6 +1,6 @@
-import { usePrefersReducedMotion } from '@adrienlcp/browser/react'
 import { useEffect, useState } from 'react'
 
+import { usePrefersReducedMotion } from '@/infrastructure/browser'
 import { nowMs } from '@/infrastructure/clock'
 
 /**

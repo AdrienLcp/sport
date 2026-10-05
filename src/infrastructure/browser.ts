@@ -1,5 +1,11 @@
 import { Result } from '@adrienlcp/result'
 
+export { copyText, selectContents } from '@adrienlcp/browser'
+export {
+  usePrefersReducedMotion,
+  useScreenAwake
+} from '@adrienlcp/browser/react'
+
 /** The browser's own save dialog. No library, no server, no account. */
 export const downloadTextFile = ({
   name,

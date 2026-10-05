@@ -1,4 +1,3 @@
-import { copyText, selectContents } from '@adrienlcp/browser'
 import type React from 'react'
 import { useMemo, useRef, useState } from 'react'
 
@@ -6,6 +5,7 @@ import { proteinTargetOf } from '@/features/profile-settings/profile-settings'
 import { readProfileSettingsOrEmpty } from '@/features/profile-settings/use-profile-settings'
 import { readTrainingLogOrEmpty } from '@/features/program/use-training-log'
 import { readTableOrEmpty } from '@/features/table/use-table'
+import { copyText, selectContents } from '@/infrastructure/browser'
 import {
   homePathFor,
   journalPathFor,
