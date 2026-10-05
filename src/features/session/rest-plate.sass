@@ -11,14 +11,18 @@
     align-items: flex-start
     padding: var(--space-m) 0
 
+    // Both trimmed to the ink, so the margin is the gap from the label's
+    // baseline to the top of the digits.
     .label
       @include typography.caps
 
       color: var(--ink-dim)
+      text-box: trim-end cap alphabetic
 
     .time
-      margin: var(--space-xs) 0 0
+      margin: var(--space-m) 0 0
       font-size: var(--text-count)
       font-weight: 800
       letter-spacing: var(--track-display)
-      line-height: 0.9
+      line-height: 1
+      text-box: trim-both cap alphabetic

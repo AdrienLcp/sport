@@ -32,7 +32,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     isDisabled={isDisabled}
     onPress={onPress}
   >
-    {label}
+    <span className='action-label'>{label}</span>
   </Button>
 )
 
@@ -50,6 +50,6 @@ export const ActionLink: React.FC<ActionLinkProps> = ({
   tone
 }) => (
   <Link className={classNameOf(tone)} href={href}>
-    {label}
+    <span className='action-label'>{label}</span>
   </Link>
 )

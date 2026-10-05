@@ -18,6 +18,16 @@
     pointer-events: none
     transform: translate(var(--space-s), -50%)
 
+    // A grid trims nothing itself: its first and last lines are trimmed to
+    // the ink, so the frame's padding reads equal on all four sides.
+    > :first-child
+      text-box-trim: trim-start
+      text-box-edge: cap alphabetic
+
+    > :last-child
+      text-box-trim: trim-end
+      text-box-edge: cap alphabetic
+
     &[data-side='left']
       transform: translate(calc(-100% - var(--space-s)), -50%)
 

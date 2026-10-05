@@ -37,6 +37,11 @@
       padding-bottom: var(--space-xs)
       border-bottom: var(--hairline-mid)
 
+      // Measured from the baseline, not from a line box with room for
+      // descenders capitals never have: the gap to the rule is the token.
+      > span:not(.chrono, .gauge)
+        text-box: trim-end cap alphabetic
+
       .rank
         color: var(--ink-dim)
         letter-spacing: var(--track-index)
@@ -269,6 +274,16 @@
         align-items: center
         justify-content: center
 
+      // The label's line box keeps room for descenders capitals never have, so
+      // the caps ride high. Trimmed to the ink, then given back what was cut on
+      // both sides alike: same height, caps centred.
+      .action-label
+        display: block
+
+        @supports (text-box: trim-both cap alphabetic)
+          padding-block: calc((1lh - 1cap) / 2)
+          text-box: trim-both cap alphabetic
+
       &[data-hovered]
         background: var(--ink-bright)
 
@@ -338,14 +353,13 @@
     .facts
       display: grid
       grid-template-columns: auto 1fr
+      align-items: baseline
       gap: var(--space-2xs) var(--space-m)
       font-size: var(--text-ledger)
       color: var(--ink-dim)
 
       dt
         @include typography.term
-
-        padding-top: var(--space-4xs)
 
       dd
         color: var(--ink)
@@ -361,6 +375,7 @@
         text-align: left
         padding: 0 0 var(--space-2xs)
         border-bottom: var(--hairline-soft)
+        text-box: trim-end cap alphabetic
         color: var(--ink-dim)
 
       td
