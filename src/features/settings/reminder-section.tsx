@@ -9,7 +9,10 @@ import {
   WEEKDAYS_FROM_MONDAY,
   type Weekday
 } from '@/features/reminders/reminder-schedule'
-import { useReminderSchedule } from '@/features/reminders/use-reminder-schedule'
+import {
+  type ReminderUpdate,
+  useReminderSchedule
+} from '@/features/reminders/use-reminder-schedule'
 import { isStandaloneDisplay } from '@/infrastructure/browser'
 import {
   notificationPermission,
@@ -24,6 +27,7 @@ import type {
   PlainTranslationKey,
   Translate
 } from '@/presentation/i18n/translation'
+import { useLatestOnly } from '@/presentation/use-latest-only'
 
 /** 2024 opened on a Monday, so its first week spells the days out in ISO order. */
 const weekdayName = (translate: Translate, day: Weekday): string =>
@@ -45,7 +49,7 @@ const DAY_CELL_KEYS = {
 type TestOutcome = 'denied' | 'failed' | 'sent' | 'unsupported' | null
 
 type ReminderControlsProps = {
-  keep: (next: ReminderSchedule) => void
+  keep: (update: ReminderUpdate) => void
   schedule: ReminderSchedule
 }
 
@@ -57,16 +61,19 @@ const ReminderControls: React.FC<ReminderControlsProps> = ({
   const [permission, setPermission] = useState(notificationPermission)
   const [test, setTest] = useState<TestOutcome>(null)
   const [time, setTime] = useState(schedule.time)
+  const toggles = useLatestOnly()
   const isUnsupported = permission === 'unsupported'
 
   const enable = async (isEnabled: boolean) => {
     if (!isEnabled) {
-      keep({ ...schedule, isEnabled })
+      toggles.abort()
+      keep((current) => ({ ...current, isEnabled }))
       return
     }
-    const asked = await requestNotificationPermission()
+    const asked = await toggles.run(requestNotificationPermission)
     setPermission(notificationPermission())
-    if (asked.status === 'success') keep({ ...schedule, isEnabled })
+    if (asked.status === 'failure' || asked.data.status === 'failure') return
+    keep((current) => ({ ...current, isEnabled }))
   }
 
   const sendTest = async () => {
@@ -108,7 +115,7 @@ const ReminderControls: React.FC<ReminderControlsProps> = ({
               isDisabled={!schedule.isEnabled}
               isSelected={schedule.days.includes(day)}
               key={day}
-              onChange={() => keep(toggleDay(schedule, day))}
+              onChange={() => keep((current) => toggleDay(current, day))}
             >
               {translate(DAY_CELL_KEYS[day])}
             </ToggleButton>
@@ -123,15 +130,12 @@ const ReminderControls: React.FC<ReminderControlsProps> = ({
         <input
           disabled={!schedule.isEnabled}
           onBlur={() => {
-            if (isReminderTime(time)) keep({ ...schedule, time })
-            else setTime(schedule.time)
-          }}
-          onChange={(event) => {
-            setTime(event.target.value)
-            if (isReminderTime(event.target.value)) {
-              keep({ ...schedule, time: event.target.value })
+            if (!isReminderTime(time)) setTime(schedule.time)
+            else if (time !== schedule.time) {
+              keep((current) => ({ ...current, time }))
             }
           }}
+          onChange={(event) => setTime(event.target.value)}
           type='time'
           value={time}
         />
@@ -141,7 +145,7 @@ const ReminderControls: React.FC<ReminderControlsProps> = ({
         className='switch'
         isDisabled={!schedule.isEnabled}
         isSelected={schedule.withSound}
-        onChange={(withSound) => keep({ ...schedule, withSound })}
+        onChange={(withSound) => keep((current) => ({ ...current, withSound }))}
       >
         <span aria-hidden='true' className='tick' />
         <span className='switch-label'>

@@ -16,6 +16,9 @@ export type DeviceKey =
   | 'reminder-copy'
   | 'reminder-schedule'
 
+/** `'aborted'` is the caller's own doing and is never shown or logged. */
+export type DeviceStoreError = 'aborted' | 'unavailable'
+
 const openDatabase = (): Promise<IDBDatabase> =>
   new Promise((resolve, reject) => {
     const request = indexedDB.open(DATABASE, 1)
@@ -26,43 +29,74 @@ const openDatabase = (): Promise<IDBDatabase> =>
     request.onerror = () => reject(request.error)
   })
 
-const settle = <T>(request: IDBRequest<T>): Promise<T> =>
+const completion = (transaction: IDBTransaction): Promise<void> =>
   new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(request.error)
+    transaction.oncomplete = () => resolve()
+    transaction.onabort = () => reject(transaction.error)
+    transaction.onerror = () => reject(transaction.error)
   })
+
+/**
+ * One transaction on the shelf. An abort of `signal` before it opens leaves
+ * the shelf untouched; during it, it aborts the transaction, which rolls back.
+ */
+const onShelf = async <T>({
+  mode,
+  operate,
+  signal
+}: {
+  mode: IDBTransactionMode
+  operate: (shelf: IDBObjectStore) => IDBRequest<T>
+  signal: AbortSignal | undefined
+}): Promise<Result<T, DeviceStoreError>> => {
+  if (signal?.aborted) return Result.failure('aborted')
+  try {
+    const database = await openDatabase()
+    try {
+      if (signal?.aborted) return Result.failure('aborted')
+      const transaction = database.transaction(SHELF, mode)
+      const abortTransaction = () => transaction.abort()
+      signal?.addEventListener('abort', abortTransaction, { once: true })
+      try {
+        const request = operate(transaction.objectStore(SHELF))
+        await completion(transaction)
+        return Result.success(request.result)
+      } finally {
+        signal?.removeEventListener('abort', abortTransaction)
+      }
+    } finally {
+      database.close()
+    }
+  } catch {
+    return Result.failure(signal?.aborted ? 'aborted' : 'unavailable')
+  }
+}
 
 /** `undefined` when nothing was ever written under the key. */
 export const readDeviceValue = async (
-  key: DeviceKey
-): Promise<Result<unknown, 'unavailable'>> => {
-  try {
-    const database = await openDatabase()
-    const value: unknown = await settle(
-      database.transaction(SHELF, 'readonly').objectStore(SHELF).get(key)
-    )
-    database.close()
-    return Result.success(value)
-  } catch {
-    return Result.failure('unavailable')
+  key: DeviceKey,
+  signal?: AbortSignal
+): Promise<Result<unknown, DeviceStoreError>> => {
+  const read = await onShelf<unknown>({
+    mode: 'readonly',
+    operate: (shelf) => shelf.get(key),
+    signal
+  })
+  if (read.status === 'success' && signal?.aborted) {
+    return Result.failure('aborted')
   }
+  return read
 }
 
 export const writeDeviceValue = async (
   key: DeviceKey,
-  value: unknown
-): Promise<Result<void, 'unavailable'>> => {
-  try {
-    const database = await openDatabase()
-    await settle(
-      database
-        .transaction(SHELF, 'readwrite')
-        .objectStore(SHELF)
-        .put(value, key)
-    )
-    database.close()
-    return Result.success()
-  } catch {
-    return Result.failure('unavailable')
-  }
+  value: unknown,
+  signal?: AbortSignal
+): Promise<Result<void, DeviceStoreError>> => {
+  const written = await onShelf({
+    mode: 'readwrite',
+    operate: (shelf) => shelf.put(value, key),
+    signal
+  })
+  return written.status === 'success' ? Result.success() : written
 }

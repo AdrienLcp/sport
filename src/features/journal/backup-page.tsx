@@ -22,6 +22,7 @@ import { Plate, PlateHead } from '@/presentation/components/plate'
 import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
+import { useLatestOnly } from '@/presentation/use-latest-only'
 
 import {
   type Backup,
@@ -76,10 +77,13 @@ export const BackupPage: React.FC = () => {
   const [here] = useState(() => gatherHere(today().toString()))
   const [incoming, setIncoming] = useState<Backup | null>(null)
   const [isRejected, setIsRejected] = useState(false)
+  const reads = useLatestOnly()
 
   const take = async (file: File | undefined) => {
     if (file === undefined) return
-    const text = await readFileText(file)
+    const read = await reads.run(() => readFileText(file))
+    if (read.status === 'failure') return
+    const text = read.data
     const backup = text.status === 'success' ? parseBackup(text.data) : text
     setIsRejected(backup.status === 'failure')
     setIncoming(backup.status === 'success' ? backup.data : null)

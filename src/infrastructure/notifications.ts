@@ -20,18 +20,27 @@ export const requestNotificationPermission = async (): Promise<
   }
 }
 
-/** The service worker, once it controls the page; `null` in a browser without one. */
-const readyRegistration =
-  async (): Promise<ServiceWorkerRegistration | null> => {
-    if (!hasServiceWorker()) return null
-    const waited = await Promise.race([
-      navigator.serviceWorker.ready,
-      new Promise<null>((resolve) => {
-        window.setTimeout(() => resolve(null), 3000)
-      })
-    ])
-    return waited
+/**
+ * The service worker, once it controls the page; `null` in a browser without
+ * one, after three seconds without one, or as soon as `signal` aborts, so a
+ * replaced save stops waiting and the one replacing it is not held behind it.
+ */
+const readyRegistration = async (
+  signal?: AbortSignal
+): Promise<ServiceWorkerRegistration | null> => {
+  if (!hasServiceWorker() || signal?.aborted) return null
+  const { promise: aborted, resolve: stopWaiting } =
+    Promise.withResolvers<null>()
+  const stop = () => stopWaiting(null)
+  signal?.addEventListener('abort', stop, { once: true })
+  const timeout = window.setTimeout(stop, 3000)
+  try {
+    return await Promise.race([navigator.serviceWorker.ready, aborted])
+  } finally {
+    window.clearTimeout(timeout)
+    signal?.removeEventListener('abort', stop)
   }
+}
 
 export type NotificationContent = {
   readonly title: string
@@ -102,10 +111,11 @@ const REMINDER_WAKE = 'reminder'
 /** Chrome grants the permission to installed apps only, and picks the rhythm itself. */
 const MIN_WAKE_INTERVAL = 60 * 60 * 1000
 
-export const startPeriodicWake = async (): Promise<
-  Result<void, 'refused' | 'unsupported'>
-> => {
-  const registration = await readyRegistration()
+export const startPeriodicWake = async (
+  signal?: AbortSignal
+): Promise<Result<void, 'aborted' | 'refused' | 'unsupported'>> => {
+  const registration = await readyRegistration(signal)
+  if (signal?.aborted) return Result.failure('aborted')
   const periodicSync = registration?.periodicSync
   if (periodicSync === undefined) return Result.failure('unsupported')
   try {
@@ -119,8 +129,9 @@ export const startPeriodicWake = async (): Promise<
 }
 
 /** Nothing registered is the state asked for, so a refusal here is no failure. */
-export const stopPeriodicWake = async (): Promise<void> => {
-  const registration = await readyRegistration()
+export const stopPeriodicWake = async (signal?: AbortSignal): Promise<void> => {
+  const registration = await readyRegistration(signal)
+  if (signal?.aborted) return
   await registration?.periodicSync
     ?.unregister(REMINDER_WAKE)
     .catch(() => undefined)
@@ -135,26 +146,32 @@ const SCHEDULED_TAG_PREFIX = 'reminder-'
  */
 export const scheduleAhead = async ({
   content,
-  moments
+  moments,
+  signal
 }: {
   content: Omit<NotificationContent, 'tag'>
   moments: readonly Temporal.ZonedDateTime[]
-}): Promise<Result<void, 'failed' | 'unsupported'>> => {
+  /** Aborted, it stops before the next notification it would hand over. */
+  signal?: AbortSignal
+}): Promise<Result<void, 'aborted' | 'failed' | 'unsupported'>> => {
   if (!wakeCapabilities().canScheduleAhead) {
     return Result.failure('unsupported')
   }
-  const registration = await readyRegistration()
+  const registration = await readyRegistration(signal)
+  if (signal?.aborted) return Result.failure('aborted')
   if (registration === null) return Result.failure('unsupported')
   try {
     const pending = await registration.getNotifications({
       includeTriggered: true
     })
+    if (signal?.aborted) return Result.failure('aborted')
     for (const notification of pending) {
       if (notification.tag.startsWith(SCHEDULED_TAG_PREFIX)) {
         notification.close()
       }
     }
     for (const moment of moments) {
+      if (signal?.aborted) return Result.failure('aborted')
       await registration.showNotification(content.title, {
         badge: BADGE,
         body: content.body,

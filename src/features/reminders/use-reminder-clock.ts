@@ -37,10 +37,10 @@ export const useReminderClock = (): void => {
     let isStopped = false
 
     const arm = async () => {
-      const schedule = await readReminderSchedule()
-      if (isStopped) return
+      const read = await readReminderSchedule()
+      if (isStopped || read.status === 'failure') return
       const now = zonedNow()
-      const next = nextReminder(schedule, now)
+      const next = nextReminder(read.data, now)
       const wait =
         next === null
           ? Infinity

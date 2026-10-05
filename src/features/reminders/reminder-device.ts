@@ -1,3 +1,5 @@
+import { Result } from '@adrienlcp/result'
+
 import { warnOnFailure } from '@/infrastructure/diagnostics'
 import {
   type NotificationContent,
@@ -29,14 +31,20 @@ export type ReminderCopy = {
 /** How far ahead a browser able to schedule notifications is handed them. */
 const SCHEDULE_AHEAD_DAYS = 14
 
-/** A schedule this device cannot read is the default one: off. */
-export const readReminderSchedule = async (): Promise<ReminderSchedule> => {
-  const read = await readDeviceValue('reminder-schedule')
+/**
+ * A schedule this device cannot read is the default one: off. `'aborted'`
+ * only when `signal` was, and then nothing is logged.
+ */
+export const readReminderSchedule = async (
+  signal?: AbortSignal
+): Promise<Result<ReminderSchedule, 'aborted'>> => {
+  const read = await readDeviceValue('reminder-schedule', signal)
+  if (signal?.aborted) return Result.failure('aborted')
   warnOnFailure(read, 'The reminder schedule could not be read')
   if (read.status === 'failure' || read.data === undefined) {
-    return DEFAULT_SCHEDULE
+    return Result.success(DEFAULT_SCHEDULE)
   }
-  return parseSchedule(read.data)
+  return Result.success(parseSchedule(read.data))
 }
 
 /**
@@ -47,44 +55,49 @@ export const readReminderSchedule = async (): Promise<ReminderSchedule> => {
 export const saveReminderSchedule = async ({
   copy,
   now,
-  schedule
+  schedule,
+  signal
 }: {
   copy: ReminderCopy
   now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
+  /** Aborted by a newer save: this one stops at its next step, silently. */
+  signal: AbortSignal
 }): Promise<void> => {
-  warnOnFailure(
-    await writeDeviceValue('reminder-schedule', schedule),
-    'The reminder schedule could not be saved'
+  const savedSchedule = await writeDeviceValue(
+    'reminder-schedule',
+    schedule,
+    signal
   )
-  warnOnFailure(
-    await writeDeviceValue('reminder-copy', copy),
-    'The reminder text could not be saved'
-  )
+  if (signal.aborted) return
+  warnOnFailure(savedSchedule, 'The reminder schedule could not be saved')
+
+  const savedCopy = await writeDeviceValue('reminder-copy', copy, signal)
+  if (signal.aborted) return
+  warnOnFailure(savedCopy, 'The reminder text could not be saved')
 
   const capabilities = wakeCapabilities()
   if (capabilities.canScheduleAhead) {
-    warnOnFailure(
-      await scheduleAhead({
-        content: { ...copy, isSilent: !schedule.withSound },
-        moments: remindersAfter({
-          days: SCHEDULE_AHEAD_DAYS,
-          from: now,
-          schedule
-        })
+    const scheduled = await scheduleAhead({
+      content: { ...copy, isSilent: !schedule.withSound },
+      moments: remindersAfter({
+        days: SCHEDULE_AHEAD_DAYS,
+        from: now,
+        schedule
       }),
-      'The reminders could not be scheduled ahead'
-    )
+      signal
+    })
+    if (signal.aborted) return
+    warnOnFailure(scheduled, 'The reminders could not be scheduled ahead')
   }
   if (!capabilities.canWakePeriodically) return
-  if (schedule.isEnabled) {
-    warnOnFailure(
-      await startPeriodicWake(),
-      'The periodic wake could not be started'
-    )
-  } else {
-    await stopPeriodicWake()
+  if (!schedule.isEnabled) {
+    await stopPeriodicWake(signal)
+    return
   }
+  const woken = await startPeriodicWake(signal)
+  if (signal.aborted) return
+  warnOnFailure(woken, 'The periodic wake could not be started')
 }
 
 /** A reminder after the session already ran is noise: the worker checks this day. */
@@ -131,8 +144,9 @@ const noteShown = async (now: Temporal.ZonedDateTime): Promise<void> => {
 export const acknowledgeTodaysReminder = async (
   now: Temporal.ZonedDateTime
 ): Promise<void> => {
-  const schedule = await readReminderSchedule()
-  if (await isOwedAt({ now, schedule })) await noteShown(now)
+  const read = await readReminderSchedule()
+  if (read.status === 'failure') return
+  if (await isOwedAt({ now, schedule: read.data })) await noteShown(now)
 }
 
 /**
@@ -147,7 +161,9 @@ export const remindIfOwed = async ({
   copy: ReminderCopy
   now: Temporal.ZonedDateTime
 }): Promise<void> => {
-  const schedule = await readReminderSchedule()
+  const read = await readReminderSchedule()
+  if (read.status === 'failure') return
+  const schedule = read.data
   if (!(await isOwedAt({ now, schedule }))) return
 
   const shown = await showNotification({
