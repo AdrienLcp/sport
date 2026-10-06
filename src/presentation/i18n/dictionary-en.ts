@@ -31,7 +31,11 @@ export const EN_DICTIONARY = defineDictionary({
     },
     prose:
       'Everything the app knows lives in this browser, on this device. Exporting writes a file; importing it elsewhere puts everything back. It is also how you move from the phone to the computer.',
-    rejected: 'This file is not a backup from the app. Nothing was touched.',
+    rejected: {
+      damaged:
+        'This backup from the app is damaged: some of what it holds cannot be read. Nothing was touched.',
+      foreign: 'This file is not a backup from the app. Nothing was touched.'
+    },
     title: 'A file, nothing else.',
     unknownDate: 'unknown date'
   },

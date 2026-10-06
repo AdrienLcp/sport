@@ -18,15 +18,11 @@ import {
   DEFAULT_SCHEDULE,
   isReminderOwed,
   parseSchedule,
+  type ReminderCopy,
   type ReminderSchedule,
-  remindersAfter
+  remindersAfter,
+  storedDayOrNull
 } from './reminder-schedule'
-
-/** The words a reminder carries, in the reader's language at the time it was set. */
-export type ReminderCopy = {
-  readonly title: string
-  readonly body: string
-}
 
 /** How far ahead a browser able to schedule notifications is handed them. */
 const SCHEDULE_AHEAD_DAYS = 14
@@ -108,9 +104,6 @@ export const noteSessionRun = async (day: string): Promise<void> => {
   )
 }
 
-const dayOrNull = (value: unknown): string | null =>
-  typeof value === 'string' ? value : null
-
 const isOwedAt = async ({
   now,
   schedule
@@ -122,9 +115,11 @@ const isOwedAt = async ({
   const lastSession = await readDeviceValue('last-session-day')
   return isReminderOwed({
     lastSessionDay:
-      lastSession.status === 'success' ? dayOrNull(lastSession.data) : null,
+      lastSession.status === 'success'
+        ? storedDayOrNull(lastSession.data)
+        : null,
     lastShownDay:
-      lastShown.status === 'success' ? dayOrNull(lastShown.data) : null,
+      lastShown.status === 'success' ? storedDayOrNull(lastShown.data) : null,
     now,
     schedule
   })

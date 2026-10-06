@@ -1,6 +1,6 @@
 import type { Translate } from '@/presentation/i18n/translation'
 
-import type { ReminderCopy } from './reminder-device'
+import type { ReminderCopy } from './reminder-schedule'
 
 export const reminderCopyOf = (translate: Translate): ReminderCopy => ({
   body: translate('reminders.notification.body'),

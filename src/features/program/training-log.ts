@@ -1,4 +1,11 @@
-import type { MovementId, SessionId, Station } from './program-types'
+import { z } from 'zod/mini'
+
+import {
+  type MovementId,
+  SESSION_IDS,
+  type SessionId,
+  type Station
+} from './program-types'
 import { pushUpVariantFor } from './progression'
 
 /**
@@ -44,6 +51,34 @@ export type Log = {
 }
 
 export const EMPTY_LOG: Log = { entries: [], version: 1 }
+
+export const setResultSchema = z.object({
+  address: z.string(),
+  round: z.number(),
+  value: z.number()
+}) satisfies z.ZodMiniType<SetResult>
+
+const sessionEntrySchema = z.object({
+  day: z.string(),
+  results: z.array(setResultSchema),
+  sessionId: z.enum(SESSION_IDS),
+  stopped: z.optional(z.literal(true)),
+  week: z.number()
+}) satisfies z.ZodMiniType<SessionEntry>
+
+const measureSchema = z.object({
+  day: z.string(),
+  waist: z.optional(z.number()),
+  weight: z.optional(z.number())
+}) satisfies z.ZodMiniType<Measure>
+
+/** Backup files written by the first builds carry no `version` on their log. */
+export const logSchema = z.object({
+  entries: z.array(sessionEntrySchema),
+  measures: z.optional(z.array(measureSchema)),
+  pushUpTest: z.optional(z.number()),
+  version: z._default(z.literal(1), 1)
+}) satisfies z.ZodMiniType<Log>
 
 /** One reading per day: noting twice the same day corrects, never appends. */
 export const putMeasure = (log: Log, measure: Measure): Log => {

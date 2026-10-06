@@ -1,6 +1,5 @@
 import { Result } from '@adrienlcp/result'
 import {
-  readStoredJson,
   type StorageReadError,
   type StorageWriteError,
   writeStoredJson
@@ -9,25 +8,21 @@ import {
 import {
   EMPTY_PROFILE_SETTINGS,
   type ProfileSettings,
-  parseProfileSettings
+  profileSettingsSchema
 } from '@/features/profile-settings/profile-settings'
-import { isRecord } from '@/helpers/records'
 
+import { readStoredShape } from './read-stored-shape'
 import { type StorageProfile, storageKeyOf } from './storage-profile'
 
 export const readProfileSettings = (
   profile?: StorageProfile
 ): Result<ProfileSettings, StorageReadError> => {
-  const read = readStoredJson({
-    isValue: isRecord,
-    key: storageKeyOf('settings', profile)
+  const read = readStoredShape({
+    key: storageKeyOf('settings', profile),
+    schema: profileSettingsSchema
   })
   if (read.status === 'failure') return read
-  return Result.success(
-    read.data === null
-      ? EMPTY_PROFILE_SETTINGS
-      : parseProfileSettings(read.data)
-  )
+  return Result.success(read.data ?? EMPTY_PROFILE_SETTINGS)
 }
 
 export const writeProfileSettings = (

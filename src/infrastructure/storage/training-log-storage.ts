@@ -1,26 +1,22 @@
 import { Result } from '@adrienlcp/result'
 import {
-  readStoredJson,
   type StorageReadError,
   type StorageWriteError,
   writeStoredJson
 } from '@adrienlcp/safe-storage'
 
-import { EMPTY_LOG, type Log } from '@/features/program/training-log'
-import { isRecord } from '@/helpers/records'
+import { EMPTY_LOG, type Log, logSchema } from '@/features/program/training-log'
 
+import { readStoredShape } from './read-stored-shape'
 import { type StorageProfile, storageKeyOf } from './storage-profile'
-
-export const isLog = (value: unknown): value is Log =>
-  isRecord(value) && value.version === 1 && Array.isArray(value.entries)
 
 /** A browser that never ran a session holds no log, which reads as the empty one. */
 export const readTrainingLog = (
   profile?: StorageProfile
 ): Result<Log, StorageReadError> => {
-  const read = readStoredJson({
-    isValue: isLog,
-    key: storageKeyOf('log', profile)
+  const read = readStoredShape({
+    key: storageKeyOf('log', profile),
+    schema: logSchema
   })
   if (read.status === 'failure') return read
   return Result.success(read.data ?? EMPTY_LOG)

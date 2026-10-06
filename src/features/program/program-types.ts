@@ -235,7 +235,9 @@ export type CooldownEntry = CooldownDrill | FreeDrill
 export const isFree = (entry: CooldownEntry): entry is FreeDrill =>
   'free' in entry
 
-export type SessionId = 'A' | 'B' | 'C' | 'D' | 'E'
+export const SESSION_IDS = ['A', 'B', 'C', 'D', 'E'] as const
+
+export type SessionId = (typeof SESSION_IDS)[number]
 
 export type SessionShape =
   /**

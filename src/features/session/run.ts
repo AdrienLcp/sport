@@ -1,11 +1,17 @@
+import { z } from 'zod/mini'
+
 import {
   isFree,
+  SESSION_IDS,
   type Session,
   type SessionId,
   type Station
 } from '@/features/program/program-types'
 import { isPerSide, isTimed } from '@/features/program/progression'
-import type { SetResult } from '@/features/program/training-log'
+import {
+  type SetResult,
+  setResultSchema
+} from '@/features/program/training-log'
 
 export type Stage = 'cooldown' | 'done' | 'rest' | 'set' | 'title' | 'warmup'
 
@@ -45,6 +51,20 @@ export type RunSnapshot = {
   readonly week?: number
   readonly isMeasuring?: true
 }
+
+export const runSnapshotSchema = z.object({
+  day: z.string(),
+  firstSide: z.optional(z.number()),
+  isCutShort: z.optional(z.literal(true)),
+  isMeasuring: z.optional(z.literal(true)),
+  restSeconds: z.number(),
+  results: z.array(setResultSchema),
+  sessionId: z.enum(SESSION_IDS),
+  side: z.literal([0, 1]),
+  stage: z.enum(['cooldown', 'rest', 'set', 'warmup']),
+  step: z.number(),
+  week: z.optional(z.number())
+}) satisfies z.ZodMiniType<RunSnapshot>
 
 export type RunAction =
   | { readonly type: 'begin'; readonly isMeasuring?: true }

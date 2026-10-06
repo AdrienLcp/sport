@@ -50,4 +50,70 @@ describe('backup', () => {
     })
     expect(parseBackup('not json').status).toBe('failure')
   })
+
+  const backupWith = (fields: Record<string, unknown>) =>
+    JSON.stringify({
+      app: 'seance',
+      log: { entries: [], version: 1 },
+      savedAt: '2026-10-01',
+      table: { days: {}, version: 1 },
+      version: 1,
+      ...fields
+    })
+
+  it('[backup] refuses as damaged a file of ours whose sessions cannot be read', () => {
+    expect(
+      parseBackup(
+        backupWith({
+          log: { entries: [{ day: 3, results: 'many', sessionId: 'Z' }] }
+        })
+      )
+    ).toEqual({ error: 'damaged', status: 'failure' })
+  })
+
+  it('[backup] refuses as damaged a table whose counts are not numbers', () => {
+    expect(
+      parseBackup(
+        backupWith({ table: { days: { '2026-10-01': { eggs: 'two' } } } })
+      )
+    ).toEqual({ error: 'damaged', status: 'failure' })
+  })
+
+  it('[backup] drops a field the app never wrote instead of storing it', () => {
+    const parsed = parseBackup(
+      backupWith({
+        injected: true,
+        log: {
+          entries: [
+            {
+              day: '2026-10-01',
+              extra: 'x',
+              results: [{ address: '1.1', round: 1, value: 12 }],
+              sessionId: 'A',
+              week: 1
+            }
+          ],
+          version: 1
+        }
+      })
+    )
+    expect(parsed.status === 'success' && parsed.data).toEqual({
+      app: 'seance',
+      log: {
+        entries: [
+          {
+            day: '2026-10-01',
+            results: [{ address: '1.1', round: 1, value: 12 }],
+            sessionId: 'A',
+            week: 1
+          }
+        ],
+        version: 1
+      },
+      savedAt: '2026-10-01',
+      settings: { version: 1 },
+      table: { days: {}, market: { ticked: [], week: '' }, version: 1 },
+      version: 1
+    })
+  })
 })

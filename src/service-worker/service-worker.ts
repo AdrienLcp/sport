@@ -10,9 +10,9 @@ import {
   precacheAndRoute
 } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
+import { z } from 'zod/mini'
 
 import { parseSchedule } from '../features/reminders/reminder-schedule'
-import { isRecord } from '../helpers/records'
 import { zonedNow } from '../infrastructure/clock'
 import {
   readDeviceValue,
@@ -36,8 +36,10 @@ clientsClaim()
 registerRoute(new NavigationRoute(createHandlerBoundToURL('/index.html')))
 
 /** Sent by the page when the reader accepts a new printing. */
+const skipWaitingMessageSchema = z.object({ type: z.literal('SKIP_WAITING') })
+
 self.addEventListener('message', (event) => {
-  if (isRecord(event.data) && event.data.type === 'SKIP_WAITING') {
+  if (skipWaitingMessageSchema.safeParse(event.data).success) {
     void self.skipWaiting()
   }
 })

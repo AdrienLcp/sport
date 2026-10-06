@@ -34,8 +34,12 @@ export const FR_DICTIONARY = defineDictionary({
     },
     prose:
       'Tout ce que l’app sait vit dans ce navigateur, sur cet appareil. Exporter écrit un fichier ; l’importer ailleurs y remet tout. C’est aussi comme ça qu’on passe du téléphone au PC.',
-    rejected:
-      'Ce fichier n’est pas une sauvegarde de l’app. Rien n’a été touché.',
+    rejected: {
+      damaged:
+        'Cette sauvegarde de l’app est abîmée : une partie de ce qu’elle contient est illisible. Rien n’a été touché.',
+      foreign:
+        'Ce fichier n’est pas une sauvegarde de l’app. Rien n’a été touché.'
+    },
     title: 'Un fichier, rien d’autre.',
     unknownDate: 'date inconnue'
   },

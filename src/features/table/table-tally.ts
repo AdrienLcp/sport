@@ -1,3 +1,5 @@
+import { z } from 'zod/mini'
+
 import { type IsoDay, plainDayOf } from '@/helpers/days'
 
 import { MARKET_IDS, SOURCES } from './table-catalogue'
@@ -30,6 +32,22 @@ export const EMPTY_TABLE: Table = {
   market: { ticked: [], week: '' },
   version: 1
 }
+
+/**
+ * Older builds wrote `days` as `null` before the first tap, and no `market`
+ * before the list existed; the first backup files carry no `version`.
+ */
+export const tableSchema = z.object({
+  days: z.pipe(
+    z.nullable(z.record(z.string(), z.record(z.string(), z.number()))),
+    z.transform((days): Table['days'] => days ?? EMPTY_TABLE.days)
+  ),
+  market: z._default(
+    z.object({ ticked: z.readonly(z.array(z.string())), week: z.string() }),
+    EMPTY_TABLE.market
+  ),
+  version: z._default(z.literal(1), 1)
+}) satisfies z.ZodMiniType<Table>
 
 /**
  * The week opens on Friday, because that is when the weekend — and the

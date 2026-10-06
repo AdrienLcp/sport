@@ -1,8 +1,9 @@
+import { z } from 'zod/mini'
+
 import {
   DEFAULT_PROTEIN_TARGET,
   PROTEIN_TARGET_RANGE
 } from '@/features/table/table-catalogue'
-import { isRecord } from '@/helpers/records'
 
 /**
  * What a profile decides about itself. Stored beside its log and carried by a
@@ -20,16 +21,25 @@ export const EMPTY_PROFILE_SETTINGS: ProfileSettings = { version: 1 }
 export const proteinTargetOf = (settings: ProfileSettings): number =>
   settings.proteinTarget ?? DEFAULT_PROTEIN_TARGET
 
+const proteinTargetSchema = z
+  .int()
+  .check(z.gte(PROTEIN_TARGET_RANGE.min), z.lte(PROTEIN_TARGET_RANGE.max))
+
 export const isProteinTarget = (value: number): boolean =>
-  Number.isInteger(value) &&
-  value >= PROTEIN_TARGET_RANGE.min &&
-  value <= PROTEIN_TARGET_RANGE.max
+  proteinTargetSchema.safeParse(value).success
 
 /** Tolerant: an unknown field is dropped, a bad target falls back to none. */
-export const parseProfileSettings = (value: unknown): ProfileSettings => {
-  if (!isRecord(value)) return EMPTY_PROFILE_SETTINGS
-  const target = value.proteinTarget
-  return typeof target === 'number' && isProteinTarget(target)
-    ? { proteinTarget: target, version: 1 }
-    : EMPTY_PROFILE_SETTINGS
-}
+export const profileSettingsSchema = z.catch(
+  z.pipe(
+    z.object({
+      proteinTarget: z.catch(z.optional(proteinTargetSchema), undefined)
+    }),
+    z.transform(
+      ({ proteinTarget }): ProfileSettings =>
+        proteinTarget === undefined
+          ? EMPTY_PROFILE_SETTINGS
+          : { proteinTarget, version: 1 }
+    )
+  ),
+  EMPTY_PROFILE_SETTINGS
+)

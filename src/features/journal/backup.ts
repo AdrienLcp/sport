@@ -1,18 +1,18 @@
 import { Result } from '@adrienlcp/result'
+import { z } from 'zod/mini'
 
 import {
-  EMPTY_PROFILE_SETTINGS,
   type ProfileSettings,
-  parseProfileSettings
+  profileSettingsSchema
 } from '@/features/profile-settings/profile-settings'
-import { EMPTY_LOG, type Log } from '@/features/program/training-log'
+import { type Log, logSchema } from '@/features/program/training-log'
 import {
   EMPTY_TABLE,
   inCatalogue,
-  type Table
+  type Table,
+  tableSchema
 } from '@/features/table/table-tally'
 import type { IsoDay } from '@/helpers/days'
-import { isRecord } from '@/helpers/records'
 
 /**
  * One file that carries everything the app knows. localStorage lives in one
@@ -28,8 +28,8 @@ export type Backup = {
   readonly savedAt: string
   readonly log: Log
   readonly table: Table
-  /** Absent from files written before profile settings existed. */
-  readonly settings?: ProfileSettings
+  /** Empty when read from a file written before profile settings existed. */
+  readonly settings: ProfileSettings
 }
 
 export type BackupCount = {
@@ -66,43 +66,49 @@ export const countBackup = (backup: Backup): BackupCount => ({
   sessions: backup.log.entries.length
 })
 
-const isLogLike = (value: unknown): value is Log =>
-  isRecord(value) && Array.isArray(value.entries)
+/** Why a picked file restores nothing: not ours at all, or ours but broken. */
+export type BackupRejection = 'damaged' | 'not_a_backup'
 
-const isTableLike = (value: unknown): value is Table =>
-  isRecord(value) && typeof value.days === 'object'
+const backupEnvelopeSchema = z.object({
+  app: z.literal('seance'),
+  version: z.literal(1)
+})
 
 /**
- * A file picked by hand is never assumed to be ours. Anything missing falls
- * back to empty rather than to `undefined`, so a half-written file restores
- * what it does carry instead of breaking every plate that reads it.
+ * Files from older builds lack the table, the settings or the date: each
+ * reads as empty. Settings stay tolerant — a bad protein target is dropped.
  */
-export const parseBackup = (text: string): Result<Backup, 'not_a_backup'> => {
-  let raw: unknown
+const backupSchema = z.extend(backupEnvelopeSchema, {
+  log: logSchema,
+  savedAt: z.catch(z.string(), ''),
+  settings: profileSettingsSchema,
+  table: z._default(tableSchema, EMPTY_TABLE)
+}) satisfies z.ZodMiniType<Backup>
+
+const parseJson = (text: string): Result<unknown, 'not_json'> => {
   try {
-    raw = JSON.parse(text)
+    const value: unknown = JSON.parse(text)
+    return Result.success(value)
   } catch {
+    return Result.failure('not_json')
+  }
+}
+
+/**
+ * A file picked by hand is never assumed to be ours: every session, measure
+ * and count in it is checked before anything is replaced, and an unknown field
+ * is dropped rather than carried into the app's storage.
+ */
+export const parseBackup = (text: string): Result<Backup, BackupRejection> => {
+  const json = parseJson(text)
+  if (json.status === 'failure') return Result.failure('not_a_backup')
+  if (!backupEnvelopeSchema.safeParse(json.data).success) {
     return Result.failure('not_a_backup')
   }
-
-  if (!isRecord(raw) || raw.app !== 'seance' || raw.version !== 1) {
-    return Result.failure('not_a_backup')
-  }
-  if (!isLogLike(raw.log)) return Result.failure('not_a_backup')
-
-  return Result.success({
-    app: 'seance',
-    log: { ...EMPTY_LOG, ...raw.log, version: 1 },
-    savedAt: typeof raw.savedAt === 'string' ? raw.savedAt : '',
-    settings:
-      raw.settings === undefined
-        ? EMPTY_PROFILE_SETTINGS
-        : parseProfileSettings(raw.settings),
-    table: isTableLike(raw.table)
-      ? { ...EMPTY_TABLE, ...raw.table, version: 1 }
-      : EMPTY_TABLE,
-    version: 1
-  })
+  const backup = backupSchema.safeParse(json.data)
+  return backup.success
+    ? Result.success(backup.data)
+    : Result.failure('damaged')
 }
 
 export const backupFileName = (backup: Backup): string =>

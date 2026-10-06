@@ -208,6 +208,9 @@ importers:
       workbox-window:
         specifier: ^7.4.1
         version: 7.4.1
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
     devDependencies:
       '@adrienlcp/biome-config':
         specifier: ^0.2.0
@@ -3397,6 +3400,9 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@adrienlcp/biome-config@0.2.0(@biomejs/biome@2.5.14)':
@@ -6509,3 +6515,5 @@ snapshots:
   yallist@3.1.1: {}
 
   yaml@2.9.1: {}
+
+  zod@4.6.5: {}

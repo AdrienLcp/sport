@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useState } from 'react'
 
-import { EMPTY_PROFILE_SETTINGS } from '@/features/profile-settings/profile-settings'
 import {
   readProfileSettingsOrEmpty,
   saveProfileSettings
@@ -22,10 +21,12 @@ import { Plate, PlateHead } from '@/presentation/components/plate'
 import { ScreenTitle } from '@/presentation/head/screen-title'
 import { useTranslate } from '@/presentation/i18n/i18n-provider'
 import { bold, RichText } from '@/presentation/i18n/rich-text'
+import type { PlainTranslationKey } from '@/presentation/i18n/translation'
 import { useLatestOnly } from '@/presentation/use-latest-only'
 
 import {
   type Backup,
+  type BackupRejection,
   backupFileName,
   countBackup,
   gatherBackup,
@@ -35,6 +36,12 @@ import {
 import { shortDay } from './format'
 
 import './backup-page.sass'
+
+const REJECTION_MESSAGES = {
+  damaged: 'backup.rejected.damaged',
+  not_a_backup: 'backup.rejected.foreign',
+  unreadable: 'backup.rejected.foreign'
+} as const satisfies Record<BackupRejection | 'unreadable', PlainTranslationKey>
 
 const gatherHere = (today: IsoDay): Backup =>
   gatherBackup({
@@ -76,7 +83,9 @@ export const BackupPage: React.FC = () => {
   const goBack = useGoBack(settingsPathFor())
   const [here] = useState(() => gatherHere(today().toString()))
   const [incoming, setIncoming] = useState<Backup | null>(null)
-  const [isRejected, setIsRejected] = useState(false)
+  const [rejection, setRejection] = useState<
+    keyof typeof REJECTION_MESSAGES | null
+  >(null)
   const reads = useLatestOnly()
 
   const take = async (file: File | undefined) => {
@@ -85,7 +94,7 @@ export const BackupPage: React.FC = () => {
     if (read.status === 'failure') return
     const text = read.data
     const backup = text.status === 'success' ? parseBackup(text.data) : text
-    setIsRejected(backup.status === 'failure')
+    setRejection(backup.status === 'failure' ? backup.error : null)
     setIncoming(backup.status === 'success' ? backup.data : null)
   }
 
@@ -102,7 +111,7 @@ export const BackupPage: React.FC = () => {
   const replaceWith = (backup: Backup) => {
     saveTrainingLog(backup.log)
     saveTable(backup.table)
-    saveProfileSettings(backup.settings ?? EMPTY_PROFILE_SETTINGS)
+    saveProfileSettings(backup.settings)
     goBack()
   }
 
@@ -176,8 +185,10 @@ export const BackupPage: React.FC = () => {
           />
         </p>
 
-        {isRejected && (
-          <p className='rejected'>{translate('backup.rejected')}</p>
+        {rejection !== null && (
+          <p className='rejected' role='alert'>
+            {translate(REJECTION_MESSAGES[rejection])}
+          </p>
         )}
       </div>
 

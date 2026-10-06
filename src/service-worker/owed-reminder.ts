@@ -1,17 +1,15 @@
 import {
   isReminderOwed,
-  type ReminderSchedule
+  type ReminderSchedule,
+  reminderCopySchema,
+  storedDayOrNull
 } from '../features/reminders/reminder-schedule'
-import { isRecord } from '../helpers/records'
 
 export type OwedReminder = {
   readonly title: string
   readonly body: string
   readonly isSilent: boolean
 }
-
-const asDay = (value: unknown): string | null =>
-  typeof value === 'string' ? value : null
 
 /**
  * What the worker shows when it wakes, or `null`. The words come from the page
@@ -31,20 +29,19 @@ export const owedReminder = ({
   now: Temporal.ZonedDateTime
   schedule: ReminderSchedule
 }): OwedReminder | null => {
-  if (
-    !isRecord(copy) ||
-    typeof copy.title !== 'string' ||
-    typeof copy.body !== 'string'
-  ) {
-    return null
-  }
+  const words = reminderCopySchema.safeParse(copy)
+  if (!words.success) return null
   const isOwed = isReminderOwed({
-    lastSessionDay: asDay(lastSessionDay),
-    lastShownDay: asDay(lastShownDay),
+    lastSessionDay: storedDayOrNull(lastSessionDay),
+    lastShownDay: storedDayOrNull(lastShownDay),
     now,
     schedule
   })
   return isOwed
-    ? { body: copy.body, isSilent: !schedule.withSound, title: copy.title }
+    ? {
+        body: words.data.body,
+        isSilent: !schedule.withSound,
+        title: words.data.title
+      }
     : null
 }

@@ -1,10 +1,12 @@
-import { isRecord } from '../../helpers/records'
-
-/** 1 is Monday and 7 is Sunday, as `Temporal.PlainDate#dayOfWeek` counts. */
-export type Weekday = 1 | 2 | 3 | 4 | 5 | 6 | 7
+import { z } from 'zod/mini'
 
 /** Monday first, the way a training week reads. */
-export const WEEKDAYS_FROM_MONDAY: readonly Weekday[] = [1, 2, 3, 4, 5, 6, 7]
+export const WEEKDAYS_FROM_MONDAY = [1, 2, 3, 4, 5, 6, 7] as const
+
+/** 1 is Monday and 7 is Sunday, as `Temporal.PlainDate#dayOfWeek` counts. */
+export type Weekday = (typeof WEEKDAYS_FROM_MONDAY)[number]
+
+const SUNDAY: Weekday = 7
 
 /** Schedules saved before the ISO count wrote Sunday as 0, as `Date#getDay` did. */
 const LEGACY_SUNDAY = 0
@@ -27,38 +29,56 @@ export const DEFAULT_SCHEDULE: ReminderSchedule = {
   withSound: false
 }
 
-const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/
+const reminderTimeSchema = z
+  .string()
+  .check(z.regex(/^([01]\d|2[0-3]):([0-5]\d)$/))
 
 export const isReminderTime = (value: string): boolean =>
-  TIME_PATTERN.test(value)
+  reminderTimeSchema.safeParse(value).success
 
-const isWeekday = (value: unknown): value is Weekday =>
-  typeof value === 'number' &&
-  Number.isInteger(value) &&
-  value >= 1 &&
-  value <= 7
+const storedWeekdaySchema = z.union([
+  z.literal(WEEKDAYS_FROM_MONDAY),
+  z.pipe(
+    z.literal(LEGACY_SUNDAY),
+    z.transform(() => SUNDAY)
+  )
+])
 
 const storedWeekdayOf = (value: unknown): readonly Weekday[] => {
-  if (value === LEGACY_SUNDAY) return [7]
-  return isWeekday(value) ? [value] : []
+  const weekday = storedWeekdaySchema.safeParse(value)
+  return weekday.success ? [weekday.data] : []
 }
 
 /** Tolerant, like every stored shape here: what cannot be read is the default. */
-export const parseSchedule = (value: unknown): ReminderSchedule => {
-  if (!isRecord(value)) return DEFAULT_SCHEDULE
-  const days = Array.isArray(value.days)
-    ? value.days.flatMap(storedWeekdayOf)
-    : []
-  return {
-    days: [...new Set(days)].toSorted((a, b) => a - b),
-    isEnabled: value.isEnabled === true,
-    time:
-      typeof value.time === 'string' && isReminderTime(value.time)
-        ? value.time
-        : DEFAULT_SCHEDULE.time,
-    withSound: value.withSound === true
-  }
-}
+const reminderScheduleSchema = z.catch(
+  z.object({
+    days: z.pipe(
+      z.catch(z.array(z.unknown()), []),
+      z.transform((values): readonly Weekday[] =>
+        [...new Set(values.flatMap(storedWeekdayOf))].toSorted((a, b) => a - b)
+      )
+    ),
+    isEnabled: z.catch(z.boolean(), false),
+    time: z.catch(reminderTimeSchema, DEFAULT_SCHEDULE.time),
+    withSound: z.catch(z.boolean(), false)
+  }),
+  DEFAULT_SCHEDULE
+) satisfies z.ZodMiniType<ReminderSchedule>
+
+export const parseSchedule = (value: unknown): ReminderSchedule =>
+  reminderScheduleSchema.parse(value)
+
+/** The words a reminder carries, in the reader's language at the time it was set. */
+export const reminderCopySchema = z.object({
+  body: z.string(),
+  title: z.string()
+})
+
+export type ReminderCopy = z.infer<typeof reminderCopySchema>
+
+/** A day noted on the device for the reminders; anything else reads as none. */
+export const storedDayOrNull = (value: unknown): string | null =>
+  z.string().safeParse(value).data ?? null
 
 export const toggleDay = (
   schedule: ReminderSchedule,

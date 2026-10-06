@@ -10,11 +10,11 @@ import {
   useRouteError,
   useSearchParams
 } from 'react-router'
+import { z } from 'zod/mini'
 
 import { parseFigureId } from '@/features/figures/poses'
 import type { FigureId } from '@/features/program/program-types'
 import { parseTablePlate, type TablePlate } from '@/features/table/table-plates'
-import { isRecord } from '@/helpers/records'
 
 /**
  * `sessionReport` is a child of `home`: the session page stays mounted under
@@ -106,10 +106,10 @@ export const useMediaSearchParam = (): string | null => {
  * `replace` keeps it: switching table plates on the first entry still reads as
  * nothing to go back to.
  */
-const hasEntryBehind = (): boolean => {
-  const state: unknown = window.history.state
-  return isRecord(state) && typeof state.idx === 'number' && state.idx > 0
-}
+const entryBehindSchema = z.object({ idx: z.number().check(z.positive()) })
+
+const hasEntryBehind = (): boolean =>
+  entryBehindSchema.safeParse(window.history.state).success
 
 /**
  * The on-screen way back does what the phone's Back button does, so the two
