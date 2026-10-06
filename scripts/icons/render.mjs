@@ -1,17 +1,13 @@
-// Renders the home-screen icons from their SVG sources into public/icons/.
+// Renders the home-screen icons from their SVG sources into public/icons/:
 //
-//   PLAYWRIGHT_FROM=C:/git/portfolio/package.json node scripts/icons/render.mjs
-//
-// Playwright is not a dependency of this repository: PLAYWRIGHT_FROM points at
-// any package.json whose node_modules holds it.
+//   pnpm icons
 
 import { readFileSync } from 'node:fs'
-import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 
+import sharp from 'sharp'
+
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const require = createRequire(process.env.PLAYWRIGHT_FROM ?? import.meta.url)
-const { chromium } = require('playwright')
 
 const ICONS = [
   { output: 'apple-touch-icon.png', size: 180, source: 'public/favicon.svg' },
@@ -24,28 +20,14 @@ const ICONS = [
   }
 ]
 
-const browser = await chromium.launch({ args: ['--mute-audio'] })
-try {
-  for (const { output, size, source } of ICONS) {
-    const page = await browser.newPage({
-      deviceScaleFactor: 1,
-      viewport: { height: size, width: size }
-    })
-    const svg = readFileSync(`${root}${source}`, 'utf8').replace(
-      '<svg ',
-      `<svg width="${size}" height="${size}" `
-    )
-    await page.setContent(
-      `<style>html,body{margin:0}svg{display:block}</style>${svg}`
-    )
-    await page.screenshot({
-      omitBackground: false,
-      path: `${root}public/icons/${output}`
-    })
-    await page.close()
-    process.stdout.write(`icons: ${output} (${size}px) from ${source}
-`)
-  }
-} finally {
-  await browser.close()
+for (const { output, size, source } of ICONS) {
+  const svg = readFileSync(`${root}${source}`, 'utf8').replace(
+    '<svg ',
+    `<svg width="${size}" height="${size}" `
+  )
+  await sharp(Buffer.from(svg))
+    .removeAlpha()
+    .png()
+    .toFile(`${root}public/icons/${output}`)
+  process.stdout.write(`icons: ${output} (${size}px) from ${source}\n`)
 }
