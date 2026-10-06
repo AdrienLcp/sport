@@ -52,6 +52,9 @@ fi
 staging=$(mktemp -d)
 trap 'rm -rf "$staging" 2>/dev/null || true' EXIT
 cp -r dist "$staging/dist"
+# Netlify answers a deep link it has no file for with a 404, where Cloudflare
+# Pages falls back to the app by itself.
+echo '/* /index.html 200' > "$staging/dist/_redirects"
 
 NETLIFY_AUTH_TOKEN=$(tr -d ' \r\n"' < "$token_file")
 export NETLIFY_AUTH_TOKEN
