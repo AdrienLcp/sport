@@ -3,6 +3,7 @@ import {
   generatePath,
   isRouteErrorResponse,
   type PathParam,
+  useLoaderData,
   useLocation,
   useNavigate,
   useOutlet,
@@ -127,6 +128,10 @@ export const useGoBack = (fallbackPath: string): (() => void) => {
     void navigate(fallbackPath, { replace: true })
   }
 }
+
+/** The one `useLoaderData`: a feature pairs it with its own loader's type. */
+export const useRouteData = <TLoader extends (...args: never[]) => unknown>() =>
+  useLoaderData<TLoader>()
 
 /** The page matched below a layout page, or `null` when the layout is the page. */
 export const useChildPage = (): React.ReactNode => useOutlet()

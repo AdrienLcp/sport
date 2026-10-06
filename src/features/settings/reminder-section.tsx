@@ -29,6 +29,8 @@ import type {
 } from '@/presentation/i18n/translation'
 import { useLatestOnly } from '@/presentation/use-latest-only'
 
+import { useSettingsData } from './settings-loader'
+
 /** 2024 opened on a Monday, so its first week spells the days out in ISO order. */
 const weekdayName = (translate: Translate, day: Weekday): string =>
   translate('settings.reminders.weekday', {
@@ -200,14 +202,13 @@ const HowItReaches: React.FC = () => {
 
 export const ReminderSection: React.FC = () => {
   const translate = useTranslate()
-  const [schedule, keep] = useReminderSchedule()
+  const { reminderSchedule } = useSettingsData()
+  const [schedule, keep] = useReminderSchedule(reminderSchedule)
 
   return (
     <section className='setting reminders'>
       <h3 className='heading'>{translate('settings.reminders.title')}</h3>
-      {schedule !== null && (
-        <ReminderControls keep={keep} schedule={schedule} />
-      )}
+      <ReminderControls keep={keep} schedule={schedule} />
       <HowItReaches />
     </section>
   )

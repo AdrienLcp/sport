@@ -44,9 +44,17 @@ const pageFor = {
   [paths.progress]: async () => ({
     Component: (await import('@/features/progress/progress-page')).ProgressPage
   }),
-  [paths.settings]: async () => ({
-    Component: (await import('@/features/settings/settings-page')).SettingsPage
-  }),
+  [paths.settings]: async () => {
+    const [page, loader] = await Promise.all([
+      import('@/features/settings/settings-page'),
+      import('@/features/settings/settings-loader')
+    ])
+
+    return {
+      Component: page.SettingsPage,
+      loader: ({ request }) => loader.settingsLoader({ signal: request.signal })
+    }
+  },
   [paths.specimen]: async () => ({
     Component: (await import('@/features/specimen/specimen-page')).SpecimenPage
   }),
