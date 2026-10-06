@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import type { FigureId, Tempo } from '@/features/program/program-types'
 import { usePrefersReducedMotion } from '@/infrastructure/browser'
@@ -105,6 +105,12 @@ const pathOf = (bone: Bone, joints: Joints): string | undefined => {
   return line(from, to)
 }
 
+/** The trunk's lower half is drawn by its upper half, as one curve. */
+const DRAWN_BONES = BONES.filter((bone) => bone.to !== 'spine')
+
+/** The ghost drops its far side: depth drawn twice over the same body reads as a tangle, not as two poses. */
+const GHOST_BONES = DRAWN_BONES.filter((bone) => !bone.far)
+
 type BodyProps = {
   /**
    * Drawn as a construction line (default: `false`): the far end of the
@@ -112,35 +118,33 @@ type BodyProps = {
    */
   isGhost?: boolean
   joints: Joints
+  /** Handed to the gesture, which moves the limbs in place frame by frame. */
+  ref?: React.Ref<SVGGElement>
 }
 
-export const Body: React.FC<BodyProps> = ({ isGhost = false, joints }) => {
+/**
+ * Every bone keeps its path, empty while it has no length, so a gesture can
+ * redraw the body by writing attributes without React drawing a frame.
+ */
+export const Body: React.FC<BodyProps> = ({ isGhost = false, joints, ref }) => {
   const head = joints.head
 
   return (
     <g
       className='figure-body'
       fill='none'
+      ref={ref}
       strokeLinecap='round'
       strokeLinejoin='round'
     >
-      {BONES.map((bone) => {
-        // The ghost drops its far side: depth drawn twice over the same body
-        // reads as a tangle, not as two poses.
-        if (isGhost && bone.far) return null
-
-        const d = pathOf(bone, joints)
-        if (d === undefined) return null
-
-        return (
-          <path
-            className={isGhost ? 'ghost-limb' : bone.far ? 'far-limb' : 'limb'}
-            d={d}
-            key={`${bone.from}-${bone.to}`}
-            strokeWidth={weightOf(bone)}
-          />
-        )
-      })}
+      {(isGhost ? GHOST_BONES : DRAWN_BONES).map((bone) => (
+        <path
+          className={isGhost ? 'ghost-limb' : bone.far ? 'far-limb' : 'limb'}
+          d={pathOf(bone, joints) ?? ''}
+          key={`${bone.from}-${bone.to}`}
+          strokeWidth={weightOf(bone)}
+        />
+      ))}
 
       {head !== undefined && (
         <circle
@@ -152,6 +156,19 @@ export const Body: React.FC<BodyProps> = ({ isGhost = false, joints }) => {
       )}
     </g>
   )
+}
+
+/** Writes a pose onto a body `Body` drew, limb by limb, in its own order. */
+const repaint = (body: SVGGElement, joints: Joints): void => {
+  const limbs = body.querySelectorAll('path')
+  DRAWN_BONES.forEach((bone, index) => {
+    limbs[index]?.setAttribute('d', pathOf(bone, joints) ?? '')
+  })
+  const head = joints.head
+  const circle = body.querySelector('circle')
+  if (head === undefined || circle === null) return
+  circle.setAttribute('cx', String(head[0]))
+  circle.setAttribute('cy', String(head[1]))
 }
 
 type StageProps = {
@@ -191,22 +208,28 @@ export const Stage: React.FC<StageProps> = ({ ground, props: furniture }) => (
  * last frame is the instruction: the hold itself.
  */
 const useGesture = ({
+  body,
   isStill,
   motion,
   playSeconds,
-  take
+  printed
 }: {
+  body: React.RefObject<SVGGElement | null>
   isStill: boolean
   motion: Motion | undefined
   playSeconds: number
-  take: string
-}): Joints | undefined => {
-  const [shown, setShown] = useState<{
-    joints: Joints | undefined
-    take: string
-  }>({ joints: undefined, take })
+  /** The pose shown before the gesture starts and after it ends. */
+  printed: Joints
+}): void => {
+  const printedPose = useRef(printed)
+  printedPose.current = printed
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const drawn = body.current
+    if (drawn === null) return
+    // Reduced motion switched on mid-gesture stops on the printed pose, never
+    // on whichever frame was showing.
+    repaint(drawn, printedPose.current)
     if (motion === undefined || isStill) return
 
     let frame = 0
@@ -217,42 +240,39 @@ const useGesture = ({
       const seconds = (now - opened) / 1000 - AFTER_THE_TURN
 
       if (seconds >= playSeconds) {
-        setShown({ joints: undefined, take })
+        repaint(drawn, printedPose.current)
         return
       }
 
-      setShown({ joints: sample(motion, Math.max(0, seconds)), take })
+      repaint(drawn, sample(motion, Math.max(0, seconds)))
       frame = requestAnimationFrame(draw)
     }
 
     frame = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(frame)
-  }, [motion, playSeconds, take, isStill])
-
-  // A plate that has just turned owns nothing the previous one drew: the take
-  // is read during render so the new figure never shows the old body's last
-  // frame while it waits out the turn.
-  return shown.take === take ? shown.joints : undefined
+  }, [body, motion, playSeconds, isStill])
 }
 
 type DrawingProps = {
   id: FigureId
   isStill: boolean
-  /** Changes whenever the gesture must start over. */
-  take: string
   tempo?: Tempo
 }
 
-const Drawing: React.FC<DrawingProps> = ({ id, isStill, take, tempo }) => {
+/** Mounted afresh for every take, so a new gesture never starts from the old body's last frame. */
+const Drawing: React.FC<DrawingProps> = ({ id, isStill, tempo }) => {
   const localize = useLocalize()
 
   const printed = POSES[id]
   const motion = motionFor(id, tempo)
-  const moving = useGesture({
+  const body = useRef<SVGGElement>(null)
+  const printedJoints = jointsOf(printed)
+  useGesture({
+    body,
     isStill,
     motion,
     playSeconds: motion === undefined ? Infinity : playSecondsOf(id, motion),
-    take
+    printed: printedJoints
   })
 
   const { box, ground } = frameOf(...posesOf(motion, printed))
@@ -262,7 +282,7 @@ const Drawing: React.FC<DrawingProps> = ({ id, isStill, take, tempo }) => {
     <svg aria-label={localize(FIGURE_LABELS[id])} role='img' viewBox={box}>
       <Stage ground={ground} props={printed.props ?? []} />
       {ghost !== undefined && <Body isGhost joints={jointsOf(ghost)} />}
-      <Body joints={moving ?? jointsOf(printed)} />
+      <Body joints={printedJoints} ref={body} />
     </svg>
   )
 }
@@ -286,7 +306,7 @@ export const Figure: React.FC<FigureProps> = ({ id, profile, tempo }) => {
 
   const take = `${id}-${tempo === undefined ? '' : Object.values(tempo).join('.')}-${replay}`
   const drawing = (view: FigureId) => (
-    <Drawing id={view} isStill={isStill} take={take} tempo={tempo} />
+    <Drawing id={view} isStill={isStill} key={take} tempo={tempo} />
   )
 
   const plate =

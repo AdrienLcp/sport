@@ -1,4 +1,7 @@
 import type React from 'react'
+import { useLayoutEffect, useRef } from 'react'
+
+import { usePrefersReducedMotion } from '@/infrastructure/browser'
 
 import './plate.sass'
 
@@ -34,9 +37,61 @@ export type Chrono = {
   /** 1 when the time is whole, 0 when it is spent. */
   ratio: number
   state: 'rest' | 'set'
+  /**
+   * Present while the clock runs: from `ratio`, the rule glides down to
+   * nothing over `secondsLeft`, drawn by the browser rather than by a render
+   * per frame. A new `key` starts a new glide; reduced motion steps with
+   * `ratio` instead.
+   */
+  run?: { readonly key: string; readonly secondsLeft: number }
 }
 
 const clampToUnit = (value: number): number => Math.max(0, Math.min(1, value))
+
+type ChronoRuleProps = {
+  chrono: Chrono
+}
+
+const ChronoRule: React.FC<ChronoRuleProps> = ({ chrono }) => {
+  const rule = useRef<HTMLSpanElement>(null)
+  const isStill = usePrefersReducedMotion()
+  const latest = useRef(chrono)
+  latest.current = chrono
+  const runKey = chrono.run?.key
+
+  useLayoutEffect(() => {
+    const { ratio, run } = latest.current
+    if (
+      rule.current === null ||
+      runKey === undefined ||
+      run === undefined ||
+      isStill
+    ) {
+      return
+    }
+    const glide = rule.current.animate(
+      [
+        { transform: `scaleX(${clampToUnit(ratio)})` },
+        { transform: 'scaleX(0)' }
+      ],
+      {
+        duration: Math.max(0, run.secondsLeft) * 1000,
+        easing: 'linear',
+        fill: 'forwards'
+      }
+    )
+    return () => glide.cancel()
+  }, [runKey, isStill])
+
+  return (
+    <span
+      className='chrono'
+      data-state={chrono.state}
+      ref={rule}
+      style={{ '--chrono-scale': clampToUnit(chrono.ratio) }}
+    />
+  )
+}
 
 type PlateHeadProps = {
   /**
@@ -63,13 +118,7 @@ export const PlateHead: React.FC<PlateHeadProps> = ({
   <header className='plate-head'>
     <span>{title}</span>
     {rank !== undefined && <span className='rank'>{rank}</span>}
-    {chrono !== undefined && (
-      <span
-        className='chrono'
-        data-state={chrono.state}
-        style={{ '--chrono-scale': clampToUnit(chrono.ratio) }}
-      />
-    )}
+    {chrono !== undefined && <ChronoRule chrono={chrono} />}
     {gauge !== undefined && (
       <span
         className='gauge'

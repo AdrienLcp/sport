@@ -92,12 +92,16 @@ export const SetPlate: React.FC<SetPlateProps> = ({
   const key = `${step}-${side}`
   const [startedKey, setStartedKey] = useState<string | null>(null)
   const isRunning = timed && startedKey === key
-  const elapsed = useElapsed(isRunning, key)
+  const { readExactSeconds, seconds: elapsed } = useElapsed(isRunning, key)
 
   const remaining = target - elapsed
   const chrono =
     timed && !isCalibration
-      ? ({ ratio: isRunning ? remaining / target : 1, state: 'set' } as const)
+      ? ({
+          ratio: isRunning ? remaining / target : 1,
+          run: isRunning ? { key, secondsLeft: remaining } : undefined,
+          state: 'set'
+        } as const)
       : undefined
 
   const shown = timed
@@ -128,7 +132,8 @@ export const SetPlate: React.FC<SetPlateProps> = ({
     ? Math.round(elapsed)
     : Math.min(target, Math.round(elapsed))
 
-  const finish = () => onDone(timed ? Math.max(0, heldSeconds) : count, elapsed)
+  const finish = () =>
+    onDone(timed ? Math.max(0, heldSeconds) : count, readExactSeconds())
 
   const ledgerLabel = (
     position: number,

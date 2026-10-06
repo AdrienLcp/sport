@@ -98,7 +98,7 @@ const StretchPlate: React.FC<StretchPlateProps> = ({
 
   const [isStarted, setIsStarted] = useState(false)
   const isRunning = isHeld && isStarted
-  const elapsed = useElapsed(isRunning, `cooldown-${position}`)
+  const { seconds: elapsed } = useElapsed(isRunning, `cooldown-${position}`)
   const remaining = seconds === undefined ? 0 : seconds - elapsed
 
   useClockTones(isRunning, remaining)
@@ -134,7 +134,13 @@ const StretchPlate: React.FC<StretchPlateProps> = ({
           chrono={
             seconds === undefined
               ? undefined
-              : { ratio: isRunning ? remaining / seconds : 1, state: 'set' }
+              : {
+                  ratio: isRunning ? remaining / seconds : 1,
+                  run: isRunning
+                    ? { key: `cooldown-${position}`, secondsLeft: remaining }
+                    : undefined,
+                  state: 'set'
+                }
           }
           rank={translate('common.rank', {
             position: String(position + 1),
@@ -250,13 +256,17 @@ type FreePlateProps = {
 const FreePlate: React.FC<FreePlateProps> = ({ drill, onDone, session }) => {
   const translate = useTranslate()
   const localize = useLocalize()
-  const elapsed = useElapsed(true, 'cooldown-free')
+  const { seconds: elapsed } = useElapsed(true, 'cooldown-free')
   const remaining = drill.seconds - elapsed
 
   return (
     <Plate>
       <PlateHead
-        chrono={{ ratio: remaining / drill.seconds, state: 'set' }}
+        chrono={{
+          ratio: remaining / drill.seconds,
+          run: { key: 'cooldown-free', secondsLeft: remaining },
+          state: 'set'
+        }}
         rank={formatCount(Math.max(0, remaining))}
         title={translate('session.plateTitle', {
           id: session.id,

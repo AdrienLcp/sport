@@ -41,7 +41,7 @@ export const RestPlate: React.FC<RestPlateProps> = ({
 }) => {
   const translate = useTranslate()
   const localize = useLocalize()
-  const elapsed = useElapsed(true, `rest-${step}`)
+  const { seconds: elapsed } = useElapsed(true, `rest-${step}`)
   const remaining = seconds - elapsed
   useClockTones(true, remaining)
   const station = stationAt(session, step)
@@ -57,7 +57,11 @@ export const RestPlate: React.FC<RestPlateProps> = ({
   return (
     <Plate className='rest-plate'>
       <PlateHead
-        chrono={{ ratio: remaining / seconds, state: 'rest' }}
+        chrono={{
+          ratio: remaining / seconds,
+          run: { key: `rest-${step}`, secondsLeft: remaining },
+          state: 'rest'
+        }}
         rank={translate('session.rest.round', {
           round: String(roundOf(session, step)),
           rounds: String(roundsOf(session))

@@ -46,7 +46,10 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
 
   const isHold = drill?.dose.kind === 'hold'
   const [isRunning, setIsRunning] = useState(false)
-  const elapsed = useElapsed(isHold && isRunning, `warmup-${index}`)
+  const { seconds: elapsed } = useElapsed(
+    isHold && isRunning,
+    `warmup-${index}`
+  )
 
   const doseText = (dose: Dose): string =>
     dose.kind === 'hold'
@@ -86,6 +89,9 @@ export const WarmupPlate: React.FC<WarmupPlateProps> = ({
             dose.kind === 'hold'
               ? {
                   ratio: isRunning ? remaining / dose.seconds : 1,
+                  run: isRunning
+                    ? { key: `warmup-${index}`, secondsLeft: remaining }
+                    : undefined,
                   state: 'set'
                 }
               : undefined
