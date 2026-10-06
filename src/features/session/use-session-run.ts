@@ -1,8 +1,10 @@
 import { useEffect, useReducer, useState } from 'react'
 
 import type { Session } from '@/features/program/program-types'
+import { hasMeasurable } from '@/features/program/progression'
+import { SESSIONS } from '@/features/program/sessions'
 import {
-  hasHistory,
+  hasCalibrated,
   type Log,
   type SessionEntry
 } from '@/features/program/training-log'
@@ -86,7 +88,7 @@ export const useSessionRun = ({
     () => restoreRun({ day, session })
   )
 
-  const isCalibration = !hasHistory(log)
+  const isCalibration = hasMeasurable(session) && !hasCalibrated(log, SESSIONS)
 
   // An address survives a closed tab: the run is written down as it happens.
   useEffect(() => {

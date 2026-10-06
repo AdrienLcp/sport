@@ -7,6 +7,7 @@ import { isPaced } from '@/features/figures/motion'
 import type { Session } from '@/features/program/program-types'
 import {
   DEFAULT_TEMPO,
+  isMeasurable,
   isPerSide,
   isTimed,
   targetFor
@@ -49,7 +50,7 @@ type SetPlateProps = {
 
 export const SetPlate: React.FC<SetPlateProps> = ({
   day,
-  isCalibration,
+  isCalibration: isCalibrationEvening,
   log,
   onBack,
   onDone,
@@ -69,6 +70,7 @@ export const SetPlate: React.FC<SetPlateProps> = ({
   const rounds = roundsOf(session)
 
   const timed = isTimed(station.effort)
+  const isCalibration = isCalibrationEvening && isMeasurable(station.effort)
   const perSide = isPerSide(station.effort)
   const target = targetFor(station.effort, week)
   const beat = isCalibration
@@ -131,12 +133,13 @@ export const SetPlate: React.FC<SetPlateProps> = ({
   const ledgerLabel = (
     position: number,
     entryTarget: number,
-    entryTimed: boolean
+    entryTimed: boolean,
+    isEntryMeasured: boolean
   ) => {
     const state = ledgerState(position, index)
     if (state === 'done') return translate('session.ledger.done')
     if (state === 'live') return translate('session.ledger.live')
-    if (isCalibration) return translate('common.none')
+    if (isEntryMeasured) return translate('common.none')
     return entryTimed
       ? translate('common.seconds', { count: String(entryTarget) })
       : String(entryTarget)
@@ -169,7 +172,8 @@ export const SetPlate: React.FC<SetPlateProps> = ({
                   {ledgerLabel(
                     position,
                     targetFor(entry.effort, week),
-                    isTimed(entry.effort)
+                    isTimed(entry.effort),
+                    isCalibrationEvening && isMeasurable(entry.effort)
                   )}
                 </span>
               </li>

@@ -9,6 +9,15 @@ export const isPerSide = (effort: Effort): boolean =>
   effort.kind === 'repsPerSide' || effort.kind === 'holdPerSide'
 
 /**
+ * A range leaves a starting number to find on the calibration evening; a fixed
+ * effort — three minutes of shadow boxing — is simply done, never measured.
+ */
+export const isMeasurable = (effort: Effort): boolean => effort.from < effort.to
+
+export const hasMeasurable = (session: Session): boolean =>
+  session.circuit.some((station) => isMeasurable(station.effort))
+
+/**
  * Double progression, as the block defines it: one rep more per week until the
  * top of the range, five seconds more per week on a hold. Past the top, the
  * variant changes — that is a block-2 decision, not something the app invents.

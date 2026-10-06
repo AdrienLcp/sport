@@ -1,5 +1,5 @@
-import type { MovementId, SessionId, Station } from './program-types'
-import { pushUpVariantFor } from './progression'
+import type { MovementId, Session, SessionId, Station } from './program-types'
+import { hasMeasurable, pushUpVariantFor } from './progression'
 
 /**
  * The shapes below are what `localStorage` holds under `seance.log.v1` and what
@@ -59,6 +59,17 @@ export const putMeasure = (log: Log, measure: Measure): Log => {
 }
 
 export const hasHistory = (log: Log): boolean => log.entries.length > 0
+
+/**
+ * Whether the starting numbers are already set: a session of fixed efforts
+ * run first sets none, and the next session that has some is still the
+ * calibration evening.
+ */
+export const hasCalibrated = (
+  log: Log,
+  sessions: Readonly<Record<SessionId, Session>>
+): boolean =>
+  log.entries.some((entry) => hasMeasurable(sessions[entry.sessionId]))
 
 /**
  * The log with its sessions and its calibration struck out, the measures kept:
