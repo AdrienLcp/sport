@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { bandScale } from './chart-scale'
 import { ChartScrubber } from './chart-scrubber'
 import { ChartTooltip } from './chart-tooltip'
 import { nearestIndex, useChartCursor } from './use-chart-cursor'
@@ -66,8 +67,7 @@ export const ColumnChart: React.FC<ColumnChartProps> = ({
   const last = columns.at(-1)
   if (first === undefined || last === undefined) return null
 
-  const heightOf = (value: number) =>
-    ((value - band.lo) / (band.hi - band.lo)) * 100
+  const heightOf = bandScale(band, [0, 100])
   const positions = columns.map((_, index) => (index + 0.5) / columns.length)
   const activeColumn =
     cursor.active === null ? undefined : columns[cursor.active]

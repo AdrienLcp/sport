@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { bandScale, linePath } from './chart-scale'
 import { ChartScrubber } from './chart-scrubber'
 import { ChartTooltip } from './chart-tooltip'
 import { nearestIndex, useChartCursor } from './use-chart-cursor'
@@ -56,14 +57,12 @@ export const LineChart: React.FC<LineChartProps> = ({
     points.map((point) => point.value),
     minimumSpan
   )
-  const span = last.time - first.time
-  const x = (point: LinePoint) =>
-    PAD + (span === 0 ? 0.5 : (point.time - first.time) / span) * (W - 2 * PAD)
-  const y = (value: number) =>
-    PAD + (1 - (value - band.lo) / (band.hi - band.lo)) * (H - 2 * PAD)
+  const across = bandScale({ hi: last.time, lo: first.time }, [PAD, W - PAD])
+  const x = (point: LinePoint) => across(point.time)
+  const y = bandScale(band, [H - PAD, PAD])
 
   const ticks = [band.hi, (band.hi + band.lo) / 2, band.lo]
-  const path = points.map((point) => `${x(point)},${y(point.value)}`).join(' ')
+  const path = linePath(points.map((point) => [x(point), y(point.value)]))
   const positions = points.map((point) => x(point) / W)
   const activePoint = cursor.active === null ? undefined : points[cursor.active]
 
@@ -125,9 +124,9 @@ export const LineChart: React.FC<LineChartProps> = ({
             )}
 
             {points.length > 1 && (
-              <polyline
+              <path
                 className='line'
-                points={path}
+                d={path}
                 vectorEffect='non-scaling-stroke'
               />
             )}
