@@ -452,6 +452,9 @@ export const FR_DICTIONARY = defineDictionary({
         'On souffle dans l’effort, on inspire dans la phase facile. Jamais d’apnée.',
       defaultNote: 'Tout est écrit : suis les planches.',
       done: 'Faite',
+      doneToday: '{id} faite.',
+      doneTodayProse:
+        'C’est tout pour ce soir. La prochaine prévue est la {id}, quand tu veux : touche une séance pour l’ouvrir.',
       due: 'Prévue',
       kitFact: 'Un tapis, rien d’autre',
       kitTerm: 'Matériel',

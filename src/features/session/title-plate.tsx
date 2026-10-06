@@ -29,13 +29,19 @@ type TitlePlateProps = {
   onMeasure: () => void
   onPick: (session: Session) => void
   onStart: () => void
-  /** Already carrying this week's rounds. */
-  session: Session
+  /**
+   * Already carrying this week's rounds. Null once a session is done tonight:
+   * the plate is the menu, and nothing is lined up to run next.
+   */
+  session: Session | null
+  /** The session finished today, when no other is picked yet. */
+  doneToday?: SessionId
   week: number
 }
 
 export const TitlePlate: React.FC<TitlePlateProps> = ({
   done,
+  doneToday,
   due,
   onMeasure,
   onPick,
@@ -46,9 +52,10 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
   const translate = useTranslate()
   const now = useWallMinute()
   const localize = useLocalize()
-  const title = translate('session.title.named', {
-    name: localize(session.name)
-  })
+  const title =
+    session === null
+      ? translate('session.title.doneToday', { id: doneToday ?? due.id })
+      : translate('session.title.named', { name: localize(session.name) })
 
   return (
     <Plate className='title-plate'>
@@ -61,9 +68,11 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
         <h1 className='headline'>{title}</h1>
 
         <p className='prose'>
-          {session.note === undefined
-            ? translate('session.title.defaultNote')
-            : localize(session.note)}
+          {session === null
+            ? translate('session.title.doneTodayProse', { id: due.id })
+            : session.note === undefined
+              ? translate('session.title.defaultNote')
+              : localize(session.note)}
         </p>
 
         <p className='register-label' id='session-register'>
@@ -76,14 +85,14 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
             const next = BLOCK_1.find((candidate) => candidate.id === id)
             if (next !== undefined) onPick(next)
           }}
-          value={session.id}
+          value={session?.id ?? null}
         >
           {BLOCK_1.map((candidate) => (
             <Radio
               className='choice'
               data-due={candidate.id === due.id || undefined}
               data-state={
-                candidate.id === session.id
+                candidate.id === session?.id
                   ? 'live'
                   : done.has(candidate.id)
                     ? 'done'
@@ -95,7 +104,7 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
               <span className='address'>{candidate.id}</span>
               <span className='label'>{localize(candidate.name)}</span>
               <span className='state'>
-                {candidate.id === session.id && candidate.id !== due.id
+                {candidate.id === session?.id && candidate.id !== due.id
                   ? translate('session.title.picked')
                   : done.has(candidate.id)
                     ? translate('session.title.done')
@@ -107,60 +116,68 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
           ))}
         </RadioGroup>
 
-        <div className='divider' />
+        {session !== null && (
+          <>
+            <div className='divider' />
 
-        <dl className='facts'>
-          <dt>{translate('session.title.lengthTerm')}</dt>
-          <dd>
-            {translate('session.title.lengthFact', {
-              minutes: String(sessionMinutes(session, week))
-            })}
-          </dd>
-          <dt>{translate('session.title.roundsTerm')}</dt>
-          <dd>
-            {translate('session.title.roundsFact', {
-              rounds: String(session.shape.rounds),
-              week: String(week)
-            })}
-          </dd>
-          <dt>{translate('session.title.kitTerm')}</dt>
-          <dd>
-            {session.kit === undefined
-              ? translate('session.title.kitFact')
-              : localize(session.kit)}
-          </dd>
-        </dl>
+            <dl className='facts'>
+              <dt>{translate('session.title.lengthTerm')}</dt>
+              <dd>
+                {translate('session.title.lengthFact', {
+                  minutes: String(sessionMinutes(session, week))
+                })}
+              </dd>
+              <dt>{translate('session.title.roundsTerm')}</dt>
+              <dd>
+                {translate('session.title.roundsFact', {
+                  rounds: String(session.shape.rounds),
+                  week: String(week)
+                })}
+              </dd>
+              <dt>{translate('session.title.kitTerm')}</dt>
+              <dd>
+                {session.kit === undefined
+                  ? translate('session.title.kitFact')
+                  : localize(session.kit)}
+              </dd>
+            </dl>
 
-        <div className='divider' />
+            <div className='divider' />
 
-        <p className='register-label'>{translate('session.title.rules')}</p>
-        <dl className='facts rules'>
-          <dt>{translate('session.cues.stopTerm')}</dt>
-          <dd>{translate('session.cues.stop')}</dd>
-          <dt>{translate('session.cues.tempoTerm')}</dt>
-          <dd>{translate('session.title.tempoFact')}</dd>
-          <dt>{translate('session.cues.breath')}</dt>
-          <dd>{translate('session.title.breathFact')}</dd>
-          <dt>{translate('session.cues.supportTerm')}</dt>
-          <dd>{translate('session.title.supportFact')}</dd>
-        </dl>
+            <p className='register-label'>{translate('session.title.rules')}</p>
+            <dl className='facts rules'>
+              <dt>{translate('session.cues.stopTerm')}</dt>
+              <dd>{translate('session.cues.stop')}</dd>
+              <dt>{translate('session.cues.tempoTerm')}</dt>
+              <dd>{translate('session.title.tempoFact')}</dd>
+              <dt>{translate('session.cues.breath')}</dt>
+              <dd>{translate('session.title.breathFact')}</dd>
+              <dt>{translate('session.cues.supportTerm')}</dt>
+              <dd>{translate('session.title.supportFact')}</dd>
+            </dl>
+          </>
+        )}
       </div>
 
-      <ActionButton
-        label={translate(
-          done.has(session.id)
-            ? 'session.title.restart'
-            : 'session.title.start',
-          { id: session.id }
-        )}
-        onPress={onStart}
-      />
-      {hasMeasurable(session) && (
-        <ActionButton
-          label={translate('session.title.measure', { id: session.id })}
-          onPress={onMeasure}
-          tone='ghost'
-        />
+      {session !== null && (
+        <>
+          <ActionButton
+            label={translate(
+              done.has(session.id)
+                ? 'session.title.restart'
+                : 'session.title.start',
+              { id: session.id }
+            )}
+            onPress={onStart}
+          />
+          {hasMeasurable(session) && (
+            <ActionButton
+              label={translate('session.title.measure', { id: session.id })}
+              onPress={onMeasure}
+              tone='ghost'
+            />
+          )}
+        </>
       )}
       <div className='exits'>
         <ActionLink

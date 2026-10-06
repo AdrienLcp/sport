@@ -438,6 +438,9 @@ export const EN_DICTIONARY = defineDictionary({
       breathFact: 'Out on the effort, in on the easy half. Never hold it.',
       defaultNote: 'Everything is written: follow the plates.',
       done: 'Done',
+      doneToday: '{id} done.',
+      doneTodayProse:
+        'That is all for tonight. Next due is {id}, whenever you like: touch a session to open it.',
       due: 'Due',
       kitFact: 'A mat, nothing else',
       kitTerm: 'Kit',

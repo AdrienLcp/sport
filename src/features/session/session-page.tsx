@@ -144,20 +144,33 @@ const SessionRun: React.FC<SessionRunProps> = ({
 
 type Turn = {
   readonly done: ReadonlySet<SessionId>
+  /** The last session run, when it ran today. */
+  readonly doneToday?: SessionId
   readonly due: Session
   readonly week: number
 }
 
-const readTurn = (): Turn => {
+const readTurn = (today: string): Turn => {
   const log = readTrainingLogOrEmpty()
-  return { done: doneThisWeek(log), due: dueSession(log), week: weekOf(log) }
+  const last = log.entries.at(-1)
+  return {
+    done: doneThisWeek(log),
+    doneToday: last?.day === today ? last.sessionId : undefined,
+    due: dueSession(log),
+    week: weekOf(log)
+  }
 }
 
-/** A session interrupted today reopens where it stood; otherwise, the one due. */
-const openingSession = (due: Session, today: string): Session => {
+/**
+ * A session interrupted today reopens where it stood; one finished today
+ * leaves the menu with nothing picked; otherwise, the one due.
+ */
+const openingSession = (turn: Turn, today: string): Session | null => {
   const read = readRunSnapshot()
-  if (read.status === 'failure' || read.data === null) return due
-  return read.data.day === today ? SESSIONS[read.data.sessionId] : due
+  if (read.status === 'success' && read.data?.day === today) {
+    return SESSIONS[read.data.sessionId]
+  }
+  return turn.doneToday === undefined ? turn.due : null
 }
 
 /**
@@ -169,31 +182,45 @@ export const SessionPage: React.FC = () => {
   const today = useToday()
   const [turn, setTurn] = useState(() => {
     salvageAbandonedRun(today)
-    return readTurn()
+    return readTurn(today)
   })
-  const [picked, setPicked] = useState(() => openingSession(turn.due, today))
+  const [picked, setPicked] = useState(() => openingSession(turn, today))
   const childPage = useChildPage()
 
   const moveOn = () => {
-    const next = readTurn()
-    setTurn(next)
-    setPicked(next.due)
+    setTurn(readTurn(today))
+    setPicked(null)
   }
 
   return (
     <>
       {childPage === null && <ScreenTitle screen='app' />}
-      <SessionRun
-        childPage={childPage}
-        done={turn.done}
-        due={turn.due}
-        key={picked.id}
-        onClose={moveOn}
-        onPick={setPicked}
-        session={picked}
-        today={today}
-        week={turn.week}
-      />
+      {picked === null ? (
+        (childPage ?? (
+          <TitlePlate
+            done={turn.done}
+            doneToday={turn.doneToday}
+            due={turn.due}
+            onMeasure={() => undefined}
+            onPick={setPicked}
+            onStart={() => undefined}
+            session={null}
+            week={turn.week}
+          />
+        ))
+      ) : (
+        <SessionRun
+          childPage={childPage}
+          done={turn.done}
+          due={turn.due}
+          key={picked.id}
+          onClose={moveOn}
+          onPick={setPicked}
+          session={picked}
+          today={today}
+          week={turn.week}
+        />
+      )}
     </>
   )
 }
