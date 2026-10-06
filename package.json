@@ -9,6 +9,7 @@
     "@adrienlcp/safe-storage": "^0.1.0",
     "@adrienlcp/styles": "^0.6.0",
     "@adrienlcp/theme-preference": "^0.3.0",
+    "idb-keyval": "^6.3.0",
     "react": "19.3.0",
     "react-aria-components": "1.21.1",
     "react-dom": "19.3.0",

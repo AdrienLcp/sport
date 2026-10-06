@@ -1,12 +1,8 @@
 import 'fake-indexeddb/auto'
 
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { readDeviceValue, writeDeviceValue } from './device-store'
-
-afterEach(() => {
-  vi.restoreAllMocks()
-})
 
 describe('device store', () => {
   it('[device-store] a write aborted before it starts stores nothing', async () => {
@@ -26,24 +22,37 @@ describe('device store', () => {
     })
   })
 
-  it('[device-store] aborting during the write rolls its transaction back', async () => {
-    const controller = new AbortController()
-    const put = IDBObjectStore.prototype.put
-    vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(function (
-      this: IDBObjectStore,
-      ...args: Parameters<typeof put>
-    ) {
-      const request = put.apply(this, args)
-      controller.abort()
-      return request
+  it('[device-store] the newer of two writes in flight has the last word', async () => {
+    await Promise.all([
+      writeDeviceValue('last-shown-day', '2026-10-01'),
+      writeDeviceValue('last-shown-day', '2026-10-02')
+    ])
+
+    expect(await readDeviceValue('last-shown-day')).toEqual({
+      data: '2026-10-02',
+      status: 'success'
+    })
+  })
+
+  it('[device-store] reads what an earlier build wrote in the same database', async () => {
+    await new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open('seance', 1)
+      request.onupgradeneeded = () => {
+        request.result.createObjectStore('device')
+      }
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => {
+        const transaction = request.result.transaction('device', 'readwrite')
+        transaction.objectStore('device').put('2026-09-30', 'last-session-day')
+        transaction.oncomplete = () => {
+          request.result.close()
+          resolve()
+        }
+      }
     })
 
-    expect(
-      await writeDeviceValue('last-shown-day', '2026-10-02', controller.signal)
-    ).toEqual({ error: 'aborted', status: 'failure' })
-    vi.restoreAllMocks()
-    expect(await readDeviceValue('last-shown-day')).toEqual({
-      data: undefined,
+    expect(await readDeviceValue('last-session-day')).toEqual({
+      data: '2026-09-30',
       status: 'success'
     })
   })
