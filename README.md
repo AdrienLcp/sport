@@ -69,7 +69,7 @@ read. A copy exports the same names as the file it replaces.
 `netlify-token-path.local` — runs `pnpm validate` and deploys the private build
 to a personal site.
 
-The public demo, https://sport-buk.pages.dev, is deployed by CI on every push to
+The public demo, https://sport.adrienlcp.com, is deployed by CI on every push to
 `main`, from a clone that never holds the private programme; it refuses to
 deploy anything but the public one.
 
