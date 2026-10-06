@@ -2,6 +2,7 @@ import { BLOCK_1 } from '@programme/program'
 import type React from 'react'
 
 import type { Session, SessionId } from '@/features/program/program-types'
+import { hasMeasurable } from '@/features/program/progression'
 import { capitalize } from '@/helpers/text'
 import {
   journalPathFor,
@@ -24,8 +25,8 @@ type TitlePlateProps = {
   done: ReadonlySet<SessionId>
   /** The one the order of A to E suggests; the picked one may differ. */
   due: Session
-  /** No session in the log yet: tonight sets the starting numbers. */
-  isCalibration: boolean
+  /** Runs the session to find the starting numbers: every set to the end. */
+  onMeasure: () => void
   onPick: (session: Session) => void
   onStart: () => void
   /** Already carrying this week's rounds. */
@@ -36,7 +37,7 @@ type TitlePlateProps = {
 export const TitlePlate: React.FC<TitlePlateProps> = ({
   done,
   due,
-  isCalibration,
+  onMeasure,
   onPick,
   onStart,
   session,
@@ -45,9 +46,9 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
   const translate = useTranslate()
   const now = useWallMinute()
   const localize = useLocalize()
-  const title = isCalibration
-    ? translate('session.title.calibration')
-    : translate('session.title.named', { name: localize(session.name) })
+  const title = translate('session.title.named', {
+    name: localize(session.name)
+  })
 
   return (
     <Plate className='title-plate'>
@@ -59,22 +60,11 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
       <div className='body from-top'>
         <h1 className='headline'>{title}</h1>
 
-        {isCalibration ? (
-          <>
-            <p className='prose'>
-              {translate('session.title.calibrationProse', { id: session.id })}
-            </p>
-            <p className='prose'>
-              {translate('session.title.calibrationLength')}
-            </p>
-          </>
-        ) : (
-          <p className='prose'>
-            {session.note === undefined
-              ? translate('session.title.defaultNote')
-              : localize(session.note)}
-          </p>
-        )}
+        <p className='prose'>
+          {session.note === undefined
+            ? translate('session.title.defaultNote')
+            : localize(session.note)}
+        </p>
 
         <p className='register-label' id='session-register'>
           {translate('session.title.register')}
@@ -146,13 +136,7 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
         <p className='register-label'>{translate('session.title.rules')}</p>
         <dl className='facts rules'>
           <dt>{translate('session.cues.stopTerm')}</dt>
-          <dd>
-            {translate(
-              isCalibration
-                ? 'session.cues.stopCalibration'
-                : 'session.cues.stop'
-            )}
-          </dd>
+          <dd>{translate('session.cues.stop')}</dd>
           <dt>{translate('session.cues.tempoTerm')}</dt>
           <dd>{translate('session.title.tempoFact')}</dd>
           <dt>{translate('session.cues.breath')}</dt>
@@ -171,6 +155,13 @@ export const TitlePlate: React.FC<TitlePlateProps> = ({
         )}
         onPress={onStart}
       />
+      {hasMeasurable(session) && (
+        <ActionButton
+          label={translate('session.title.measure', { id: session.id })}
+          onPress={onMeasure}
+          tone='ghost'
+        />
+      )}
       <div className='exits'>
         <ActionLink
           href={journalPathFor()}

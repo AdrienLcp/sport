@@ -21,6 +21,8 @@ export type RunState = {
   readonly results: readonly SetResult[]
   /** The circuit was ended early: the stretches still come, the log says so. */
   readonly isCutShort?: true
+  /** Run to find the starting numbers: every set to the end, no target. */
+  readonly isMeasuring?: true
 }
 
 /**
@@ -41,10 +43,11 @@ export type RunSnapshot = {
   readonly isCutShort?: true
   /** The programme week the run belongs to; absent on older snapshots. */
   readonly week?: number
+  readonly isMeasuring?: true
 }
 
 export type RunAction =
-  | { readonly type: 'begin' }
+  | { readonly type: 'begin'; readonly isMeasuring?: true }
   | { readonly type: 'endDrill' }
   | {
       readonly type: 'completeSet'
@@ -217,6 +220,7 @@ export const runReducer = (
     case 'begin':
       return {
         ...INITIAL_RUN,
+        isMeasuring: action.isMeasuring,
         stage: session.warmup.length > 0 ? 'warmup' : 'set'
       }
     case 'endDrill': {

@@ -19,6 +19,17 @@ describe('the session run', () => {
     expect(runReducer(session, warming, { type: 'endDrill' }).step).toBe(1)
   })
 
+  it('runs every session with its targets unless the reader asks to measure', () => {
+    const session = SESSIONS.A
+    expect(
+      runReducer(session, INITIAL_RUN, { type: 'begin' }).isMeasuring
+    ).toBe(undefined)
+    expect(
+      runReducer(session, INITIAL_RUN, { isMeasuring: true, type: 'begin' })
+        .isMeasuring
+    ).toBe(true)
+  })
+
   it('runs two rounds in week one', () => {
     const session = sessionAtWeek(SESSIONS.A, 1)
     expect(roundsOf(session)).toBe(2)

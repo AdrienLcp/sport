@@ -436,10 +436,6 @@ export const EN_DICTIONARY = defineDictionary({
     switchSide: 'Switch sides',
     title: {
       breathFact: 'Out on the effort, in on the easy half. Never hold it.',
-      calibration: 'Tonight, we measure.',
-      calibrationLength: 'Once started, nothing to decide: the plates lead.',
-      calibrationProse:
-        'Nothing to beat yet. Session {id} sets the starting numbers: tonight only, as many clean reps as you can. After tonight, every set stops two reps before failure.',
       defaultNote: 'Everything is written: follow the plates.',
       done: 'Done',
       due: 'Due',
@@ -447,6 +443,7 @@ export const EN_DICTIONARY = defineDictionary({
       kitTerm: 'Kit',
       lengthFact: 'About {minutes} min',
       lengthTerm: 'Length',
+      measure: 'Measure my numbers on {id}',
       named: '{name}.',
       picked: 'Picked',
       register: 'Tap a session to pick it',
@@ -557,13 +554,13 @@ export const EN_DICTIONARY = defineDictionary({
     },
     wipe: {
       arm: 'Erase the sessions',
-      cleared: 'Sessions erased. The next one is the calibration evening.',
+      cleared: 'Sessions erased.',
       confirm: 'Yes, erase them all',
       confirmProse:
         'Sessions recorded on this device: {count}. Without a backup, they will not come back.',
       empty: 'No session recorded',
       prose:
-        'Erases the recorded sessions and the push-up test — for sessions run only to try the app. The next session becomes the calibration evening again. Measures, settings and the table stay.',
+        'Erases the recorded sessions and the push-up test — for sessions run only to try the app. Measures, settings and the table stay.',
       title: 'Start from zero'
     }
   },

@@ -450,11 +450,6 @@ export const FR_DICTIONARY = defineDictionary({
     title: {
       breathFact:
         'On souffle dans l’effort, on inspire dans la phase facile. Jamais d’apnée.',
-      calibration: 'Ce soir, on mesure.',
-      calibrationLength:
-        'Une fois lancée, rien à décider : les planches mènent.',
-      calibrationProse:
-        'Rien à battre encore. La séance {id} sert à poser les chiffres de départ : ce soir seulement, autant de répétitions propres que possible. Ensuite, chaque série s’arrête deux répétitions avant l’échec.',
       defaultNote: 'Tout est écrit : suis les planches.',
       done: 'Faite',
       due: 'Prévue',
@@ -462,6 +457,7 @@ export const FR_DICTIONARY = defineDictionary({
       kitTerm: 'Matériel',
       lengthFact: 'Environ {minutes} min',
       lengthTerm: 'Durée',
+      measure: 'Mesurer mes chiffres sur la {id}',
       named: '{name}.',
       picked: 'Choisie',
       register: 'Touche une séance pour la choisir',
@@ -573,13 +569,13 @@ export const FR_DICTIONARY = defineDictionary({
     },
     wipe: {
       arm: 'Effacer les séances',
-      cleared: 'Séances effacées. La prochaine sera le soir de mesure.',
+      cleared: 'Séances effacées.',
       confirm: 'Oui, tout effacer',
       confirmProse:
         'Séances notées sur cet appareil : {count}. Sans sauvegarde, elles ne reviendront pas.',
       empty: 'Aucune séance notée',
       prose:
-        'Efface les séances notées et le test de pompes — pour des séances faites seulement pour essayer l’app. La prochaine séance redevient le soir de mesure. Les mesures, les réglages et la table restent.',
+        'Efface les séances notées et le test de pompes — pour des séances faites seulement pour essayer l’app. Les mesures, les réglages et la table restent.',
       title: 'Repartir de zéro'
     }
   },

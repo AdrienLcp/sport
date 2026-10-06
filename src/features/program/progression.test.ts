@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { roundsFor, sessionAtWeek } from './progression'
+import { dueSession } from './schedule'
 import { SESSIONS } from './sessions'
 import { EMPTY_LOG, type Log, withoutSessions } from './training-log'
 
@@ -31,5 +32,30 @@ describe('erasing the sessions', () => {
       version: 1
     })
     expect(withoutSessions({ ...log, measures: undefined })).toEqual(EMPTY_LOG)
+  })
+})
+
+describe('the session due', () => {
+  const after = (...ids: readonly ('A' | 'B' | 'C' | 'D' | 'E')[]): Log => ({
+    ...EMPTY_LOG,
+    entries: ids.map((sessionId) => ({
+      day: '2026-10-06',
+      results: [],
+      sessionId,
+      week: 1
+    }))
+  })
+
+  it('starts at A on an empty log', () => {
+    expect(dueSession(EMPTY_LOG).id).toBe('A')
+  })
+
+  it('leads on from the last session run, not back to A', () => {
+    expect(dueSession(after('C')).id).toBe('D')
+  })
+
+  it('wraps round to the sessions still missing this week', () => {
+    expect(dueSession(after('C', 'D', 'E')).id).toBe('A')
+    expect(dueSession(after('C', 'D', 'E', 'A')).id).toBe('B')
   })
 })

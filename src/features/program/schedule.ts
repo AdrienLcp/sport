@@ -24,8 +24,14 @@ export const weekOf = (log: Log): number => {
 export const doneThisWeek = (log: Log): ReadonlySet<SessionId> =>
   sessionsIn(log, weekOf(log))
 
-/** The first of A to E not yet done this week: suggested, never imposed. */
+/**
+ * The one after the last session run, skipping those already done this week:
+ * suggested, never imposed. Picking C first leads on to D, not back to A.
+ */
 export const dueSession = (log: Log): Session => {
   const done = doneThisWeek(log)
-  return BLOCK_1.find((session) => !done.has(session.id)) ?? SESSIONS.A
+  const last = log.entries.at(-1)?.sessionId
+  const start = BLOCK_1.findIndex((session) => session.id === last) + 1
+  const inTurn = [...BLOCK_1.slice(start), ...BLOCK_1.slice(0, start)]
+  return inTurn.find((session) => !done.has(session.id)) ?? SESSIONS.A
 }

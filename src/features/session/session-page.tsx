@@ -132,7 +132,7 @@ const SessionRun: React.FC<SessionRunProps> = ({
         <TitlePlate
           done={done}
           due={due}
-          isCalibration={run.isCalibration}
+          onMeasure={() => run.dispatch({ isMeasuring: true, type: 'begin' })}
           onPick={onPick}
           onStart={() => run.dispatch({ type: 'begin' })}
           session={session}

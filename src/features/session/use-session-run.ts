@@ -1,13 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
 
 import type { Session } from '@/features/program/program-types'
-import { hasMeasurable } from '@/features/program/progression'
-import { SESSIONS } from '@/features/program/sessions'
-import {
-  hasCalibrated,
-  type Log,
-  type SessionEntry
-} from '@/features/program/training-log'
+import type { Log, SessionEntry } from '@/features/program/training-log'
 import { useTrainingLog } from '@/features/program/use-training-log'
 import { noteSessionRun } from '@/features/reminders/reminder-device'
 import { warnOnFailure } from '@/infrastructure/diagnostics'
@@ -55,6 +49,7 @@ const restoreRun = ({
   return {
     firstSide: snapshot.firstSide,
     isCutShort: snapshot.isCutShort,
+    isMeasuring: snapshot.isMeasuring,
     restSeconds: snapshot.restSeconds,
     results: snapshot.results,
     side: snapshot.side,
@@ -88,7 +83,7 @@ export const useSessionRun = ({
     () => restoreRun({ day, session })
   )
 
-  const isCalibration = hasMeasurable(session) && !hasCalibrated(log, SESSIONS)
+  const isCalibration = state.isMeasuring === true
 
   // An address survives a closed tab: the run is written down as it happens.
   useEffect(() => {
@@ -98,6 +93,7 @@ export const useSessionRun = ({
         day,
         firstSide: state.firstSide,
         isCutShort: state.isCutShort,
+        isMeasuring: state.isMeasuring,
         restSeconds: state.restSeconds,
         results: state.results,
         sessionId: session.id,
@@ -125,7 +121,7 @@ export const useSessionRun = ({
       (station) => station.calibrated === true
     )
     const pushUps =
-      calibrated === undefined
+      calibrated === undefined || !isCalibration
         ? undefined
         : state.results
             .filter((result) => result.address === calibrated.address)
@@ -153,7 +149,7 @@ export const useSessionRun = ({
     keepLog({
       ...log,
       entries: [...log.entries, entry],
-      pushUpTest: log.pushUpTest ?? pushUps
+      pushUpTest: pushUps ?? log.pushUpTest
     })
     dispatch({ type: isCutShort ? 'stop' : 'endCooldown' })
   }
