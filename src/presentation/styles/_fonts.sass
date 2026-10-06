@@ -1,7 +1,7 @@
-// Libre Franklin, variable 100-900, OFL 1.1 (fonts/OFL.txt). Self-hosted on
-// purpose: the app runs with no network during a set.
+// Libre Franklin, variable 100-900, OFL 1.1 (public/fonts/OFL.txt). Self-hosted
+// on purpose: the app runs with no network during a set.
 
 @use '@adrienlcp/styles/fonts'
 
-@include fonts.font-face('Libre Franklin', './fonts/libre-franklin-latin.woff2', fonts.$latin, $display: block, $weight: 100 900)
-@include fonts.font-face('Libre Franklin', './fonts/libre-franklin-latin-ext.woff2', fonts.$latin-ext, $display: block, $weight: 100 900)
+@include fonts.font-face('Libre Franklin', '/fonts/libre-franklin-latin.woff2', fonts.$latin, $weight: 100 900)
+@include fonts.font-face('Libre Franklin', '/fonts/libre-franklin-latin-ext.woff2', fonts.$latin-ext, $weight: 100 900)

@@ -104,4 +104,4 @@ The visual system is described in [`DESIGN.md`](DESIGN.md).
 ## Licence
 
 MIT. The Libre Franklin font is under the SIL Open Font License
-(`src/presentation/styles/fonts/OFL.txt`).
+(`public/fonts/OFL.txt`).
