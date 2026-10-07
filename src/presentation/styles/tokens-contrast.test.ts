@@ -5,8 +5,6 @@ import { describe, expect, it } from 'vitest'
 
 const TOKENS = readFileSync(new URL('_tokens.sass', import.meta.url), 'utf8')
 
-const PRINTINGS = ['day-printing', 'night-printing'] as const
-
 const TEXT_INKS = [
   '--ink',
   '--ink-soft',
@@ -38,17 +36,8 @@ const PAIRS = [
   }))
 ]
 
-/** Each printing declares every colour once, inside its own mixin. */
-const readPrinting = (printing: (typeof PRINTINGS)[number]) =>
-  TOKENS.split(/^@/m).find((block) => block.startsWith(`mixin ${printing}`))
-
 describe('colour tokens', () => {
-  it.each(PRINTINGS)(
-    '[contrast] every ink and mark reads on the ground, in the %s',
-    (printing) => {
-      const stylesheet = readPrinting(printing)
-      expect(stylesheet).toBeDefined()
-      expect(findContrastFailures(stylesheet ?? '', PAIRS)).toEqual([])
-    }
-  )
+  it('[contrast] every ink and mark reads on the ground, in the day and the night printing', () => {
+    expect(findContrastFailures(TOKENS, PAIRS)).toEqual([])
+  })
 })
