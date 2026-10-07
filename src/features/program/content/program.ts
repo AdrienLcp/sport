@@ -288,8 +288,8 @@ export const BLOCK_1: readonly Session[] = [
     cooldown: [
       {
         cue: {
-          en: 'Kneeling, hips over the knees, chest toward the floor, arms long in front. Walk the hands to one side: the other flank opens.',
-          fr: 'À genoux, hanches au-dessus des genoux, poitrine vers le sol, bras allongés devant. On promène les mains d’un côté : c’est l’autre flanc qui s’ouvre.'
+          en: 'Kneeling, hips over the knees, chest toward the floor, arms long in front. Walk both hands toward the side shown: the opposite flank stretches, from the hip to the armpit.',
+          fr: 'À genoux, hanches au-dessus des genoux, poitrine vers le sol, bras allongés devant. On promène les deux mains vers le côté affiché : c’est le flanc opposé qui s’étire, de la hanche à l’aisselle.'
         },
         detail: { en: '30 s per side', fr: '30 s par côté' },
         figure: 'lat-stretch',

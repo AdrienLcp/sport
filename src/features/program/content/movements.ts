@@ -449,8 +449,8 @@ export const MOVEMENTS: Record<MovementId, Movement> = {
     cues: {
       breath: BREATH_OUT_UP,
       moves: {
-        en: 'Arms only, lifted off the floor: Y, then T, then W.',
-        fr: 'Les bras seuls, décollés du sol : Y, puis T, puis W.'
+        en: 'One rep is three shapes in a row: arms in a Y above the head, a T out to the sides, a W with the elbows to the ribs.',
+        fr: 'Une répétition, trois formes à la suite : bras en Y au-dessus de la tête, en T sur les côtés, en W coudes aux côtes.'
       },
       squeeze: {
         en: 'Shoulder blades down and together.',

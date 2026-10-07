@@ -609,6 +609,8 @@ export const POSES: Record<FigureId, Pose> = {
     wrist: [80, 84]
   },
 
+  /* Facing left, so the standing foot points left too: turned back, it lay
+     along the floor like a shin and the figure read as kneeling. */
   'rdl-single': {
     ankle: [98, 132],
     elbow: [54, 98],
@@ -622,7 +624,7 @@ export const POSES: Record<FigureId, Pose> = {
     hip: [94, 84],
     knee: [96, 108],
     shoulder: [56, 78],
-    toe: [112, 133],
+    toe: [84, 133],
     wrist: [52, 118]
   },
 

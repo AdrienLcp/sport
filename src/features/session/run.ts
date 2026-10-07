@@ -92,7 +92,7 @@ export const INITIAL_RUN: RunState = {
 
 /**
  * The cool-down read as a flat list of plates. A stretch held per side is two
- * plates and not one: the app ships no sound, and a vibration is not offered
+ * plates and not one: a tone can be muted, and a vibration is not offered
  * by every phone, so a single sixty-second plate has no reliable way to say
  * « switch sides » halfway through, and a reader face down in a pigeon is not
  * watching a number.

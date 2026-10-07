@@ -497,7 +497,7 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     hip: [98, 96],
     knee: [99, 114],
     shoulder: [97, 58],
-    toe: [112, 133],
+    toe: [84, 133],
     wrist: [93, 98]
   },
 
