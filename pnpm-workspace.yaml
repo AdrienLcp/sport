@@ -8,5 +8,8 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@adrienlcp/*'
 
+patchedDependencies:
+  vite-plugin-pwa@2.0.0: patches/vite-plugin-pwa@2.0.0.patch
+
 publicHoistPattern:
   - '@biomejs/*'
