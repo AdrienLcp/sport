@@ -7,14 +7,22 @@
       margin-top: var(--space-l)
 
     .dish
+      @include layout.container
+
       display: flex
       flex-direction: column
       gap: var(--space-m)
       margin-top: var(--space-xs)
 
+    // Two up once there is room, so the key stays in the same eyeful as the
+    // drawing it keys.
     .shares
       display: grid
       gap: var(--space-s)
+
+      @include layout.container-wide(25rem)
+        grid-template-columns: 1fr 1fr
+        gap: var(--space-m) var(--space-l)
 
     .share
       dt
@@ -89,9 +97,3 @@
     .base-detail
       font-size: var(--text-s)
       color: var(--ink-dim)
-
-  @include layout.wide
-    // Two up, so the key stays in the same eyeful as the drawing it keys.
-    .pot-plate .shares
-      grid-template-columns: 1fr 1fr
-      gap: var(--space-m) var(--space-l)

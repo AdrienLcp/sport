@@ -2,12 +2,14 @@
 
 @layer components
   .measure-page
+    .body
+      @include layout.container
+
     .fields
       display: grid
       gap: var(--space-xl)
       margin-top: var(--space-s)
 
-  @include layout.wide
-    .measure-page .fields
-      grid-template-columns: 1fr 1fr
-      gap: var(--space-2xl)
+      @include layout.container-wide(36rem)
+        grid-template-columns: 1fr 1fr
+        gap: var(--space-2xl)
