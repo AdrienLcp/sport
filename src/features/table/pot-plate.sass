@@ -26,14 +26,15 @@
         color: var(--ink-dim)
 
       dd
+        @include typography.note(var(--text-ledger))
+
         padding-left: calc(var(--swatch) + var(--space-xs))
-        font-size: var(--text-ledger)
-        line-height: var(--leading-note)
         color: var(--ink-soft)
 
         b
+          @include typography.strong
+
           color: var(--ink)
-          font-weight: 700
 
     .parts
       display: grid
@@ -47,9 +48,9 @@
       color: var(--ink-dim)
 
     .part-detail
+      @include typography.note(var(--text-ledger))
+
       display: block
-      font-size: var(--text-ledger)
-      line-height: var(--leading-note)
       color: var(--ink-soft)
 
     .bases
@@ -66,11 +67,10 @@
           border-bottom: 0
 
       .address
+        @include typography.address
+
         flex: none
         width: 3.6em
-        font-size: var(--text-head)
-        font-weight: 700
-        letter-spacing: var(--track-index)
         color: var(--ink-dim)
 
     .base-body
@@ -80,8 +80,9 @@
       gap: var(--space-4xs)
 
     .base-name
+      @include typography.strong
+
       font-size: var(--text-prose)
-      font-weight: 700
       color: var(--ink)
       text-wrap: balance
 

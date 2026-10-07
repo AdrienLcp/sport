@@ -31,15 +31,17 @@
     // being read. Compounded with `.tally` to win over the plate by specificity.
     .tally.logbook.readings
       tbody td:nth-child(2)
+        @include typography.strong
+
         color: var(--ink)
-        font-weight: 700
 
       tr[data-last='true'] td
         color: var(--ink)
 
       tr[data-last='true'] td:nth-child(2)
+        @include typography.heavy
+
         color: var(--signal-ink)
-        font-weight: 800
 
     .session-block
       margin-top: var(--space-m)

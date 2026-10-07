@@ -1,3 +1,5 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   .report-page
     // The text is not a read, it is what leaves. It keeps the world's typeface:
@@ -6,9 +8,9 @@
       margin: 0
       min-width: 0
       max-width: var(--measure-wide)
-      font: inherit
-      font-size: var(--text-ledger)
-      line-height: 1.6
+      @include typography.transcript
+
+      font-family: inherit
       color: var(--ink-dim)
       font-variant-numeric: tabular-nums
       white-space: pre-wrap
@@ -30,8 +32,9 @@
       color: var(--ink-dim)
 
       b
+        @include typography.strong
+
         color: var(--ink)
-        font-weight: 700
 
     // A refused clipboard says so, and says how to finish the gesture.
     .refused

@@ -1,3 +1,5 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   // Correcting the count is allowed, never required: the target is pre-filled
   // and one tap validates it.
@@ -5,9 +7,10 @@
     min-width: var(--target)
     min-height: var(--target)
     margin: calc(-1 * var(--target-reach)) calc(-1 * var(--space-2xs))
+    @include typography.strong
+
     color: var(--ink-dim)
     font-size: var(--text-figure)
-    font-weight: 700
     transition: color var(--transition-fast) var(--ease-out)
 
     &[data-hovered]

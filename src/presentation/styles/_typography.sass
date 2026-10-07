@@ -1,30 +1,91 @@
 @use 'layout'
 
+/// The page's own voice: every line the plate does not set otherwise.
+@mixin body
+  font-weight: 400
+  line-height: 1.5
+
+/// A word or a number set apart inside its line: the value a sentence is about.
+@mixin strong
+  font-weight: 700
+
+/// The heaviest weight inside a line: the reading that settles it.
+@mixin heavy
+  font-weight: 800
+
+/// Back to the body's weight inside a heavier line.
+@mixin regular
+  font-weight: 400
+
+/// Prose: cues, guards, the paragraph under a headline.
+@mixin prose
+  font-size: var(--text-prose)
+  line-height: var(--leading-prose)
+
+/// A note under a figure, a field or a heading: prose set closer.
+@mixin note($size: var(--text-note))
+  font-size: $size
+  line-height: var(--leading-note)
+
 /// The head band's capitals: a label, a column's name, a field's name.
 @mixin caps
   font-size: var(--text-head)
   font-weight: 700
-  letter-spacing: var(--track-caps)
+  letter-spacing: var(--tracking-caps)
   text-transform: uppercase
 
 /// A term beside its answer: the head band's capitals, set closer.
 @mixin term
   font-size: var(--text-head)
   font-weight: 700
-  letter-spacing: var(--track-term)
+  letter-spacing: var(--tracking-term)
   text-transform: uppercase
 
 /// A chart's numerals and a grid's day initials, beside the marks they read.
 @mixin numeral
   font-size: var(--text-head)
   font-weight: 700
-  letter-spacing: var(--track-numeral)
+  letter-spacing: var(--tracking-numeral)
+
+/// A rank or a count at the end of a line, tracked apart from its words.
+@mixin index
+  letter-spacing: var(--tracking-index)
+
+/// A list's address in front of its line, at the head band's size.
+@mixin address
+  font-size: var(--text-head)
+  font-weight: 700
+  letter-spacing: var(--tracking-index)
+
+/// A ledger line's address, a step under the line it numbers.
+@mixin ledger-address
+  font-size: 0.8em
+  letter-spacing: var(--tracking-index)
+
+/// A ledger line's state, in small tracked capitals.
+@mixin ledger-state
+  font-size: 0.78em
+  letter-spacing: var(--tracking-term)
+  text-transform: uppercase
+
+/// A weekday's initial beside the day grid.
+@mixin weekday
+  font-size: var(--text-micro)
+  font-weight: 700
+  letter-spacing: var(--tracking-index)
+  text-transform: uppercase
+
+/// The specimen's stamp: the signal's one line of capitals.
+@mixin stamp
+  font-weight: 800
+  letter-spacing: var(--tracking-caps)
+  text-transform: uppercase
 
 /// A column's title on a register page, larger once the page is a spread.
 @mixin heading
   font-size: var(--text-heading)
   font-weight: 800
-  letter-spacing: var(--track-tight)
+  letter-spacing: var(--tracking-tight)
   line-height: var(--leading-heading)
 
   @include layout.wide
@@ -33,12 +94,79 @@
 /// The plate's display line — a movement's name, a verdict. The size is the caller's.
 @mixin display
   font-weight: 800
-  letter-spacing: var(--track-tight)
+  letter-spacing: var(--tracking-tight)
   line-height: var(--leading-display)
   text-wrap: balance
 
 /// The number a sentence of prose is about.
-@mixin figure
+@mixin figure($size: var(--text-figure))
   color: var(--ink)
-  font-size: var(--text-figure)
+  font-size: $size
   font-weight: 800
+
+/// The count in a set's legend, read at a metre mid-set.
+@mixin reps
+  font-size: var(--text-reps)
+  font-weight: 800
+  letter-spacing: var(--tracking-tight)
+
+/// The rest countdown: the only number allowed to be enormous.
+@mixin countdown
+  font-size: var(--text-count)
+  font-weight: 800
+  letter-spacing: var(--tracking-display)
+  line-height: 1
+
+/// The day's total, at the size a movement's name takes.
+@mixin total
+  font-size: var(--text-name)
+  font-weight: 800
+  letter-spacing: var(--tracking-tight)
+  line-height: 1
+
+/// The primary action's label.
+@mixin action
+  font-size: var(--text-button)
+  font-weight: 800
+  letter-spacing: var(--tracking-action)
+  text-transform: uppercase
+
+/// The next movement's name, under the capitals that announce it.
+@mixin next-name
+  font-size: var(--text-button)
+  font-weight: 800
+  letter-spacing: var(--tracking-tight)
+  text-transform: none
+
+/// A number typed into a ruled field: typographically a reading, not form filler.
+@mixin field-value($size: var(--text-field))
+  font-size: $size
+  font-variant-numeric: tabular-nums
+  font-weight: 800
+  letter-spacing: var(--tracking-tight)
+
+/// How many portions a line has counted, heavy and tracked like a numeral.
+@mixin taps
+  font-size: var(--text-ledger)
+  font-weight: 800
+  letter-spacing: var(--tracking-numeral)
+
+/// A chart's tooltip: a ledger line set tight, so the frame stays small.
+@mixin tooltip
+  font-size: var(--text-ledger)
+  line-height: 1.3
+
+/// A movement's cues, a term beside each answer.
+@mixin cues
+  font-size: var(--text-note)
+  line-height: 1.35
+
+/// A how-to's numbered steps.
+@mixin steps
+  font-size: var(--text-ledger)
+  line-height: 1.4
+
+/// A text that leaves the app as it is shown: a report to copy.
+@mixin transcript
+  font-size: var(--text-ledger)
+  line-height: 1.6

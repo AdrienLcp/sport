@@ -33,7 +33,8 @@
       margin: var(--space-3xs) 0 var(--space-xs)
 
       dd
-        font-weight: 700
+        @include typography.strong
+
 
     // The legend mirrors the marks: a filled square for a whole session, an
     // outline for a stopped one. Text stays in ink; the mark carries identity.

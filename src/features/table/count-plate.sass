@@ -11,15 +11,14 @@
       gap: var(--space-xs)
 
       b
-        font-size: var(--text-name)
-        line-height: 1
+        @include typography.total
+
         text-box: trim-both cap alphabetic
-        font-weight: 800
-        letter-spacing: var(--track-tight)
 
     .unit
+      @include typography.strong
+
       font-size: var(--text-figure)
-      font-weight: 700
       color: var(--ink)
 
     .of-target
@@ -33,8 +32,9 @@
       // The one place the signal belongs on this plate: the gauge under the band
       // is short, and the cinnabar says by how much. Met, nothing is lit at all.
       b
+        @include typography.heavy
+
         color: var(--signal-ink)
-        font-weight: 800
 
       &[data-met='true']
         color: var(--ink-dim)
@@ -44,8 +44,9 @@
       color: var(--ink-dim)
 
       b
+        @include typography.strong
+
         color: var(--ink)
-        font-weight: 700
 
     .sources
       margin-top: var(--space-3xs)
@@ -87,10 +88,9 @@
       color: var(--ink-dim)
 
     .taps
+      @include typography.taps
+
       flex: none
-      font-size: var(--text-ledger)
-      font-weight: 800
-      letter-spacing: var(--track-numeral)
       color: var(--ink)
 
     .yield
@@ -103,8 +103,9 @@
     .sources li[data-counted='true']
       .source-name,
       .yield
+        @include typography.strong
+
         color: var(--ink)
-        font-weight: 700
 
     .add[data-hovered] .source-name
       color: var(--ink)

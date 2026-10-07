@@ -1,9 +1,11 @@
 @use '@adrienlcp/styles/accessibility'
 @use 'layout'
+@use 'typography'
 
 @layer base
   body
     @include layout.container
+    @include typography.body
 
     background: var(--ground)
     color: var(--ink)
@@ -11,8 +13,6 @@
     font-family: 'Libre Franklin', 'Libre Franklin fallback', system-ui, sans-serif
     font-synthesis: none
     font-variant-numeric: tabular-nums
-    font-weight: 400
-    line-height: 1.5
     overscroll-behavior: none
 
   // The surfaces the browser draws for us still belong to the plate.

@@ -26,6 +26,8 @@
         border-bottom-color: var(--signal)
 
     input
+      @include typography.field-value
+
       flex: 1 1 0
       width: 100%
       min-width: 0
@@ -34,15 +36,12 @@
       background: none
       border: 0
       color: var(--ink)
-      font: inherit
-      font-variant-numeric: tabular-nums
-      font-size: var(--text-field)
-      font-weight: 800
-      letter-spacing: var(--track-tight)
+      font-family: inherit
 
       &::placeholder
+        @include typography.regular
+
         color: var(--ink-dim)
-        font-weight: 400
 
     .unit
       @include typography.caps
@@ -52,7 +51,7 @@
       color: var(--ink-dim)
 
     .hint
+      @include typography.note
+
       margin-top: var(--space-xs)
-      font-size: var(--text-note)
-      line-height: var(--leading-note)
       color: var(--ink-dim)

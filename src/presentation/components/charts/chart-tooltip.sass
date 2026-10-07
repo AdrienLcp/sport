@@ -3,6 +3,8 @@
 @layer components
   // Framed by a hairline like everything else in the manual: no shadow, no radius.
   .chart-tooltip
+    @include typography.tooltip
+
     position: absolute
     z-index: 2
     top: var(--tooltip-down)
@@ -13,8 +15,6 @@
     padding: var(--space-2xs) var(--space-xs)
     background: var(--ground)
     box-shadow: var(--inset-hairline)
-    font-size: var(--text-ledger)
-    line-height: 1.3
     pointer-events: none
     transform: translate(var(--space-s), -50%)
 
@@ -32,8 +32,9 @@
       transform: translate(calc(-100% - var(--space-s)), -50%)
 
     b
+      @include typography.heavy
+
       color: var(--ink)
-      font-weight: 800
 
     .detail
       color: var(--ink-soft)

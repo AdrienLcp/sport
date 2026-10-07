@@ -33,8 +33,9 @@
     transition: color var(--transition-fast) var(--ease-out)
 
     .state
+      @include typography.index
+
       flex: none
-      letter-spacing: var(--track-index)
 
     &[data-hovered],
     &[data-selected]
@@ -46,12 +47,12 @@
   // The term takes the head band's capitals so the eye finds a line by its
   // label; the answer is prose, one step quieter than the count above it.
   .cue-list
+    @include typography.cues
+
     display: grid
     grid-template-columns: max-content 1fr
     align-content: start
     gap: var(--space-3xs) var(--space-s)
-    font-size: var(--text-note)
-    line-height: 1.35
 
     .cue
       display: contents
@@ -70,9 +71,9 @@
   // the steps follow it, always open, because a stretch is read once before
   // its clock starts.
   .cue-summary
+    @include typography.note
+
     padding-block: var(--space-xs)
-    font-size: var(--text-note)
-    line-height: var(--leading-note)
     color: var(--ink)
     text-wrap: pretty
 
@@ -81,11 +82,11 @@
 
   // The how-to, numbered as a manual numbers its steps.
   .setup-steps
+    @include typography.steps
+
     display: grid
     gap: var(--space-xs)
     padding-left: 1.4em
-    font-size: var(--text-ledger)
-    line-height: 1.4
     color: var(--ink-soft)
     list-style: decimal
 
@@ -95,7 +96,8 @@
       text-wrap: pretty
 
       &::marker
-        font-weight: 700
+        @include typography.strong
+
         color: var(--ink-dim)
 
   // A phone cannot hold the figure, the count, the cues and the five-line

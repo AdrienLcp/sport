@@ -151,16 +151,14 @@
         color: var(--ink-dim)
 
       input
+        @include typography.field-value(var(--text-field-inline))
+
         min-height: 3.25rem
         padding: 0
         background: none
         border: 0
         color: var(--ink)
-        font: inherit
-        font-size: var(--text-field-inline)
-        font-weight: 800
-        font-variant-numeric: tabular-nums
-        letter-spacing: var(--track-tight)
+        font-family: inherit
         text-align: right
 
         &:focus-visible
@@ -178,5 +176,6 @@
       margin-top: var(--space-xs)
 
       dd
+        @include typography.note(var(--text-ledger))
+
         color: var(--ink-soft)
-        line-height: var(--leading-note)

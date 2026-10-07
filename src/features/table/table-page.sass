@@ -17,13 +17,14 @@
       @include typography.heading
 
     .hint
-      font-size: var(--text-ledger)
-      line-height: var(--leading-note)
+      @include typography.note(var(--text-ledger))
+
       color: var(--ink-dim)
 
       b
+        @include typography.strong
+
         color: var(--ink)
-        font-weight: 700
 
     // ---------- the register of three ----------
 

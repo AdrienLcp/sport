@@ -22,10 +22,9 @@
       box-shadow: var(--inset-hairline-signal)
 
       b
+        @include typography.stamp
+
         color: var(--signal-ink)
-        font-weight: 800
-        letter-spacing: var(--track-caps)
-        text-transform: uppercase
 
     .notice-text
       min-width: 0
@@ -39,12 +38,12 @@
 
     .notice-action
       @include typography.caps
+      @include typography.heavy
       @include accessibility.ring
 
       min-height: var(--target)
       padding: 0
       color: var(--ink)
-      font-weight: 800
       text-decoration: underline
       text-decoration-color: var(--rule)
       text-underline-offset: var(--underline-offset)

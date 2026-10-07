@@ -1,3 +1,5 @@
+@use '../../presentation/styles/typography'
+
 @layer components
   .backup-page
     .file-name,
@@ -6,8 +8,9 @@
       color: var(--ink-dim)
 
     .file-name b
+      @include typography.strong
+
       color: var(--ink)
-      font-weight: 700
 
     // A refused file says so, and says that nothing moved.
     .rejected

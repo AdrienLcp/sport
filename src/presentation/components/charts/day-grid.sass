@@ -1,3 +1,4 @@
+@use '../../styles/typography'
 @use 'chart-focus'
 
 @layer components
@@ -16,13 +17,11 @@
       gap: var(--space-s)
 
     .weekdays
+      @include typography.weekday
+
       display: grid
       grid-auto-rows: var(--cell)
       gap: var(--gap)
-      font-size: var(--text-micro)
-      font-weight: 700
-      letter-spacing: var(--track-index)
-      text-transform: uppercase
       color: var(--ink-dim)
 
       span
