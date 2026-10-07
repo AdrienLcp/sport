@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useLayoutEffect, useRef } from 'react'
+import { useEffectEvent, useLayoutEffect, useRef } from 'react'
 
 import { usePrefersReducedMotion } from '@/infrastructure/browser'
 
@@ -55,21 +55,12 @@ type ChronoRuleProps = {
 const ChronoRule: React.FC<ChronoRuleProps> = ({ chrono }) => {
   const rule = useRef<HTMLSpanElement>(null)
   const isStill = usePrefersReducedMotion()
-  const latest = useRef(chrono)
-  latest.current = chrono
   const runKey = chrono.run?.key
 
-  useLayoutEffect(() => {
-    const { ratio, run } = latest.current
-    if (
-      rule.current === null ||
-      runKey === undefined ||
-      run === undefined ||
-      isStill
-    ) {
-      return
-    }
-    const glide = rule.current.animate(
+  const glide = useEffectEvent((drawn: HTMLSpanElement) => {
+    const { ratio, run } = chrono
+    if (run === undefined) return undefined
+    return drawn.animate(
       [
         { transform: `scaleX(${clampToUnit(ratio)})` },
         { transform: 'scaleX(0)' }
@@ -80,7 +71,12 @@ const ChronoRule: React.FC<ChronoRuleProps> = ({ chrono }) => {
         fill: 'forwards'
       }
     )
-    return () => glide.cancel()
+  })
+
+  useLayoutEffect(() => {
+    if (rule.current === null || runKey === undefined || isStill) return
+    const animation = glide(rule.current)
+    return () => animation?.cancel()
   }, [runKey, isStill])
 
   return (

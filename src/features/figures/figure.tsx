@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffectEvent, useLayoutEffect, useRef, useState } from 'react'
 
 import type { FigureId, Tempo } from '@/features/program/program-types'
 import { usePrefersReducedMotion } from '@/infrastructure/browser'
@@ -221,15 +221,14 @@ const useGesture = ({
   /** The pose shown before the gesture starts and after it ends. */
   printed: Joints
 }): void => {
-  const printedPose = useRef(printed)
-  printedPose.current = printed
+  const readPrintedPose = useEffectEvent(() => printed)
 
   useLayoutEffect(() => {
     const drawn = body.current
     if (drawn === null) return
     // Reduced motion switched on mid-gesture stops on the printed pose, never
     // on whichever frame was showing.
-    repaint(drawn, printedPose.current)
+    repaint(drawn, readPrintedPose())
     if (motion === undefined || isStill) return
 
     let frame = 0
@@ -240,7 +239,7 @@ const useGesture = ({
       const seconds = (now - opened) / 1000 - AFTER_THE_TURN
 
       if (seconds >= playSeconds) {
-        repaint(drawn, printedPose.current)
+        repaint(drawn, readPrintedPose())
         return
       }
 
