@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use 'styles/layout'
 
 @layer components
   .app-shell
@@ -22,7 +22,7 @@
       min-height: 0
       display: grid
 
-  @include breakpoints.wide
+  @include layout.wide
     .app-shell
       padding: var(--space-l)
 

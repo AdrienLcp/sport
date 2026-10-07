@@ -3,13 +3,13 @@
 // field — nothing a printed manual would not already hold.
 
 @use '@adrienlcp/styles/accessibility'
-@use '@adrienlcp/styles/spread'
+@use '../../presentation/styles/layout'
 @use '../../presentation/styles/tick'
 @use '../../presentation/styles/typography'
 
 @layer components
   .settings-page
-    @include spread.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
+    @include layout.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
 
     .page-heading
       @include typography.heading

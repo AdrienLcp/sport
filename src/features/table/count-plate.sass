@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/layout'
 @use '../../presentation/styles/typography'
 
 @layer components
@@ -135,6 +135,6 @@
     .sources li[data-counted='false'] .less
       visibility: hidden
 
-  @include breakpoints.wide
+  @include layout.wide
     .count-plate .settled
       justify-content: center

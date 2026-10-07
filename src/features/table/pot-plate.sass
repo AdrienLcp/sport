@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/layout'
 @use '../../presentation/styles/typography'
 
 @layer components
@@ -89,7 +89,7 @@
       font-size: var(--text-note)
       color: var(--ink-dim)
 
-  @include breakpoints.wide
+  @include layout.wide
     // Two up, so the key stays in the same eyeful as the drawing it keys.
     .pot-plate .shares
       grid-template-columns: 1fr 1fr

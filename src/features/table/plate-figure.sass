@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/layout'
 
 @layer components
   .plate-figure
@@ -12,6 +12,6 @@
     width: var(--swatch)
     height: 18px
 
-  @include breakpoints.wide
+  @include layout.wide
     .plate-figure
       max-width: 250px

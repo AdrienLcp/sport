@@ -7,7 +7,7 @@
 // come after every rule they override.
 
 @use '@adrienlcp/styles/accessibility'
-@use '@adrienlcp/styles/breakpoints'
+@use '../styles/layout'
 @use '../styles/typography'
 
 @layer components
@@ -496,7 +496,7 @@
     .figure-frame
       padding: var(--space-xs) 0 0
 
-  @include breakpoints.wide
+  @include layout.wide
     .plate
       width: min(var(--plate-width), 100%)
       min-height: min(660px, 100%)

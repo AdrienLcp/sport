@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/layout'
 
 @layer components
   .measure-page
@@ -7,7 +7,7 @@
       gap: var(--space-xl)
       margin-top: var(--space-s)
 
-  @include breakpoints.wide
+  @include layout.wide
     .measure-page .fields
       grid-template-columns: 1fr 1fr
       gap: var(--space-2xl)

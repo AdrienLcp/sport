@@ -1,12 +1,12 @@
 // The curves. The journal's plate again, a register rather than a figure: two
 // columns on a desk, one on a phone, every chart with its numbers under it.
 
-@use '@adrienlcp/styles/spread'
+@use '../../presentation/styles/layout'
 @use '../../presentation/styles/typography'
 
 @layer components
   .progress-page
-    @include spread.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
+    @include layout.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
 
     .chart-block
       display: flex

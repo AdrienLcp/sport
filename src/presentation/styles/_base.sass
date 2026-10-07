@@ -1,6 +1,10 @@
+@use '@adrienlcp/styles/accessibility'
+@use 'layout'
+
 @layer base
   body
-    -webkit-font-smoothing: antialiased
+    @include layout.container
+
     background: var(--ground)
     color: var(--ink)
     // 'Libre Franklin fallback' is the local face fontaine scales to its metrics
@@ -9,7 +13,6 @@
     font-variant-numeric: tabular-nums
     font-weight: 400
     line-height: 1.5
-    margin: 0
     overscroll-behavior: none
 
   // The surfaces the browser draws for us still belong to the plate.
@@ -22,17 +25,8 @@
     scrollbar-color: var(--rule) var(--ground)
     scrollbar-width: thin
 
-  :focus-visible
-    outline: var(--ring)
-    outline-offset: var(--ring-offset)
-
-  @media (prefers-reduced-motion: reduce)
-    *,
-    *::before,
-    *::after
-      animation-duration: 1ms !important
-      animation-iteration-count: 1 !important
-      transition-duration: 1ms !important
+  :where(*)
+    @include accessibility.ring
 
   // The one authored moment: the plate turns, and the new figure is laid down
   // like ink across the page. It holds when it lands; it never blinks.

@@ -1,5 +1,5 @@
 @use '@adrienlcp/styles/accessibility'
-@use '@adrienlcp/styles/breakpoints'
+@use '../../presentation/styles/layout'
 @use '../../presentation/styles/typography'
 
 @layer components
@@ -105,7 +105,7 @@
   // cues first, the register after — while the head band and its chrono stay
   // pinned to the top and the action to the bottom. « Next » goes: the register
   // already names the next line.
-  @include breakpoints.narrow
+  @include layout.narrow
     .plate.spread:has(.cue-block)
       overflow-y: auto
       overscroll-behavior: contain

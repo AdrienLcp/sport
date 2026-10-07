@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/breakpoints'
+@use 'layout'
 
 /// The head band's capitals: a label, a column's name, a field's name.
 @mixin caps
@@ -27,7 +27,7 @@
   letter-spacing: var(--track-tight)
   line-height: var(--leading-heading)
 
-  @include breakpoints.wide
+  @include layout.wide
     font-size: var(--text-heading-wide)
 
 /// The plate's display line — a movement's name, a verdict. The size is the caller's.
