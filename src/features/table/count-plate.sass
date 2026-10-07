@@ -109,6 +109,11 @@
     .add[data-hovered] .source-name
       color: var(--ink)
 
+    .sources .add[data-pressed]
+      .source-name,
+      .yield
+        color: var(--ink-soft)
+
     // The correcting target, never a deciding one: it exists only on a line
     // that already carries a count, and it keeps its width so the row never
     // shifts.
@@ -123,6 +128,9 @@
 
       &[data-hovered]
         color: var(--ink)
+
+      &[data-pressed]
+        color: var(--ink-soft)
 
     .sources li[data-counted='false'] .less
       visibility: hidden

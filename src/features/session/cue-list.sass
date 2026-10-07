@@ -29,7 +29,6 @@
     text-align: left
     color: var(--ink-dim)
     cursor: pointer
-    -webkit-tap-highlight-color: transparent
     touch-action: manipulation
     transition: color var(--transition-fast) var(--ease-out)
 
@@ -40,6 +39,9 @@
     &[data-hovered],
     &[data-selected]
       color: var(--ink)
+
+    &[data-pressed]
+      color: var(--ink-soft)
 
   // The term takes the head band's capitals so the eye finds a line by its
   // label; the answer is prose, one step quieter than the count above it.

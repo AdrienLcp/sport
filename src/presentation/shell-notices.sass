@@ -48,7 +48,6 @@
       text-decoration: underline
       text-decoration-color: var(--rule)
       text-underline-offset: var(--underline-offset)
-      -webkit-tap-highlight-color: transparent
 
       &.quiet
         color: var(--ink-dim)
@@ -56,3 +55,7 @@
 
       &[data-hovered]
         text-decoration-color: var(--ink)
+
+      &[data-pressed]
+        color: var(--ink-soft)
+        text-decoration-color: var(--ink-soft)

@@ -47,7 +47,9 @@
       text-align: left
       text-decoration: none
       transition: color var(--transition-fast) var(--ease-out)
-      -webkit-tap-highlight-color: transparent
 
-    .tabs li:not([data-state='live']) .tab[data-hovered]
+    .tabs li:not([data-state='live']) .tab[data-hovered]:not([data-pressed])
       color: var(--ink)
+
+    .tabs .tab[data-pressed]
+      color: var(--ink-soft)

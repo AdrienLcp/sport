@@ -209,11 +209,13 @@
         min-height: var(--target-row)
         align-items: center
         cursor: pointer
-        -webkit-tap-highlight-color: transparent
         transition: color var(--transition-fast) var(--ease-out)
 
-        &[data-hovered]:not([data-state='live'])
+        &[data-hovered]:not([data-state='live'], [data-pressed])
           color: var(--ink)
+
+        &[data-pressed]
+          color: var(--ink-soft)
 
       // Suggested by the order of A to E: the word says it, the cinnabar confirms.
       > [data-due] .state
@@ -281,7 +283,6 @@
       text-decoration: none
       text-transform: uppercase
       transition: background var(--transition-fast) var(--ease-out)
-      -webkit-tap-highlight-color: transparent
       touch-action: manipulation
 
       // A link drawn as the action: it takes the centring a button gives its
@@ -322,11 +323,16 @@
         color: var(--ink-dim)
         font-size: var(--text-ledger)
         box-shadow: var(--inset-hairline)
-        transition: color var(--transition-fast) var(--ease-out), box-shadow var(--transition-fast) var(--ease-out)
+        transition: color var(--transition-fast) var(--ease-out), background var(--transition-fast) var(--ease-out), box-shadow var(--transition-fast) var(--ease-out)
 
         &[data-hovered]
           color: var(--ink)
           background: transparent
+          box-shadow: var(--inset-hairline-dim)
+
+        &[data-pressed]
+          color: var(--ink-soft)
+          background: var(--rule-faint)
           box-shadow: var(--inset-hairline-dim)
 
     // ---------- title, verdict ----------

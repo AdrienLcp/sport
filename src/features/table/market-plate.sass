@@ -25,6 +25,9 @@
       &[data-hovered]
         color: var(--ink)
 
+      &[data-pressed]
+        color: var(--ink-soft)
+
       &[data-disabled]
         color: var(--ink-spent)
         cursor: default
@@ -70,6 +73,13 @@
 
       .item-label
         color: var(--ink)
+
+    .item[data-pressed]
+      .tick
+        box-shadow: var(--inset-hairline-ink)
+
+      .item-label
+        color: var(--ink-soft)
 
     .items li[data-state='done']
       .tick

@@ -45,7 +45,6 @@
       gap: var(--space-s)
       min-height: var(--target)
       cursor: pointer
-      -webkit-tap-highlight-color: transparent
 
       .tick
         @include tick.tick
@@ -66,9 +65,16 @@
         .switch-label
           color: var(--ink-spent)
 
-      &[data-hovered]:not([data-disabled])
+      &[data-hovered]:not([data-disabled], [data-pressed])
         .tick
           box-shadow: var(--inset-hairline-dim)
+
+      &[data-pressed]
+        .tick
+          box-shadow: var(--inset-hairline-ink)
+
+        .switch-label
+          color: var(--ink-soft)
 
     .days
       min-width: 0
@@ -102,7 +108,6 @@
       color: var(--ink-dim)
       text-transform: uppercase
       transition: background var(--transition-fast) var(--ease-out), color var(--transition-fast) var(--ease-out)
-      -webkit-tap-highlight-color: transparent
 
       &[data-selected]
         background: var(--ink)
@@ -117,8 +122,16 @@
           background: var(--rule-soft)
           color: var(--ink-dim)
 
-      &[data-hovered]:not([data-selected], [data-disabled])
+      &[data-hovered]:not([data-selected], [data-disabled], [data-pressed])
         color: var(--ink)
+
+      &[data-pressed]
+        background: var(--rule-faint)
+        color: var(--ink-soft)
+
+        &[data-selected]
+          background: var(--ink-soft)
+          color: var(--ground)
 
     .time-field
       display: flex
