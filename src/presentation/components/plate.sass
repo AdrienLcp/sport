@@ -21,7 +21,7 @@
     max-height: 100%
     padding: var(--space-l) var(--space-l) var(--space-m)
     // An engraved double frame: hairline, gap, hairline. Not a card border.
-    box-shadow: var(--inset-hairline), inset 0 0 0 7px var(--ground), inset 0 0 0 calc(7px + var(--stroke-hair)) var(--rule-soft)
+    box-shadow: var(--inset-hairline), inset 0 0 0 var(--frame-gap) var(--ground), inset 0 0 0 calc(var(--frame-gap) + var(--stroke-hair)) var(--rule-soft)
 
     // ---------- the head band, and the ruled line that is the chrono ----------
 
@@ -499,7 +499,7 @@
   @include layout.wide
     .plate
       width: min(var(--plate-width), 100%)
-      min-height: min(660px, 100%)
+      min-height: min(41.25rem, 100%)
       padding: 0
 
       // The row is held to the plate: a stretch printing seven steps under its

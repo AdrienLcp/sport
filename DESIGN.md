@@ -27,20 +27,20 @@ colors:
 typography:
   display:
     fontFamily: "Libre Franklin, system-ui, sans-serif"
-    fontSize: "clamp(4.5rem, 23vw, 7.5rem)"
+    fontSize: "fluid(4.5rem, 7.5rem, 15rem → 40rem)"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.03em"
     fontFeature: "tabular-nums"
   headline:
     fontFamily: "Libre Franklin, system-ui, sans-serif"
-    fontSize: "clamp(1.9rem, 8vw, 2.9rem)"
+    fontSize: "fluid(1.9rem, 2.9rem, 24rem → 40rem)"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.03em"
   title:
     fontFamily: "Libre Franklin, system-ui, sans-serif"
-    fontSize: "clamp(1.75rem, 7.2vw, 2.6rem)"
+    fontSize: "fluid(1.75rem, 2.6rem, 24rem → 40rem)"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.03em"
@@ -71,22 +71,22 @@ typography:
 rounded:
   none: "0"
 spacing:
-  4xs: "2px"
-  3xs: "4px"
-  2xs: "6px"
-  xs: "8px"
-  s: "12px"
-  m: "16px"
-  l: "22px"
-  xl: "30px"
-  2xl: "42px"
+  4xs: "0.125rem"
+  3xs: "0.25rem"
+  2xs: "0.375rem"
+  xs: "0.5rem"
+  s: "0.75rem"
+  m: "1rem"
+  l: "1.375rem"
+  xl: "1.875rem"
+  2xl: "2.625rem"
 components:
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.ground}"
     typography: "{typography.action}"
     rounded: "{rounded.none}"
-    padding: "22px 12px"
+    padding: "1.375rem 0.75rem"
     width: "100%"
     height: "69px"
   button-primary-hover:
@@ -103,7 +103,7 @@ components:
     textColor: "{colors.ink-dim}"
     typography: "{typography.action}"
     rounded: "{rounded.none}"
-    padding: "17px 12px"
+    padding: "1.0625rem 0.75rem"
     height: "54px"
   button-ghost-hover:
     backgroundColor: "transparent"
@@ -112,12 +112,12 @@ components:
     backgroundColor: "{colors.ground}"
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
-    padding: "22px 22px 16px"
+    padding: "1.375rem 1.375rem 1rem"
   ledger-row:
     backgroundColor: "transparent"
     textColor: "{colors.ink-dim}"
     typography: "{typography.ledger}"
-    padding: "5px 0"
+    padding: "0.3125rem 0"
   ledger-row-live:
     textColor: "{colors.ink}"
   ledger-row-done:
@@ -127,11 +127,11 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
     padding: "0"
-    height: "56px"
+    height: "3.5rem"
   tick:
     backgroundColor: "transparent"
     rounded: "{rounded.none}"
-    size: "14px"
+    size: "0.875rem"
   tick-done:
     backgroundColor: "{colors.ink}"
 ---
@@ -197,9 +197,9 @@ The figures are drawn in their own values, and they live in the token file rathe
 **Character:** A grotesque with enough width to stay legible at a metre and enough weight range to build the whole hierarchy without a second face. Self-hosting is not a preference but a requirement: the app runs with no network during a set, and `font-display: block` is set so a movement name never flashes in a fallback face mid-gesture. `font-synthesis: none` — a weight that does not exist is never faked. `font-variant-numeric: tabular-nums` is set on `body`, so every number in the product sits in its own column and a count changing from 9 to 10 does not shift the line.
 
 ### Hierarchy
-- **Display** (800, `clamp(4.5rem, 23vw, 7.5rem)`, lh 1): the rest countdown, and only it. The one place where a number is allowed to be enormous.
-- **Headline** (800, `clamp(1.9rem, 8vw, 2.9rem)`): plate titles — the session name on the title plate.
-- **Title** (800, `clamp(1.75rem, 7.2vw, 2.6rem)`): the movement name on a working plate.
+- **Display** (800, `sizes.fluid(4.5rem, 7.5rem)` from a 15rem to a 40rem screen, lh 1): the rest countdown, and only it. The one place where a number is allowed to be enormous.
+- **Headline** (800, `sizes.fluid(1.9rem, 2.9rem)` from a 24rem to a 40rem screen): plate titles — the session name on the title plate.
+- **Title** (800, `sizes.fluid(1.75rem, 2.6rem)`, same range as the headline): the movement name on a working plate.
 - **Body** (400, 1rem, lh 1.5, max measure 62ch): cues, guards, prose. Set in `ink-soft`.
 - **Label** (700, 0.72rem, tracking 0.19em, uppercase): the head band, section markers, ranks.
 - **Action** (800, 1.05rem, tracking 0.14em, uppercase): the primary and ghost buttons.
@@ -217,7 +217,7 @@ The figures are drawn in their own values, and they live in the token file rathe
 
 The plate is the layout. `.app-shell` is `100dvh` with safe-area padding; `.plate` is a flex column with `max-height: 100%` and `min-height: 0`, so the figure gives up space on a short screen instead of pushing the head band and the action off the bottom. The body scrolls **inside** the frame; the plate itself never grows past the screen.
 
-Vertical rhythm comes from a single scale, `--space-4xs` to `--space-2xl` — 2, 4, 6, 8, 12, 16, 22, 30, 42 px — with 22px as the plate's own inset and 16px as the gap above the primary action. There is no grid and no container width: a plate is a single column, and the only horizontal division is the head band's `space-between` and the ledger row's baseline-aligned flex.
+Vertical rhythm comes from a single scale, `--space-4xs` to `--space-2xl` — 2, 4, 6, 8, 12, 16, 22, 30, 42 px at the default font size, written in rem so they follow the reader's — with 22px as the plate's own inset and 16px as the gap above the primary action. There is no grid and no container width: a plate is a single column, and the only horizontal division is the head band's `space-between` and the ledger row's baseline-aligned flex.
 
 Responsive behaviour is a change of composition, not of scale alone. On a wide screen the plate splits into two columns via `display: contents` and explicit `order`, so the figure sits beside the text rather than above it. Type scales fluidly through `clamp()` keyed to viewport width, because the reading distance changes with the device: a phone on the floor at one metre and a desktop screen across a mat are both nominal.
 
@@ -284,7 +284,7 @@ A 1px absolutely-positioned bar sitting exactly on the head band's bottom border
 Drawn SVG, one movement per figure, looping without end — unless the movement does not move. A pure hold has no entry in `MOTIONS` and the plate stands still: the plank, the side plank, the hollow, and every one of the eleven stretches. A still figure here is the system working, not a figure that failed to start. Depth is carried by **stroke weight**: torso 8, thigh 5.5, shin 4.2, far side 4.2. Props and floor in `fig-prop`. Under `prefers-reduced-motion` the figure does not freeze — it prints the arrival pose behind the working pose as a broken construction line, which is what a real manual does.
 
 ### The cue block
-Under the legend of a set or warm-up plate: a ruled toggle line (« The movement in detail · 4 steps »), then a two-column list — the term in head-band capitals (Moves, Still, Squeeze, Tempo, Breathe, Support, Stop), the answer in `ink-soft` prose. The toggle swaps the list for the numbered how-to **in the same place**, so the plate never grows. On a phone the block scrolls inside itself under a figure that keeps at least `clamp(120px, 21vh, 190px)`, and « Next » steps aside: the register and the action never move. The « Tempo » line and the figure's cycle read the same `Tempo`.
+Under the legend of a set or warm-up plate: a ruled toggle line (« The movement in detail · 4 steps »), then a two-column list — the term in head-band capitals (Moves, Still, Squeeze, Tempo, Breathe, Support, Stop), the answer in `ink-soft` prose. The toggle swaps the list for the numbered how-to **in the same place**, so the plate never grows. On a phone the block scrolls inside itself under a figure that keeps at least `clamp(150px, 26svh, 220px)`, and « Next » steps aside: the register and the action never move. The « Tempo » line and the figure's cycle read the same `Tempo`.
 
 ### The erratum
 What a printed manual tips in when a page came out wrong: a plate with no figure, the band reading « Erratum » with the failing address as its rank, a headline, one line of prose saying nothing noted is lost, the raw reason in a `facts` list, then the one full-width action back to the session and a ghost reload. It carries no cinnabar: an error is not a state to confirm. The same plate, without reason or reload, answers an unknown address.

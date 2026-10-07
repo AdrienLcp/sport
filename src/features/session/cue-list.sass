@@ -117,7 +117,7 @@
         --outer: linear-gradient(var(--rule), var(--rule))
         --inner: linear-gradient(var(--rule-soft), var(--rule-soft))
         --line: var(--stroke-hair)
-        --gap: calc(7px + var(--stroke-hair))
+        --gap: calc(var(--frame-gap) + var(--stroke-hair))
 
         position: sticky
         top: 0
@@ -144,7 +144,7 @@
 
       .figure-frame
         flex: none
-        height: clamp(150px, 26vh, 220px)
+        height: clamp(150px, 26svh, 220px)
 
       .next-up
         display: none
