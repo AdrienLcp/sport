@@ -464,7 +464,7 @@ export const FR_DICTIONARY = defineDictionary({
       kitTerm: 'Matériel',
       lengthFact: 'Environ {minutes} min',
       lengthTerm: 'Durée',
-      measure: 'Mesurer mes chiffres sur la {id}',
+      measure: 'Relevé de la séance {id}',
       named: '{name}.',
       picked: 'Choisie',
       register: 'Touche une séance pour la choisir',

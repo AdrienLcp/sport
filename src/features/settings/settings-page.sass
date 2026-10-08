@@ -133,9 +133,11 @@
           background: var(--ink-soft)
           color: var(--ground)
 
+    // The picker button of a native time input takes the focus inside the
+    // input's shadow tree, where neither :focus-visible nor :has() reaches it:
+    // only :focus-within does. The box rings on that, and the button, whose own
+    // outline cannot be restyled, marks its stop with a fill instead.
     .time-field
-      @include accessibility.ring-within
-
       display: flex
       align-items: baseline
       justify-content: space-between
@@ -146,6 +148,11 @@
 
       &:focus-within
         border-bottom-color: var(--signal)
+        outline: var(--ring)
+        outline-offset: var(--ring-offset)
+
+      &:focus-within:not(:has(:focus-visible)) input::-webkit-calendar-picker-indicator
+        background-color: var(--rule-soft)
 
       .time-label
         @include typography.caps
@@ -163,7 +170,8 @@
         font-family: inherit
         text-align: right
 
-        &:focus-visible
+        &:focus-visible,
+        &::-webkit-calendar-picker-indicator
           outline: none
 
         &:disabled

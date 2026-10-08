@@ -450,7 +450,7 @@ export const EN_DICTIONARY = defineDictionary({
       kitTerm: 'Kit',
       lengthFact: 'About {minutes} min',
       lengthTerm: 'Length',
-      measure: 'Measure my numbers on {id}',
+      measure: 'Reading for session {id}',
       named: '{name}.',
       picked: 'Picked',
       register: 'Tap a session to pick it',
