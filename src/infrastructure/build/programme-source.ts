@@ -21,8 +21,12 @@ const programmeFile = (root: string, name: string): string | undefined =>
     (path) => existsSync(path)
   )
 
+/** True where the owner's own programme is present: the build is the private one, for the owner's site alone. */
+export const readsPrivateProgramme = (root: string): boolean =>
+  existsSync(resolve(root, PROGRAMME_FOLDERS[0]))
+
 const programmeLabel = (root: string): string =>
-  existsSync(resolve(root, PROGRAMME_FOLDERS[0])) ? 'private' : 'public'
+  readsPrivateProgramme(root) ? 'private' : 'public'
 
 /** Resolves `@programme/<file>` to the private copy when present, the public programme otherwise. */
 export const programmeSource = (): Plugin => {

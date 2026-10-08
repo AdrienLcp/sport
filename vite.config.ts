@@ -8,6 +8,7 @@ import fontaine from 'fontaine/postcss'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+import { privateBuildNoindex } from './src/infrastructure/build/private-build-noindex.ts'
 import { programmeSource } from './src/infrastructure/build/programme-source.ts'
 import { webAppManifest } from './src/infrastructure/pwa/web-app-manifest.ts'
 import { REGIONAL_LOCALES } from './src/presentation/i18n/regional-locales.ts'
@@ -32,6 +33,7 @@ export default defineConfig({
   },
   plugins: [
     programmeSource(),
+    privateBuildNoindex(),
     react({ compiler: { logDiagnostics: true } }),
     {
       ...optimizeLocales.vite({ locales: Object.values(REGIONAL_LOCALES) }),
@@ -41,7 +43,8 @@ export default defineConfig({
     VitePWA({
       filename: 'service-worker.ts',
       injectManifest: {
-        globIgnores: ['screenshots/**'],
+        // The share card is for link previews, never drawn by the app.
+        globIgnores: ['og.png', 'screenshots/**'],
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,webmanifest}']
       },
       injectRegister: false,
