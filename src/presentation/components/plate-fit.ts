@@ -55,16 +55,14 @@ const measure = (plate: HTMLElement): PlateMeasure => ({
  * pushing its action and exits out of the frame. Returns the cleanup.
  */
 export const observePlateFit = (plate: HTMLElement): (() => void) => {
-  let frame = 0
-
-  const update = (): void => {
-    cancelAnimationFrame(frame)
-    frame = requestAnimationFrame(() => {
-      plate.toggleAttribute('data-overflowing', plateOverflows(measure(plate)))
-    })
+  const fit = (): void => {
+    plate.toggleAttribute('data-overflowing', plateOverflows(measure(plate)))
   }
 
-  const sizes = new ResizeObserver(update)
+  // Measured in the resize callback, after layout and before paint: a notice
+  // that shrinks the stage never shows a frame of the plate overflowing it.
+  // Observing a box delivers its size at once, so a page swap is measured too.
+  const sizes = new ResizeObserver(fit)
   const observeBoxes = (): void => {
     sizes.disconnect()
     if (plate.parentElement !== null) sizes.observe(plate.parentElement)
@@ -73,17 +71,13 @@ export const observePlateFit = (plate: HTMLElement): (() => void) => {
       sizes.observe(box)
     }
   }
-  const pages = new MutationObserver(() => {
-    observeBoxes()
-    update()
-  })
+  const pages = new MutationObserver(observeBoxes)
 
   observeBoxes()
   pages.observe(plate, { childList: true, subtree: true })
-  update()
+  fit()
 
   return () => {
-    cancelAnimationFrame(frame)
     sizes.disconnect()
     pages.disconnect()
   }

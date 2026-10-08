@@ -385,6 +385,10 @@
     // ---------- title, verdict ----------
 
     .body
+      // The containing block of what react-aria hides inside it: a visually
+      // hidden input placed against the plate would hang below a squeezed
+      // body, scroll the document and flip plate-fit back and forth.
+      position: relative
       flex: 1 1 auto
       min-height: var(--body-floor)
       display: flex
