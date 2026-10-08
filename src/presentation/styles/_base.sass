@@ -25,8 +25,7 @@
     scrollbar-color: var(--rule) var(--ground)
     scrollbar-width: thin
 
-  :where(*)
-    @include accessibility.ring
+  @include accessibility.ring-focusables
 
   // The one authored moment: the plate turns, and the new figure is laid down
   // like ink across the page. It holds when it lands; it never blinks.

@@ -91,12 +91,6 @@ react-aria, indented Sass, strict TypeScript, Biome, Vitest,
 `result`, `safe-storage`, `browser`, `react`, `theme-preference`.
 The visual system is described in [`DESIGN.md`](DESIGN.md).
 
-`vite build` warns that `inlineDynamicImports` is deprecated: vite-plugin-pwa
-2.0.0, the latest, still passes it to Rolldown when it bundles the service
-worker — upstream issue
-[vite-pwa/vite-plugin-pwa#912](https://github.com/vite-pwa/vite-plugin-pwa/issues/912).
-Upgrade once a release fixes it; `node_modules` is not patched.
-
 | Route | Plate |
 | --- | --- |
 | `/` | The session of the day; `/report` opens its report over it |
@@ -106,6 +100,13 @@ Upgrade once a release fixes it; `node_modules` is not patched.
 | `/settings` | Language, printing, reminders, install, data, specimen |
 | `/specimen` | Opens the made-up profile and lands on the curves |
 | `/dev/sheet`, `/dev/strip`, `/dev/figure/:id` | Drawing tools: contact sheet, decomposition, one figure |
+
+## Known upstream issues
+
+- [vite-pwa/vite-plugin-pwa#912](https://github.com/vite-pwa/vite-plugin-pwa/issues/912):
+  `vite build` warns that `inlineDynamicImports` is deprecated — vite-plugin-pwa
+  2.0.0, the latest, still passes it to Rolldown for the service worker. No
+  release fixes it yet; upgrade once one does. `node_modules` is not patched.
 
 ## Licence
 

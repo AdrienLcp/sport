@@ -44,10 +44,10 @@
       justify-content: center
       min-width: 0
 
-    // Capped at 24px so a wide screen gets air between weeks rather than fat
+    // Capped at 1.5rem so a wide screen gets air between weeks rather than fat
     // columns; the stack grows from one baseline, square-ended like the plate.
     .stack
-      width: min(24px, 64%)
+      width: min(1.5rem, 64%)
       display: flex
       flex-direction: column-reverse
       gap: var(--space-4xs)
@@ -55,7 +55,7 @@
     .segment
       flex: none
       height: calc(var(--segment-height) - var(--space-4xs))
-      min-height: 2px
+      min-height: var(--stroke-bold)
       background: var(--ink-dim)
 
       &[data-tone='hollow']

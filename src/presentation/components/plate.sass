@@ -232,7 +232,7 @@
 
       i
         flex: 1 1 auto
-        height: 6px
+        height: var(--space-2xs)
         box-shadow: var(--inset-hairline)
 
         &[data-on='true']
@@ -451,7 +451,7 @@
   // figure in the same frame with no plate around it.
   .figure-frame
     flex: 1 1 auto
-    min-height: 90px
+    min-height: 5.625rem
     display: grid
     place-items: center
     padding: var(--space-s) 0 var(--space-3xs)
@@ -460,7 +460,7 @@
     svg
       width: 100%
       height: 100%
-      max-height: 280px
+      max-height: 17.5rem
 
   // A phone with browser chrome leaves barely 600px of height. The figure and
   // the action keep their size; everything secondary gives up its air, so the
@@ -533,7 +533,7 @@
           flex: 0 1 auto
 
           svg
-            max-height: 340px
+            max-height: 21.25rem
 
       &.single
         padding: var(--space-xl) var(--space-2xl) var(--space-l)

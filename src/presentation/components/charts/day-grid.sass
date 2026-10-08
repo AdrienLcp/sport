@@ -12,8 +12,8 @@
       @include layout.container
 
       --label-width: 1.4rem
-      --gap: 3px
-      --cell: min(20px, calc((100cqi - var(--label-width) - var(--space-s) - (var(--grid-weeks) - 1) * var(--gap)) / var(--grid-weeks)))
+      --gap: 0.1875rem
+      --cell: min(1.25rem, calc((100cqi - var(--label-width) - var(--space-s) - (var(--grid-weeks) - 1) * var(--gap)) / var(--grid-weeks)))
       display: grid
       grid-template-columns: var(--label-width) 1fr
       gap: var(--space-s)

@@ -3,6 +3,4 @@
 // The ring a chart shows when the keyboard walks it, drawn by the plot around
 // the invisible scrubber, a little away from the marks so it never sits on one.
 @mixin ring
-  --ring-offset: var(--space-2xs)
-
-  @include accessibility.ring-within
+  @include accessibility.ring-within($offset: var(--space-2xs))
