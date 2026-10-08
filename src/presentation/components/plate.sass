@@ -12,6 +12,10 @@
 
 @layer components
   .plate
+    --plate-inset-top: var(--space-l)
+    --plate-inset-inline: var(--space-l)
+    --plate-inset-bottom: var(--space-m)
+
     position: relative
     display: flex
     flex-direction: column
@@ -19,9 +23,53 @@
     // The body scrolls inside the frame; the plate itself never grows past the
     // screen, or the head band and the action leave with it.
     max-height: 100%
-    padding: var(--space-l) var(--space-l) var(--space-m)
+    padding: var(--plate-inset-top) var(--plate-inset-inline) var(--plate-inset-bottom)
     // An engraved double frame: hairline, gap, hairline. Not a card border.
     box-shadow: var(--inset-hairline), inset 0 0 0 var(--frame-gap) var(--ground), inset 0 0 0 calc(var(--frame-gap) + var(--stroke-hair)) var(--rule-soft)
+
+    // A plate that cannot fit even with its body squeezed to the floor — a page
+    // zoomed to 200 %, a phone on its side — scrolls as one page, the body laid
+    // out whole: every control stays reachable, and no scroller nests in
+    // another. plate-fit.ts sets the attribute.
+    //
+    // The page passes under two strips pinned to the top and the bottom, which
+    // redraw the stretch of the engraved frame they cover — outer hairline,
+    // gap, inner hairline — so the text never crosses the frame's lines. A
+    // phone's set plate already scrolls this way with its own pinned head
+    // band (cue-list.sass).
+    &[data-overflowing]:not(.spread:has(.cue-block))
+      --outer: linear-gradient(var(--rule), var(--rule))
+      --inner: linear-gradient(var(--rule-soft), var(--rule-soft))
+      --line: var(--stroke-hair)
+      --gap: calc(var(--frame-gap) + var(--stroke-hair))
+
+      overflow-y: auto
+      overscroll-behavior: contain
+      padding-block: 0
+
+      &::before,
+      &::after
+        content: ''
+        position: sticky
+        z-index: 1
+        flex: none
+        margin-inline: calc(-1 * var(--plate-inset-inline))
+
+      &::before
+        top: 0
+        height: var(--plate-inset-top)
+        background: var(--outer) 0 0 / 100% var(--line), var(--outer) 0 0 / var(--line) 100%, var(--outer) 100% 0 / var(--line) 100%, var(--inner) var(--gap) var(--gap) / calc(100% - 2 * var(--gap)) var(--line), var(--inner) var(--gap) var(--gap) / var(--line) 100%, var(--inner) calc(100% - var(--gap)) var(--gap) / var(--line) 100%, var(--ground)
+        background-repeat: no-repeat
+
+      &::after
+        bottom: 0
+        height: var(--plate-inset-bottom)
+        background: var(--outer) 0 100% / 100% var(--line), var(--outer) 0 0 / var(--line) 100%, var(--outer) 100% 0 / var(--line) 100%, var(--inner) var(--gap) calc(100% - var(--gap)) / calc(100% - 2 * var(--gap)) var(--line), var(--inner) var(--gap) 0 / var(--line) calc(100% - var(--gap)), var(--inner) calc(100% - var(--gap)) 0 / var(--line) calc(100% - var(--gap)), var(--ground)
+        background-repeat: no-repeat
+
+      .body
+        flex: none
+        overflow-y: visible
 
     // ---------- the head band, and the ruled line that is the chrono ----------
 
@@ -31,6 +79,7 @@
       position: relative
       flex: none
       display: flex
+      flex-wrap: wrap
       align-items: baseline
       justify-content: space-between
       gap: var(--space-s)
@@ -290,8 +339,12 @@
       // The label's line box keeps room for descenders capitals never have, so
       // the caps ride high. Trimmed to the ink, then given back what was cut on
       // both sides alike: same height, caps centred.
+      // A word wider than the action — a page zoomed to 200 % — breaks at a
+      // hyphen rather than running past the button's edge.
       .action-label
         display: block
+        hyphens: auto
+        overflow-wrap: break-word
 
         @supports (text-box: trim-both cap alphabetic)
           padding-block: calc((1lh - 1cap) / 2)
@@ -333,7 +386,7 @@
 
     .body
       flex: 1 1 auto
-      min-height: 0
+      min-height: var(--body-floor)
       display: flex
       flex-direction: column
       justify-content: center
@@ -467,7 +520,9 @@
   // head band — which carries the chrono — never scrolls off the top.
   @media (max-height: 720px)
     .plate
-      padding: var(--space-m) var(--space-m) var(--space-s)
+      --plate-inset-top: var(--space-m)
+      --plate-inset-inline: var(--space-m)
+      --plate-inset-bottom: var(--space-s)
 
       .ledger
         margin-top: var(--space-s)
@@ -494,9 +549,12 @@
 
   @include layout.wide
     .plate
+      --plate-inset-top: 0
+      --plate-inset-inline: 0
+      --plate-inset-bottom: 0
+
       width: min(var(--plate-width), 100%)
       min-height: min(41.25rem, 100%)
-      padding: 0
 
       // The row is held to the plate: a stretch printing seven steps under its
       // figure grew the page past the frame and the browser window. Held, the
@@ -536,7 +594,9 @@
             max-height: 21.25rem
 
       &.single
-        padding: var(--space-xl) var(--space-2xl) var(--space-l)
+        --plate-inset-top: var(--space-xl)
+        --plate-inset-inline: var(--space-2xl)
+        --plate-inset-bottom: var(--space-l)
 
       .caption
         font-size: var(--text-name-wide)

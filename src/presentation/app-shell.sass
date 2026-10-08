@@ -9,7 +9,7 @@
     height: 100dvh
     display: grid
     grid-template-rows: auto minmax(0, 1fr)
-    padding: max(var(--space-xs), env(safe-area-inset-top)) max(var(--space-xs), env(safe-area-inset-right)) max(var(--space-xs), env(safe-area-inset-bottom)) max(var(--space-xs), env(safe-area-inset-left))
+    padding: max(var(--space-xs), var(--safe-area-top)) max(var(--space-xs), var(--safe-area-right)) max(var(--space-xs), var(--safe-area-bottom)) max(var(--space-xs), var(--safe-area-left))
 
     .notices
       display: grid
@@ -24,7 +24,7 @@
 
   @include layout.wide
     .app-shell
-      padding: var(--space-l)
+      padding: max(var(--space-l), var(--safe-area-top)) max(var(--space-l), var(--safe-area-right)) max(var(--space-l), var(--safe-area-bottom)) max(var(--space-l), var(--safe-area-left))
 
       .notices
         justify-self: center

@@ -215,7 +215,7 @@ The figures are drawn in their own values, and they live in the token file rathe
 
 ## Layout
 
-The plate is the layout. `.app-shell` is `100dvh` with safe-area padding; `.plate` is a flex column with `max-height: 100%` and `min-height: 0`, so the figure gives up space on a short screen instead of pushing the head band and the action off the bottom. The body scrolls **inside** the frame; the plate itself never grows past the screen.
+The plate is the layout. `.app-shell` is `100dvh` with safe-area padding; `.plate` is a flex column with `max-height: 100%` and `min-height: 0`, so the figure gives up space on a short screen instead of pushing the head band and the action off the bottom. The body scrolls **inside** the frame, down to a floor of `--body-floor`; the plate itself never grows past the screen.
 
 Vertical rhythm comes from a single scale, `--space-4xs` to `--space-2xl` — 2, 4, 6, 8, 12, 16, 22, 30, 42 px at the default font size, written in rem so they follow the reader's — with 22px as the plate's own inset and 16px as the gap above the primary action. There is no grid and no container width: a plate is a single column, and the only horizontal division is the head band's `space-between` and the ledger row's baseline-aligned flex.
 
@@ -224,6 +224,8 @@ Responsive behaviour is a change of composition, not of scale alone. On a wide s
 ### Named Rules
 
 **The Turn, Don't Scroll Rule.** A plate fits the screen. If content does not fit, the body scrolls inside the frame — the frame, the head band and the action never leave. A screen where the engraved frame scrolls out of view has broken the world's central promise. (`min-height: 0` on every flex parent is what enforces this; a missing one is the known failure mode.)
+
+**The zoom exception.** A plate that cannot fit even with its body squeezed to `--body-floor` — a page zoomed to 200 %, a phone on its side — scrolls as one page instead, the body laid out whole, so every control stays reachable and no scroller nests in another. The frame still never leaves: two strips pinned to the top and the bottom redraw the stretch of the engraved frame the page passes under. `plate-fit.ts` decides, from the plate's own layout, and marks the plate `data-overflowing`; at 100 % on a phone or a desk the attribute never appears and the rule above holds unchanged.
 
 **The One Action Rule.** A plate carries one primary action, full width, at the bottom, sized as the largest touch target on the screen (69px). Secondary destinations are ghost-toned and visibly smaller (54px), and they share a wrapping row rather than stacking into a menu.
 
@@ -319,6 +321,6 @@ Selection is `ink` on `ground` inverted, the caret is cinnabar, the scrollbar is
 - **Don't** introduce `border-radius`. It is 0 throughout and there is no scale to draw from.
 - **Don't** set prose or small text in `signal` (4.5:1). Use `signal-ink` for small text, or ink.
 - **Don't** add a badge, a day streak, a ring, a trophy or an automatic congratulation. The only reward this product permits is last week's number; regularity is reported in weeks, as a fact.
-- **Don't** let a plate scroll as a whole, and never allow the frame, the head band or the action to leave the screen.
+- **Don't** let a plate scroll as a whole when it fits — only the zoom exception does — and never allow the frame to leave the screen.
 - **Don't** use a raw hex outside `_tokens.sass`. The one that used to live in a component (`#fff` on the hovered primary action) is now the token `--ink-bright`, and it stays an anomaly, not a precedent.
 - **Don't** ship a sound, a haptic or any output that starts at a non-zero volume. This app is used in a quiet home at the end of the day; anything audible begins muted and is opt-in — reminders included, which are silent unless the reader asks for the system sound.

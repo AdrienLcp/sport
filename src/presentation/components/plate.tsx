@@ -3,6 +3,7 @@ import { useEffectEvent, useLayoutEffect, useRef } from 'react'
 
 import { usePrefersReducedMotion } from '@/infrastructure/browser'
 
+import { observePlateFit } from './plate-fit'
 import './plate.sass'
 
 type PlateProps = {
@@ -27,11 +28,20 @@ export const Plate: React.FC<PlateProps> = ({
   children,
   className,
   variant = 'single'
-}) => (
-  <article className={classNames('plate', variant, className)}>
-    {children}
-  </article>
-)
+}) => {
+  const plate = useRef<HTMLElement>(null)
+
+  useLayoutEffect(() => {
+    if (plate.current === null) return
+    return observePlateFit(plate.current)
+  }, [])
+
+  return (
+    <article className={classNames('plate', variant, className)} ref={plate}>
+      {children}
+    </article>
+  )
+}
 
 export type Chrono = {
   /** 1 when the time is whole, 0 when it is spent. */

@@ -15,6 +15,13 @@
     font-variant-numeric: tabular-nums
     overscroll-behavior: none
 
+  // The app shell pads by the safe area itself, by the larger of its space and
+  // the inset; the root only fills the screen and keeps sideways overflow off
+  // the page.
+  #root
+    min-block-size: 100dvh
+    overflow-x: clip
+
   // The surfaces the browser draws for us still belong to the plate.
   ::selection
     background: var(--ink)
