@@ -14,6 +14,9 @@ import { webAppManifest } from './src/infrastructure/pwa/web-app-manifest.ts'
 import { REGIONAL_LOCALES } from './src/presentation/i18n/regional-locales.ts'
 import { themeStore } from './src/presentation/theme/theme-store.ts'
 
+/** Written by `fonts.fallback-faces` in `_fonts.sass`, one face per weight band. */
+const FALLBACK_FACES_WRITTEN_PER_WEIGHT_BAND = 'Libre Franklin fallback'
+
 /**
  * Each face gets a fallback face of its own, a local font scaled to the same
  * metrics: text paints at once in it and keeps its place when the real face
@@ -21,7 +24,9 @@ import { themeStore } from './src/presentation/theme/theme-store.ts'
  */
 const metricMatchedFallbackFaces = fontaine({
   fallbacks: ['Arial'],
-  resolvePath: (path) => resolve(import.meta.dirname, 'public', `.${path}`)
+  resolvePath: (path) => resolve(import.meta.dirname, 'public', `.${path}`),
+  skipFontFaceGeneration: (fallbackName) =>
+    fallbackName === FALLBACK_FACES_WRITTEN_PER_WEIGHT_BAND
 })
 
 export default defineConfig({

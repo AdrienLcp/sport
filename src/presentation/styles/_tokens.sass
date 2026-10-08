@@ -13,6 +13,7 @@
 // the line above its token, never after it.
 
 @use '@adrienlcp/styles/sizes'
+@use '@adrienlcp/styles/breakpoints'
 @use '@adrienlcp/styles/tokens'
 
 @layer tokens
@@ -95,9 +96,10 @@
     --space-l: 1.375rem
     --space-xl: 1.875rem
     --space-2xl: 2.625rem
+    --gutter: var(--space-xs)
 
-    --measure: 62ch
-    --measure-wide: 74ch
+    --measure: 42.66em
+    --measure-wide: 50.91em
     --plate-width: 67.5rem
     // The least a plate's body may shrink to before the whole plate scrolls.
     --body-floor: 7.5rem
@@ -131,3 +133,7 @@
     --transition-fast: 160ms
     --transition-slow: 320ms
     --turn: calc(var(--transition-fast) * 2.625)
+
+  @include breakpoints.wide
+    :root
+      --gutter: var(--space-l)
