@@ -43,7 +43,10 @@ export default defineConfig({
       filename: 'service-worker.ts',
       injectManifest: {
         globIgnores: ['screenshots/**'],
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2,webmanifest}']
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2,webmanifest}'],
+        // One classic script: the worker imports nothing at runtime, and the
+        // 'es' build passes Rolldown the deprecated inlineDynamicImports.
+        rollupFormat: 'iife'
       },
       injectRegister: false,
       manifest: webAppManifest,

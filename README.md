@@ -101,13 +101,6 @@ The visual system is described in [`DESIGN.md`](DESIGN.md).
 | `/specimen` | Opens the made-up profile and lands on the curves |
 | `/dev/sheet`, `/dev/strip`, `/dev/figure/:id` | Drawing tools: contact sheet, decomposition, one figure |
 
-## Known upstream issues
-
-- [vite-pwa/vite-plugin-pwa#912](https://github.com/vite-pwa/vite-plugin-pwa/issues/912):
-  `vite build` warns that `inlineDynamicImports` is deprecated — vite-plugin-pwa
-  2.0.0, the latest, still passes it to Rolldown for the service worker. No
-  release fixes it yet; upgrade once one does. `node_modules` is not patched.
-
 ## Licence
 
 MIT. The Libre Franklin font is under the SIL Open Font License
