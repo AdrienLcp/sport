@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { resolve } from 'node:path'
 
+import { metricTwins } from '@adrienlcp/styles/metric-twins'
 import { themePreferencePlugin } from '@adrienlcp/theme-preference/vite'
 import optimizeLocales from '@react-aria/optimize-locales-plugin'
 import react from '@vitejs/plugin-react'
@@ -8,7 +9,6 @@ import fontaine from 'fontaine/postcss'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-import { arialMetricTwins } from './src/infrastructure/build/arial-metric-twins.ts'
 import { programmeSource } from './src/infrastructure/build/programme-source.ts'
 import { webAppManifest } from './src/infrastructure/pwa/web-app-manifest.ts'
 import { REGIONAL_LOCALES } from './src/presentation/i18n/regional-locales.ts'
@@ -29,7 +29,7 @@ export default defineConfig({
   // `/journal/report` against `/journal/`, and every nested route breaks.
   base: '/',
   css: {
-    postcss: { plugins: [metricMatchedFallbackFaces, arialMetricTwins()] }
+    postcss: { plugins: [metricMatchedFallbackFaces, metricTwins()] }
   },
   plugins: [
     programmeSource(),

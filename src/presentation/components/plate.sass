@@ -399,11 +399,9 @@
       &.from-top
         justify-content: flex-start
 
-      // A register scrolls; reserving the gutter keeps the scrollbar off its
-      // columns instead of shaving them when the content grows.
+      // A register scrolls; the padding keeps a scrollbar off its columns.
       &.register
         justify-content: flex-start
-        scrollbar-gutter: stable
         padding-right: var(--space-xs)
 
     .headline
