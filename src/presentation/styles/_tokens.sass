@@ -101,7 +101,7 @@
     --plate-width: 67.5rem
 
     // A row a thumb can hit, and the reach a smaller control borrows to make one.
-    --target-row: 46px
+    --control-height: max(var(--target), 2.875rem)
     --target-reach: 14px
     --tick: 0.875rem
     --ledger-inset: 0.3125rem
@@ -128,5 +128,5 @@
 
     --transition-fast: 160ms
     --transition-slow: 320ms
-    --turn: 420ms
+    --turn: calc(var(--transition-fast) * 2.625)
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1)

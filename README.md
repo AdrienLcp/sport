@@ -91,6 +91,12 @@ react-aria, indented Sass, strict TypeScript, Biome, Vitest,
 `result`, `safe-storage`, `browser`, `react`, `theme-preference`.
 The visual system is described in [`DESIGN.md`](DESIGN.md).
 
+`vite build` warns that `inlineDynamicImports` is deprecated: vite-plugin-pwa
+2.0.0, the latest, still passes it to Rolldown when it bundles the service
+worker — upstream issue
+[vite-pwa/vite-plugin-pwa#912](https://github.com/vite-pwa/vite-plugin-pwa/issues/912).
+Upgrade once a release fixes it; `node_modules` is not patched.
+
 | Route | Plate |
 | --- | --- |
 | `/` | The session of the day; `/report` opens its report over it |

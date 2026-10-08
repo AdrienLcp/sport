@@ -1,7 +1,8 @@
-// The ring a chart shows when the keyboard walks it: the world's one focus
-// signal, drawn by the plot around the invisible scrubber, a little away from
-// the marks so it never sits on one.
+@use '@adrienlcp/styles/accessibility'
+
+// The ring a chart shows when the keyboard walks it, drawn by the plot around
+// the invisible scrubber, a little away from the marks so it never sits on one.
 @mixin ring
-  &:has(.chart-scrubber:focus-visible)
-    outline: var(--ring)
-    outline-offset: var(--space-2xs)
+  --ring-offset: var(--space-2xs)
+
+  @include accessibility.ring-within
