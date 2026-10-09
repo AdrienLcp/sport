@@ -1,2 +1,5 @@
 https://sport-buk.pages.dev/*
   X-Robots-Tag: noindex
+
+https://:deployment.sport-buk.pages.dev/*
+  X-Robots-Tag: noindex
