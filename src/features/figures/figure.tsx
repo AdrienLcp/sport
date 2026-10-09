@@ -2,7 +2,10 @@ import type React from 'react'
 import { useEffectEvent, useLayoutEffect, useRef, useState } from 'react'
 
 import type { FigureId, Tempo } from '@/features/program/program-types'
-import { usePrefersReducedMotion } from '@/infrastructure/browser'
+import {
+  readDurationSeconds,
+  usePrefersReducedMotion
+} from '@/infrastructure/browser'
 import { Button } from '@/presentation/components/button'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
@@ -49,9 +52,6 @@ const FAR = 4.2
 const PROP = 2.2
 const GROUND_WEIGHT = 1.6
 const HEAD_RADIUS = 7
-
-/** The plate is still being laid down for --turn; the body waits its turn. */
-const AFTER_THE_TURN = 0.42
 
 const WEIGHT: Partial<Record<JointId, number>> = {
   ankle: SHIN,
@@ -231,12 +231,14 @@ const useGesture = ({
     repaint(drawn, readPrintedPose())
     if (motion === undefined || isStill) return
 
+    // The plate is still being laid down for --turn; the body waits its turn.
+    const afterTheTurn = readDurationSeconds(drawn, '--turn')
     let frame = 0
     let opened = 0
 
     const draw = (now: number) => {
       if (opened === 0) opened = now
-      const seconds = (now - opened) / 1000 - AFTER_THE_TURN
+      const seconds = (now - opened) / 1000 - afterTheTurn
 
       if (seconds >= playSeconds) {
         repaint(drawn, readPrintedPose())

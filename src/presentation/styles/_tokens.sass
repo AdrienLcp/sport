@@ -16,6 +16,13 @@
 @use '@adrienlcp/styles/breakpoints'
 @use '@adrienlcp/styles/tokens'
 
+// Registered as a <time>, so the figure reads --turn resolved (0.42s) and waits
+// exactly as long as the plate takes to lay down.
+@property --turn
+  syntax: '<time>'
+  inherits: true
+  initial-value: 0s
+
 @layer tokens
   :root
     @include tokens.defaults

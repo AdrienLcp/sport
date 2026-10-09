@@ -6,6 +6,22 @@ export {
   useScreenAwake
 } from '@adrienlcp/browser/react'
 
+const MILLISECONDS = /ms$/
+
+/**
+ * A `<time>` custom property as computed on `element`, in seconds. The property
+ * must be registered with `@property`, or the browser hands back its raw text.
+ */
+export const readDurationSeconds = (
+  element: Element,
+  property: `--${string}`
+): number => {
+  const value = getComputedStyle(element).getPropertyValue(property).trim()
+  const amount = Number.parseFloat(value)
+  if (Number.isNaN(amount)) return 0
+  return MILLISECONDS.test(value) ? amount / 1000 : amount
+}
+
 /** The browser's own save dialog. No library, no server, no account. */
 export const downloadTextFile = ({
   name,
