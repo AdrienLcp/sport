@@ -104,4 +104,21 @@ The visual system is described in [`DESIGN.md`](DESIGN.md).
 ## Licence
 
 MIT. The Libre Franklin font is under the SIL Open Font License
-(`public/fonts/OFL.txt`).
+(`public/fonts/OFL.txt`), which reserves no font name.
+
+`public/fonts/libre-franklin-latin.woff2` is modified: upstream Libre Franklin
+3.000 has no tabular figures, so `scripts/add-tabular-figures.py` adds
+`zero.tf` to `nine.tf` — each digit centred on the widest digit's advance, at
+every weight of the variable font — behind a `tnum` feature, and marks the
+version string. To regenerate, put the upstream subset back at that path and
+run:
+
+```bash
+python -m pip install fonttools brotli
+python scripts/add-tabular-figures.py public/fonts/libre-franklin-latin.woff2
+```
+
+Then re-measure the digits' fallback with `pnpm exec measure-font
+public/fonts/libre-franklin-latin.woff2 --size-adjust 1.04307 --family
+'Libre Franklin' --weight 400 --weight 600 --weight 700 --weight 800 --figures
+--figure-feature tnum` and copy `$figures` into `_fonts.sass`.
