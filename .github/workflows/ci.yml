@@ -43,6 +43,12 @@ jobs:
       - name: Test with coverage
         run: pnpm test:coverage
 
+      - name: Install Chromium for the browser checks
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser checks
+        run: pnpm test:browser
+
       - name: Coverage summary
         run: |
           node -p "'Line coverage: ' + require('./coverage/coverage-summary.json').total.lines.pct + '%'" >> "$GITHUB_STEP_SUMMARY"

@@ -78,9 +78,10 @@ deploy anything but the public one.
 ```bash
 pnpm install
 pnpm dev          # http://localhost:5186
-pnpm validate     # typecheck + build + biome ci + tests
+pnpm validate     # typecheck + build + biome ci + tests + browser checks
 pnpm lint         # biome check --write
 pnpm test         # vitest
+pnpm test:browser # the built rest timer keeps its width as it ticks, in a muted Chromium
 pnpm preview      # the built app with its service worker, http://localhost:5187
 ```
 
@@ -120,5 +121,5 @@ python scripts/add-tabular-figures.py public/fonts/libre-franklin-latin.woff2
 
 Then re-measure the digits' fallback with `pnpm exec measure-font
 public/fonts/libre-franklin-latin.woff2 --size-adjust 1.04307 --family
-'Libre Franklin' --weight 400 --weight 600 --weight 700 --weight 800 --figures
+'Libre Franklin' --weight 400 --weight 700 --weight 800 --figures
 --figure-feature tnum` and copy `$figures` into `_fonts.sass`.
