@@ -2,7 +2,7 @@
 // one column on a phone. Every control is a ledger line, a tick or a ruled
 // field — nothing a printed manual would not already hold.
 
-@use '@adrienlcp/styles/accessibility'
+@use '../../presentation/styles/focus'
 @use '../../presentation/styles/layout'
 @use '../../presentation/styles/tick'
 @use '../../presentation/styles/typography'
@@ -38,7 +38,7 @@
 
     // A switch is the market list's tick: a square that inks, a label beside it.
     .switch
-      @include accessibility.ring
+      @include focus.ring
 
       display: flex
       align-items: center

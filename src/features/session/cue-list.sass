@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/accessibility'
+@use '../../presentation/styles/focus'
 @use '../../presentation/styles/layout'
 @use '../../presentation/styles/typography'
 
@@ -17,7 +17,7 @@
   // tall enough for a thumb. Bold ink once open, like a live line.
   .cue-toggle
     @include typography.caps
-    @include accessibility.ring-inset
+    @include focus.ring-inset
 
     flex: none
     display: flex

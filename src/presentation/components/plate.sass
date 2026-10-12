@@ -7,6 +7,7 @@
 // come after every rule they override.
 
 @use '@adrienlcp/styles/accessibility'
+@use '../styles/focus'
 @use '../styles/layout'
 @use '../styles/typography'
 
@@ -251,7 +252,7 @@
     // The same lines, picked by a tap: the front door's five sessions.
     .register
       > .choice
-        @include accessibility.ring-inset
+        @include focus.ring-inset
 
         min-height: var(--control-height)
         align-items: center

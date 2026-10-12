@@ -1,4 +1,4 @@
-@use '@adrienlcp/styles/accessibility'
+@use 'focus'
 @use 'layout'
 @use 'typography'
 
@@ -32,7 +32,7 @@
     scrollbar-color: var(--rule) var(--ground)
     scrollbar-width: thin
 
-  @include accessibility.ring-focusables
+  @include focus.ring-focusables
 
   // The one authored moment: the plate turns, and the new figure is laid down
   // like ink across the page. It holds when it lands; it never blinks.

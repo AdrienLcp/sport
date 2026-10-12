@@ -6,10 +6,9 @@ export {
   reloadPage,
   selectContents
 } from '@adrienlcp/browser'
-export {
-  usePrefersReducedMotion,
-  useScreenAwake
-} from '@adrienlcp/browser/react'
+export { useScreenAwake } from '@adrienlcp/browser/react'
+
+export { usePrefersReducedMotion } from './reduced-motion'
 
 /** The browser's own save dialog. No library, no server, no account. */
 export const downloadTextFile = ({

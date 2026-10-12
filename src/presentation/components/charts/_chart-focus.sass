@@ -1,6 +1,6 @@
-@use '@adrienlcp/styles/accessibility'
+@use '../../styles/focus'
 
 // The ring a chart shows when the keyboard walks it, drawn by the plot around
 // the invisible scrubber, a little away from the marks so it never sits on one.
 @mixin ring
-  @include accessibility.ring-within($offset: var(--space-2xs))
+  @include focus.ring-within($offset: var(--space-2xs))
