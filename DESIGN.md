@@ -266,7 +266,7 @@ Form language in the figures is separate and deliberate: bodies are drawn as rou
 There are no cards. The plate is the only container: ground background, the engraved triple-hairline frame, 22px inset, no radius, no shadow. Nested containers do not exist in this world.
 
 ### Inputs / Fields
-- **Style:** no box at all. A field is a baseline row with a 1px bottom rule; the input itself is transparent, borderless, 2.1rem / 800 in `ink` with tabular numerals — the value is typographically a display number, not form filler.
+- **Style:** no box at all. A field is a baseline row with a 2px bottom rule; the input itself is transparent, borderless, 2.1rem / 800 in `ink` with tabular numerals — the value is typographically a display number, not form filler.
 - **Focus:** the bottom rule turns cinnabar via `:focus-within`. Nothing glows, nothing grows.
 - **Placeholder:** `ink-dim` at weight 400, so an empty field reads as empty rather than as a faint value.
 - **Minimum height:** 56px.
