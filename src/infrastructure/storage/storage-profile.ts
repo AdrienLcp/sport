@@ -12,7 +12,7 @@ import {
  */
 export type StorageProfile = 'own' | 'specimen'
 
-const ACTIVE_PROFILE_KEY = 'seance.profile.v1'
+export const ACTIVE_PROFILE_KEY = 'seance.profile.v1'
 
 /** Unreadable storage reads as the reader's own profile, the only one it can hold. */
 export const readActiveProfile = (): StorageProfile => {

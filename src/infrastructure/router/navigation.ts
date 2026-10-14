@@ -31,6 +31,7 @@ export const paths = {
   journalBackup: '/journal/backup',
   journalMeasure: '/journal/measure',
   journalReport: '/journal/report',
+  legal: '/legal',
   progress: '/progress',
   sessionReport: '/report',
   settings: '/settings',
@@ -62,6 +63,9 @@ export const journalReportPathFor = (): string =>
 
 export const journalBackupPathFor = (): string =>
   pathFor(paths.journalBackup, {})
+
+/** The legal notice and privacy page, linked from the foot of every screen. */
+export const legalPathFor = (): string => pathFor(paths.legal, {})
 
 export const progressPathFor = (): string => pathFor(paths.progress, {})
 

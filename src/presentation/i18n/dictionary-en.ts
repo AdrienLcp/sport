@@ -74,6 +74,7 @@ export const EN_DICTIONARY = defineDictionary({
     erratum: 'Erratum — Séance',
     figure: 'Figure — Séance',
     journal: 'Journal — Séance',
+    legal: 'Legal notice — Séance',
     measure: 'Reading — Séance',
     progress: 'Progress — Séance',
     report: 'Report — Séance',
@@ -166,6 +167,60 @@ export const EN_DICTIONARY = defineDictionary({
       weightColumn: 'Weight'
     },
     title: 'Journal · The register'
+  },
+  legal: {
+    head: 'Legal notice',
+    host: {
+      body: 'Séance is hosted by:',
+      heading: 'Host'
+    },
+    kept: 'What it keeps',
+    measurement: {
+      body: 'Séance measures no audience: no counter, no tracker, no analytics. Nobody, me included, knows who opens it or how often.',
+      heading: 'Audience measurement'
+    },
+    publisher: {
+      address:
+        'As a non-professional publisher, I give the host’s identity in place of a postal address (LCEN, article 6-III-2).',
+      body: 'Séance is published by {name}, a private individual, not a business. You can write to me through <contact>this contact page</contact>.',
+      heading: 'Publisher'
+    },
+    readings: {
+      body: 'Your weight, your waist and every number in the journal never leave this device. Nothing is sent to a server, to me or to anyone; a backup file goes only where you put it.',
+      heading: 'Your readings'
+    },
+    rights: {
+      body: 'Under the GDPR, you may access, correct or erase what concerns you, or object to its use. Since everything stays on your device, you do it yourself in settings; for anything else, ask through <contact>the contact page</contact> and I answer within a month.',
+      complaint:
+        'If you believe your rights are not respected, you may lodge a complaint with the <authority>CNIL</authority>.',
+      heading: 'Your rights'
+    },
+    storage: {
+      device:
+        'Séance sets no cookies. What it remembers stays in this browser, for this site only:',
+      erase:
+        'Clearing this site’s data in your browser erases all of it; settings erase the sessions alone.',
+      heading: 'On this device',
+      locale: 'The language you picked.',
+      log: 'The journal: each session, its sets and holds, and your Friday readings of weight and waist.',
+      offline:
+        'The app’s own files, kept by its service worker so a session runs with no network.',
+      profile: 'Whether you are reading your own numbers or the specimen.',
+      reminders:
+        'The reminder’s days, time and wording, and the last day you trained: what your browser reads to remind you while the app is closed.',
+      run: 'The session in progress, so a reload resumes it on the same plate.',
+      settings: 'Your daily protein target.',
+      specimen: 'The specimen’s made-up numbers, once you open it.',
+      table:
+        'The table: each day’s protein count, over two weeks, and the week’s shopping list.',
+      theme: 'The printing you picked, light or dark.'
+    },
+    thirdParties: {
+      body: 'Your browser talks to this site only: the fonts and every file come from it. Its host, {host}, receives your IP address with each request, to deliver the page and protect the site from abuse.',
+      heading: 'Who else receives your data'
+    },
+    title: 'Legal notice and privacy',
+    who: 'Who publishes it'
   },
   progress: {
     body: {
@@ -569,6 +624,11 @@ export const EN_DICTIONARY = defineDictionary({
       prose:
         'Erases the recorded sessions and the push-up test — for sessions run only to try the app. Measures, settings and the table stay.',
       title: 'Start from zero'
+    }
+  },
+  shell: {
+    footer: {
+      legal: 'Legal notice and privacy'
     }
   },
   specimen: {

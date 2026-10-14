@@ -11,6 +11,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 import { privateBuildNoindex } from './src/infrastructure/build/private-build-noindex.ts'
 import { programmeSource } from './src/infrastructure/build/programme-source.ts'
+import { siteHost } from './src/infrastructure/build/site-host.ts'
 import { webAppManifest } from './src/infrastructure/pwa/web-app-manifest.ts'
 import { REGIONAL_LOCALES } from './src/presentation/i18n/regional-locales.ts'
 import { themeStore } from './src/presentation/theme/theme-store.ts'
@@ -40,6 +41,7 @@ export default defineConfig({
   plugins: [
     programmeSource(),
     privateBuildNoindex(),
+    siteHost(),
     react({ compiler: { logDiagnostics: true } }),
     {
       ...optimizeLocales.vite({ locales: Object.values(REGIONAL_LOCALES) }),

@@ -8,8 +8,8 @@ import { createStore, get, set, type UseStore } from 'idb-keyval'
  */
 
 /** The names every device already holds: renaming either strands its reminders. */
-const DATABASE = 'seance'
-const SHELF = 'device'
+export const DEVICE_DATABASE = 'seance'
+export const DEVICE_SHELF = 'device'
 
 /** Everything the worker reads, named once. */
 export type DeviceKey =
@@ -25,7 +25,7 @@ let shelf: UseStore | undefined
 
 /** Opened on first use: a browser without IndexedDB fails the call, not the import. */
 const deviceShelf = (): UseStore => {
-  shelf ??= createStore(DATABASE, SHELF)
+  shelf ??= createStore(DEVICE_DATABASE, DEVICE_SHELF)
   return shelf
 }
 
