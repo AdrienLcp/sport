@@ -1,0 +1,24 @@
+@use 'styles/focus'
+@use 'styles/typography'
+
+@layer components
+  .site-footer
+    display: flex
+    justify-content: center
+
+    .legal-link
+      @include typography.ledger-state
+      @include focus.ring
+
+      // Small on purpose, on every plate: the padding keeps it a 24px target.
+      padding-block: var(--space-2xs)
+      color: var(--ink-dim)
+      text-decoration: none
+      text-underline-offset: var(--underline-offset)
+
+      &[data-hovered]
+        color: var(--ink)
+        text-decoration: underline
+
+      &[data-pressed]
+        color: var(--ink-soft)

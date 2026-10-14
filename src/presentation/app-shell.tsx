@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { ShellNotices } from './shell-notices'
+import { SiteFooter } from './site-footer'
 
 import './app-shell.sass'
 
@@ -14,5 +15,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => (
       <ShellNotices />
     </div>
     <div className='stage'>{children}</div>
+    <SiteFooter />
   </div>
 )

@@ -5,10 +5,10 @@
     // Bounded, not just tall: the plate has to be height-constrained for the
     // figure to give up space on a short screen instead of pushing the head
     // band and the action off the bottom. The notices take what they need
-    // above it; the plate keeps the rest.
+    // above it, the legal line below; the plate keeps the rest.
     height: 100dvh
     display: grid
-    grid-template-rows: auto minmax(0, 1fr)
+    grid-template-rows: auto minmax(0, 1fr) auto
     padding: max(var(--space-xs), var(--safe-area-top)) var(--gutter-right) max(var(--space-xs), var(--safe-area-bottom)) var(--gutter-left)
 
     .notices
@@ -21,6 +21,9 @@
     .stage
       min-height: 0
       display: grid
+
+    .site-footer
+      margin-top: var(--space-4xs)
 
   @include layout.wide
     .app-shell

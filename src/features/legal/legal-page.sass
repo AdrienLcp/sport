@@ -1,0 +1,80 @@
+// The legal notice, set like the colophon: a column per page on a desk, one
+// column on a phone, each part under a ruled caps heading. The storage keys
+// are ledger lines — the key in ink, what it holds under it in prose.
+
+@use '../../presentation/styles/focus'
+@use '../../presentation/styles/layout'
+@use '../../presentation/styles/typography'
+
+@layer components
+  .legal-page
+    @include layout.columns($gap: var(--space-xl), $rule: var(--hairline-soft))
+
+    .page-heading
+      @include typography.heading
+
+    .legal-section
+      display: flex
+      flex-direction: column
+      gap: var(--space-xs)
+
+    .heading
+      @include typography.caps
+
+      padding-bottom: var(--space-xs)
+      border-bottom: var(--hairline-soft)
+      color: var(--ink-dim)
+      text-box: trim-end cap alphabetic
+
+    .host-address
+      display: grid
+      font-size: var(--text-m)
+      font-style: normal
+      color: var(--ink)
+
+    .stored-keys
+      display: grid
+      margin: 0
+
+    .stored-key
+      display: grid
+      gap: var(--space-4xs)
+      padding: var(--ledger-inset) 0
+      border-bottom: var(--hairline-faint)
+
+      &:last-child
+        border-bottom: 0
+
+      dt
+        display: grid
+        font-size: var(--text-s)
+        color: var(--ink)
+        overflow-wrap: anywhere
+
+      // One family, no monospace: a key is read, not typed.
+      code
+        @include typography.strong
+
+        font-family: inherit
+
+      dd
+        @include typography.note(var(--text-s))
+
+        margin: 0
+        color: var(--ink-soft)
+
+    .text-link
+      @include focus.ring
+
+      color: var(--ink)
+      text-decoration: underline
+      text-decoration-color: var(--rule)
+      text-underline-offset: var(--underline-offset)
+      transition: text-decoration-color var(--transition-fast) var(--ease-out)
+
+      &[data-hovered]
+        text-decoration-color: var(--ink)
+
+      &[data-pressed]
+        color: var(--ink-soft)
+        text-decoration-color: var(--ink-soft)

@@ -41,6 +41,9 @@ const pageFor = {
   [paths.journalReport]: async () => ({
     Component: (await import('@/features/report/report-page')).FullReportPage
   }),
+  [paths.legal]: async () => ({
+    Component: (await import('@/features/legal/legal-page')).LegalPage
+  }),
   [paths.progress]: async () => ({
     Component: (await import('@/features/progress/progress-page')).ProgressPage
   }),
@@ -89,6 +92,7 @@ export const routes: RouteObject[] = [
       routeFor(paths.table),
       routeFor(paths.settings),
       routeFor(paths.specimen),
+      routeFor(paths.legal),
       routeFor(paths.devSheet),
       routeFor(paths.devStrip),
       routeFor(paths.devFigure),

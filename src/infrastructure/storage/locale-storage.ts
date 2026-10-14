@@ -9,7 +9,7 @@ import {
 import { isLocale, type Locale } from '@/helpers/localized-text'
 
 /** A device choice, shared by every profile. */
-const LOCALE_KEY = 'seance.locale'
+export const LOCALE_KEY = 'seance.locale'
 
 /** `null` when this device never chose. */
 export const readStoredLocale = (): Result<Locale | null, StorageReadError> =>

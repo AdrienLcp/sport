@@ -78,6 +78,7 @@ export const FR_DICTIONARY = defineDictionary({
     erratum: 'Erratum — Séance',
     figure: 'Figure — Séance',
     journal: 'Journal — Séance',
+    legal: 'Mentions légales — Séance',
     measure: 'Relevé — Séance',
     progress: 'Progrès — Séance',
     report: 'Compte rendu — Séance',
@@ -170,6 +171,60 @@ export const FR_DICTIONARY = defineDictionary({
       weightColumn: 'Poids'
     },
     title: 'Journal · Le registre'
+  },
+  legal: {
+    head: 'Mentions légales',
+    host: {
+      body: 'Séance est hébergée par :',
+      heading: 'Hébergeur'
+    },
+    kept: 'Ce qu’elle conserve',
+    measurement: {
+      body: 'Séance ne mesure aucune audience : ni compteur, ni traceur, ni statistiques. Personne, moi compris, ne sait qui l’ouvre ni combien de fois.',
+      heading: 'Mesure d’audience'
+    },
+    publisher: {
+      address:
+        'Éditeur non professionnel, je donne l’identité de l’hébergeur à la place d’une adresse postale (LCEN, article 6-III-2).',
+      body: 'Séance est éditée par {name}, à titre de particulier et non de professionnel. Tu peux m’écrire depuis <contact>cette page de contact</contact>.',
+      heading: 'Éditeur'
+    },
+    readings: {
+      body: 'Ton poids, ton tour de taille et chaque chiffre du journal ne quittent jamais cet appareil. Rien n’est envoyé à un serveur, ni à moi ni à personne ; un fichier de sauvegarde ne va que là où tu le poses.',
+      heading: 'Tes relevés'
+    },
+    rights: {
+      body: 'Le RGPD te permet d’accéder à ce qui te concerne, de le rectifier ou de l’effacer, et de t’opposer à son utilisation. Comme tout reste sur ton appareil, tu le fais toi-même dans les réglages ; pour le reste, demande-le depuis <contact>la page de contact</contact>, je réponds sous un mois.',
+      complaint:
+        'Si tu estimes que tes droits ne sont pas respectés, tu peux adresser une réclamation à la <authority>CNIL</authority>.',
+      heading: 'Tes droits'
+    },
+    storage: {
+      device:
+        'Séance ne dépose aucun cookie. Ce qu’elle retient reste dans ce navigateur, pour ce seul site :',
+      erase:
+        'Effacer les données de ce site dans ton navigateur efface tout ; les réglages effacent les séances seules.',
+      heading: 'Sur cet appareil',
+      locale: 'La langue choisie.',
+      log: 'Le journal : chaque séance, ses séries et ses tenues, et tes relevés du vendredi, poids et tour de taille.',
+      offline:
+        'Les fichiers de l’app, gardés par son service worker pour qu’une séance tourne sans réseau.',
+      profile: 'Si tu lis tes propres chiffres ou le spécimen.',
+      reminders:
+        'Les jours, l’heure et le texte du rappel, et le dernier jour d’entraînement : ce que ton navigateur lit pour te le rappeler, app fermée.',
+      run: 'La séance en cours, pour qu’un rechargement la reprenne sur la même planche.',
+      settings: 'Ton objectif de protéines par jour.',
+      specimen: 'Les chiffres inventés du spécimen, une fois que tu l’ouvres.',
+      table:
+        'La table : le compte de protéines de chaque jour, sur deux semaines, et la liste de courses de la semaine.',
+      theme: 'L’impression choisie, claire ou sombre.'
+    },
+    thirdParties: {
+      body: 'Ton navigateur ne communique qu’avec ce site : les polices et chaque fichier en viennent. Son hébergeur, {host}, reçoit ton adresse IP à chaque requête, pour servir la page et protéger le site des abus.',
+      heading: 'Qui d’autre reçoit tes données'
+    },
+    title: 'Mentions légales et confidentialité',
+    who: 'Qui l’édite'
   },
   progress: {
     body: {
@@ -584,6 +639,11 @@ export const FR_DICTIONARY = defineDictionary({
       prose:
         'Efface les séances notées et le test de pompes — pour des séances faites seulement pour essayer l’app. Les mesures, les réglages et la table restent.',
       title: 'Repartir de zéro'
+    }
+  },
+  shell: {
+    footer: {
+      legal: 'Mentions légales et confidentialité'
     }
   },
   specimen: {
