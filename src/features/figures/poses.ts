@@ -55,6 +55,12 @@ export type Pose = {
   }
   /** Chair, table, step, wall: whatever the body pushes against. */
   readonly props?: readonly Segment[]
+  /**
+   * Where the chest points on screen, for a profile whose foot cannot say it:
+   * a pointed foot runs along the shin, and a body flat on the floor reads the
+   * same face up and face down. Absent, the foot decides (`facing.ts`).
+   */
+  readonly front?: 'down' | 'left' | 'right' | 'up'
 }
 
 export const GROUND = 134
@@ -104,6 +110,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [128, 132],
       wrist: [64, 133]
     },
+    front: 'down',
     head: [54, 106],
     hip: [122, 90],
     knee: [124, 130],
@@ -178,6 +185,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [92, 105],
       wrist: [90, 111]
     },
+    front: 'up',
     head: [34, 124],
     hip: [88, 131],
     knee: [110, 114],
@@ -269,6 +277,7 @@ export const POSES: Record<FigureId, Pose> = {
     ankle: [131, 85],
     elbow: [76, 132],
     far: { ankle: [126, 133], knee: [114, 104] },
+    front: 'up',
     head: [40, 125],
     hip: [89, 115],
     knee: [111, 99],
@@ -286,6 +295,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [138, 120],
       wrist: [44, 102]
     },
+    front: 'up',
     head: [72, 108],
     hip: [112, 124],
     knee: [140, 116],
@@ -331,6 +341,7 @@ export const POSES: Record<FigureId, Pose> = {
     ankle: [84, 133],
     elbow: [158, 130],
     far: { elbow: [156, 133], wrist: [176, 134] },
+    front: 'down',
     head: [154, 122],
     hip: [106, 106],
     knee: [110, 131],
@@ -442,6 +453,7 @@ export const POSES: Record<FigureId, Pose> = {
       toe: [36, 134],
       wrist: [144, 122]
     },
+    front: 'right',
     head: [131, 80],
     hip: [100, 116],
     knee: [124, 124],
@@ -459,6 +471,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [142, 129],
       wrist: [52, 134]
     },
+    front: 'down',
     head: [50, 106],
     hip: [110, 120],
     knee: [140, 126],
@@ -493,6 +506,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [138, 83],
       wrist: [52, 133]
     },
+    front: 'down',
     head: [38, 90],
     hip: [108, 84],
     knee: [136, 80],
@@ -521,6 +535,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [45, 116],
       wrist: [135, 64]
     },
+    front: 'down',
     head: [95, 70],
     hip: [62, 106],
     knee: [40, 118],
@@ -548,6 +563,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [144, 131],
       wrist: [66, 133]
     },
+    front: 'down',
     head: [52, 88],
     hip: [116, 108],
     knee: [142, 128],
@@ -601,6 +617,7 @@ export const POSES: Record<FigureId, Pose> = {
       toe: [124, 134],
       wrist: [112, 86]
     },
+    front: 'right',
     head: [102, 32],
     hip: [104, 84],
     knee: [98, 109],
@@ -660,6 +677,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [151, 117],
       wrist: [64, 133]
     },
+    front: 'down',
     head: [46, 84],
     hip: [120, 104],
     knee: [150, 114],
@@ -840,6 +858,7 @@ export const POSES: Record<FigureId, Pose> = {
     ankle: [182, 134],
     elbow: [76, 102],
     far: { elbow: [80, 108], wrist: [64, 94] },
+    front: 'down',
     head: [82, 112],
     hip: [130, 132],
     knee: [158, 133],

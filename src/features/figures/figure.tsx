@@ -10,6 +10,7 @@ import { Button } from '@/presentation/components/button'
 import { VisuallyHidden } from '@/presentation/components/visually-hidden'
 import { useLocalize, useTranslate } from '@/presentation/i18n/i18n-provider'
 
+import { type Handedness, handednessOf, nosePath, seatPath } from './facing'
 import { FIGURE_LABELS } from './figure-labels'
 import {
   ghostOf,
@@ -52,6 +53,7 @@ const FAR = 4.2
 const PROP = 2.2
 const GROUND_WEIGHT = 1.6
 const HEAD_RADIUS = 7
+const SEAT = 4.2
 
 const WEIGHT: Partial<Record<JointId, number>> = {
   ankle: SHIN,
@@ -120,14 +122,22 @@ type BodyProps = {
   joints: Joints
   /** Handed to the gesture, which moves the limbs in place frame by frame. */
   ref?: React.Ref<SVGGElement>
+  /** The side the front is on: a profile prints a nose and a seat there. */
+  side?: Handedness
 }
 
 /**
  * Every bone keeps its path, empty while it has no length, so a gesture can
  * redraw the body by writing attributes without React drawing a frame.
  */
-export const Body: React.FC<BodyProps> = ({ isGhost = false, joints, ref }) => {
+export const Body: React.FC<BodyProps> = ({
+  isGhost = false,
+  joints,
+  ref,
+  side
+}) => {
   const head = joints.head
+  const isFacing = side !== undefined && !isGhost
 
   return (
     <g
@@ -146,6 +156,14 @@ export const Body: React.FC<BodyProps> = ({ isGhost = false, joints, ref }) => {
         />
       ))}
 
+      {isFacing && (
+        <path
+          className='limb seat'
+          d={seatPath(joints, side)}
+          strokeWidth={SEAT}
+        />
+      )}
+
       {head !== undefined && (
         <circle
           className={isGhost ? 'ghost-head' : 'head'}
@@ -154,16 +172,26 @@ export const Body: React.FC<BodyProps> = ({ isGhost = false, joints, ref }) => {
           r={HEAD_RADIUS}
         />
       )}
+
+      {isFacing && <path className='nose' d={nosePath(joints, side)} />}
     </g>
   )
 }
 
 /** Writes a pose onto a body `Body` drew, limb by limb, in its own order. */
-const repaint = (body: SVGGElement, joints: Joints): void => {
+const repaint = (
+  body: SVGGElement,
+  joints: Joints,
+  side: Handedness | undefined
+): void => {
   const limbs = body.querySelectorAll('path')
   DRAWN_BONES.forEach((bone, index) => {
     limbs[index]?.setAttribute('d', pathOf(bone, joints) ?? '')
   })
+  if (side !== undefined) {
+    body.querySelector('.seat')?.setAttribute('d', seatPath(joints, side))
+    body.querySelector('.nose')?.setAttribute('d', nosePath(joints, side))
+  }
   const head = joints.head
   const circle = body.querySelector('circle')
   if (head === undefined || circle === null) return
@@ -212,7 +240,8 @@ const useGesture = ({
   isStill,
   motion,
   playSeconds,
-  printed
+  printed,
+  side
 }: {
   body: React.RefObject<SVGGElement | null>
   isStill: boolean
@@ -220,6 +249,7 @@ const useGesture = ({
   playSeconds: number
   /** The pose shown before the gesture starts and after it ends. */
   printed: Joints
+  side: Handedness | undefined
 }): void => {
   const readPrintedPose = useEffectEvent(() => printed)
 
@@ -228,7 +258,7 @@ const useGesture = ({
     if (drawn === null) return
     // Reduced motion switched on mid-gesture stops on the printed pose, never
     // on whichever frame was showing.
-    repaint(drawn, readPrintedPose())
+    repaint(drawn, readPrintedPose(), side)
     if (motion === undefined || isStill) return
 
     // The plate is still being laid down for --turn; the body waits its turn.
@@ -241,17 +271,17 @@ const useGesture = ({
       const seconds = (now - opened) / 1000 - afterTheTurn
 
       if (seconds >= playSeconds) {
-        repaint(drawn, readPrintedPose())
+        repaint(drawn, readPrintedPose(), side)
         return
       }
 
-      repaint(drawn, sample(motion, Math.max(0, seconds)))
+      repaint(drawn, sample(motion, Math.max(0, seconds)), side)
       frame = requestAnimationFrame(draw)
     }
 
     frame = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(frame)
-  }, [body, motion, playSeconds, isStill])
+  }, [body, motion, playSeconds, isStill, side])
 }
 
 type DrawingProps = {
@@ -268,12 +298,14 @@ const Drawing: React.FC<DrawingProps> = ({ id, isStill, tempo }) => {
   const motion = motionFor(id, tempo)
   const body = useRef<SVGGElement>(null)
   const printedJoints = jointsOf(printed)
+  const side = handednessOf(printed, printedJoints)
   useGesture({
     body,
     isStill,
     motion,
     playSeconds: motion === undefined ? Infinity : playSecondsOf(id, motion),
-    printed: printedJoints
+    printed: printedJoints,
+    side
   })
 
   const { box, ground } = frameOf(...posesOf(motion, printed))
@@ -283,7 +315,7 @@ const Drawing: React.FC<DrawingProps> = ({ id, isStill, tempo }) => {
     <svg aria-label={localize(FIGURE_LABELS[id])} role='img' viewBox={box}>
       <Stage ground={ground} props={printed.props ?? []} />
       {ghost !== undefined && <Body isGhost joints={jointsOf(ghost)} />}
-      <Body joints={printedJoints} ref={body} />
+      <Body joints={printedJoints} ref={body} side={side} />
     </svg>
   )
 }
