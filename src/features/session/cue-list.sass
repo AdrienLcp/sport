@@ -109,6 +109,11 @@
   // already names the next line.
   @include layout.narrow
     .plate.spread:has(.cue-block)
+      --outer: linear-gradient(var(--rule), var(--rule))
+      --inner: linear-gradient(var(--rule-soft), var(--rule-soft))
+      --line: var(--stroke-hair)
+      --gap: calc(var(--frame-gap) + var(--stroke-hair))
+
       overflow-y: auto
       overscroll-behavior: contain
       padding: 0 var(--space-m)
@@ -116,11 +121,6 @@
       // Full bleed so the scrolled page passes under it, redrawing the strip of
       // the engraved frame it covers: outer hairline, gap, inner hairline.
       .plate-head
-        --outer: linear-gradient(var(--rule), var(--rule))
-        --inner: linear-gradient(var(--rule-soft), var(--rule-soft))
-        --line: var(--stroke-hair)
-        --gap: calc(var(--frame-gap) + var(--stroke-hair))
-
         position: sticky
         top: 0
         z-index: 1
@@ -151,11 +151,23 @@
       .next-up
         display: none
 
-      > .first-page > .action
+      // The bottom strip of the frame, the head band's twin: pinned under the
+      // action so the button never covers the engraved lines, and the page
+      // passes under it too.
+      &::after
+        content: ''
         position: sticky
         bottom: 0
         z-index: 1
-        box-shadow: 0 var(--space-s) 0 var(--ground), 0 calc(-1 * var(--space-s)) 0 var(--ground)
+        order: 7
+        flex: none
+        height: var(--space-m)
+        margin-inline: calc(-1 * var(--space-m))
+        background: var(--outer) 0 100% / 100% var(--line), var(--outer) 0 0 / var(--line) 100%, var(--outer) 100% 0 / var(--line) 100%, var(--inner) var(--gap) calc(100% - var(--gap)) / calc(100% - 2 * var(--gap)) var(--line), var(--inner) var(--gap) 0 / var(--line) calc(100% - var(--gap)), var(--inner) calc(100% - var(--gap)) 0 / var(--line) calc(100% - var(--gap)), var(--ground)
+        background-repeat: no-repeat
 
-      .exits
-        padding-bottom: var(--space-s)
+      > .first-page > .action
+        position: sticky
+        bottom: var(--space-m)
+        z-index: 1
+        box-shadow: 0 calc(-1 * var(--space-s)) 0 var(--ground)
