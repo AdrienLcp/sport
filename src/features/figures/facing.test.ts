@@ -21,6 +21,11 @@ describe('the front of a profile figure', () => {
     expect(noseTip('ytw')[1]).toBeGreaterThan(head[1])
   })
 
+  it('points the mountain climber face down, whatever its tucked foot says', () => {
+    const head = POSES['mountain-climber'].head ?? [0, 0]
+    expect(noseTip('mountain-climber')[1]).toBeGreaterThan(head[1])
+  })
+
   it('points the hollow hold face up', () => {
     const head = POSES.hollow.head ?? [0, 0]
     expect(noseTip('hollow')[1]).toBeLessThan(head[1])

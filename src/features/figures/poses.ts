@@ -376,6 +376,7 @@ export const POSES: Record<FigureId, Pose> = {
       knee: [148, 118],
       wrist: [66, 133]
     },
+    front: 'down',
     head: [52, 88],
     hip: [118, 108],
     knee: [90, 120],
