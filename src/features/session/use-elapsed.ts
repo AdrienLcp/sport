@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { usePrefersReducedMotion } from '@/infrastructure/browser'
 import { nowMs } from '@/infrastructure/clock'
@@ -21,21 +21,15 @@ const READ_EVERY_MS_REDUCED = 1000
 export const useElapsed = (
   isRunning: boolean,
   resetKey: string
-): {
-  seconds: number
-  /** The exact seconds at this instant, for the moment a set is logged. */
-  readExactSeconds: () => number
-} => {
+): { seconds: number } => {
   const isReduced = usePrefersReducedMotion()
   const [tick, setTick] = useState({ key: resetKey, seconds: 0 })
-  const run = useRef<{ key: string; startedAt: number } | null>(null)
 
   useEffect(() => {
     if (!isRunning) return
 
     const every = isReduced ? READ_EVERY_MS_REDUCED : READ_EVERY_MS
     const startedAt = nowMs()
-    run.current = { key: resetKey, startedAt }
     let timer = 0
     const read = () => {
       const passed = nowMs() - startedAt
@@ -44,21 +38,12 @@ export const useElapsed = (
       timer = window.setTimeout(read, (reads + 1) * every - passed)
     }
     timer = window.setTimeout(read, every)
-    return () => {
-      window.clearTimeout(timer)
-      run.current = null
-    }
+    return () => window.clearTimeout(timer)
   }, [isRunning, isReduced, resetKey])
-
-  const readExactSeconds = () =>
-    run.current?.key === resetKey ? (nowMs() - run.current.startedAt) / 1000 : 0
 
   // The value carries the station that produced it: a station that has not
   // started yet reads zero, with no reset inside an effect.
-  return {
-    readExactSeconds,
-    seconds: tick.key === resetKey ? tick.seconds : 0
-  }
+  return { seconds: tick.key === resetKey ? tick.seconds : 0 }
 }
 
 /** `m:ss`, never below zero: what the rest plate and the band print. */

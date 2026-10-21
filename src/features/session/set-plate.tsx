@@ -17,6 +17,7 @@ import {
   movementOf,
   numberToBeat
 } from '@/features/program/training-log'
+import { nowMs } from '@/infrastructure/clock'
 import { ActionButton } from '@/presentation/components/action'
 import { Button } from '@/presentation/components/button'
 import { FigureFrame, Plate, PlateHead } from '@/presentation/components/plate'
@@ -38,7 +39,7 @@ type SetPlateProps = {
   log: Log
   /** Absent on the first set, where there is nothing to step back to. */
   onBack?: () => void
-  /** `value` is the reps counted or the whole seconds held. */
+  /** `value` is the reps counted or the whole seconds held; `elapsed`, the seconds since the plate arrived. */
   onDone: (value: number, elapsed: number) => void
   onStop: () => void
   session: Session
@@ -92,7 +93,10 @@ export const SetPlate: React.FC<SetPlateProps> = ({
   const key = `${step}-${side}`
   const [startedKey, setStartedKey] = useState<string | null>(null)
   const isRunning = timed && startedKey === key
-  const { readExactSeconds, seconds: elapsed } = useElapsed(isRunning, key)
+  const { seconds: elapsed } = useElapsed(isRunning, key)
+  // An EMOM's minute runs from the plate's arrival, whether the set is counted
+  // or timed: a rep set has no chrono, and a hold's starts once the reader is set.
+  const [arrivedAt] = useState(nowMs)
 
   const remaining = target - elapsed
   const chrono =
@@ -133,7 +137,10 @@ export const SetPlate: React.FC<SetPlateProps> = ({
     : Math.min(target, Math.round(elapsed))
 
   const finish = () =>
-    onDone(timed ? Math.max(0, heldSeconds) : count, readExactSeconds())
+    onDone(
+      timed ? Math.max(0, heldSeconds) : count,
+      (nowMs() - arrivedAt) / 1000
+    )
 
   const ledgerLabel = (
     position: number,
