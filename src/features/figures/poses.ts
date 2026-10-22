@@ -13,9 +13,9 @@ export type Segment = readonly [Point, Point]
  * flat. The few plates seen from the front give the body its width — `collar`
  * and `pelvis`, where an arm and a leg hang — which a profile never needs.
  *
- * Joints are optional because a detail plate is a real plate: when a movement
- * lives entirely in the ankle, the manual cuts the body off at the thigh rather
- * than printing a person too small to read.
+ * Joints are optional so a plate could be cut down to the part that moves. No
+ * plate is any more: a leg cut at the thigh names no front (`facing.ts`), and
+ * the calf raise drawn that way read as a stick that barely stirred.
  */
 export type Pose = {
   readonly head?: Point
@@ -86,16 +86,36 @@ export const POSES: Record<FigureId, Pose> = {
     wrist: [58, 46]
   },
 
-  /* A detail plate, one leg only: the movement lives in the ankle, so the manual
-     cuts the body at the thigh and drops the far leg rather than printing a
-     whole person too small to read the heel. Flat floor, no step: up on the
-     ball of the foot, the heel high off the ground. */
+  /* Standing side-on, both hands on a wall in front, up on the balls of the
+     feet. A leg cut at the thigh named no front and moved only its heel, so
+     the plate read as a stick: the whole body is printed so it can rise. The
+     foot pivots on its ball, which carries the body up AND toward the wall —
+     the head climbs and the elbows fold, and that is what the eye catches
+     before it ever finds the heel. The foot is one straight bone, its back
+     end the heel: a heel bone off the ankle folded the foot in two. */
   'calf-raise': {
-    ankle: [126, 113],
-    heel: [110, 121],
-    hip: [134, 47],
-    knee: [130, 81],
-    toe: [132, 133]
+    ankle: [107, 120],
+    elbow: [120, 54],
+    far: {
+      ankle: [109, 120],
+      elbow: [125, 49],
+      knee: [110, 96],
+      toe: [118, 133],
+      wrist: [141, 65]
+    },
+    front: 'right',
+    head: [111, 20],
+    hip: [107, 72],
+    knee: [108, 96],
+    props: [
+      [
+        [143, 8],
+        [143, 134]
+      ]
+    ],
+    shoulder: [110, 34],
+    toe: [116, 133],
+    wrist: [140, 62]
   },
 
   /* Quadruped, the rounded half: the mid-back pushed up to the ceiling, the

@@ -104,8 +104,8 @@ export const MOVEMENTS: Record<MovementId, Movement> = {
         fr: 'Mollets, 1 s en haut.'
       },
       still: {
-        en: 'Feet flat on the floor, knees straight.',
-        fr: 'Pieds à plat au sol, genoux tendus.'
+        en: 'Knees straight; the balls of the feet never leave the floor.',
+        fr: 'Genoux tendus, l’avant-pied ne quitte jamais le sol.'
       }
     },
     figure: 'calf-raise',

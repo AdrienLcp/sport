@@ -47,14 +47,25 @@ export const COUNTERPOSES: Partial<Record<FigureId, Pose>> = {
     wrist: [146, 50]
   },
 
-  /* Heels back on the floor. The ball of the foot is the contact and never
-     moves; everything above it rides down with the heel. */
+  /* Heels back on the floor, the body back down and away from the wall. The
+     ball of the foot and the hands are the contacts and never move. */
   'calf-raise': {
-    ankle: [116, 124],
-    heel: [104, 131],
-    hip: [122, 58],
-    knee: [119, 92],
-    toe: [132, 133]
+    ankle: [100, 132],
+    elbow: [118, 62],
+    far: {
+      ankle: [102, 132],
+      elbow: [119, 61],
+      knee: [103, 108],
+      toe: [118, 133],
+      wrist: [141, 65]
+    },
+    front: 'right',
+    head: [104, 32],
+    hip: [100, 84],
+    knee: [101, 108],
+    shoulder: [103, 46],
+    toe: [116, 133],
+    wrist: [140, 62]
   },
 
   /* The hollowed half: the belly drops, the mid-back sags below the line of

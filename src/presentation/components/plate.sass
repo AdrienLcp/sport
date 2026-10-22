@@ -157,7 +157,7 @@
       display: flex
       align-items: baseline
       flex-wrap: wrap
-      gap: 0 var(--space-xs)
+      gap: var(--space-3xs) var(--space-xs)
       margin-top: var(--space-xs)
       font-size: var(--text-m)
       color: var(--ink-dim)
@@ -173,9 +173,12 @@
 
         color: var(--signal-ink)
 
-      // Last week's number sits against the count, never pushed to the far
-      // edge: it is the only reward the plate shows, so it reads in full ink.
+      // Last week's number takes a line of its own under the count, never
+      // pushed to the far edge: wrapped in with no gap, it touched the count's
+      // digits. It is the only reward the plate shows, so it reads in full ink.
       .prev
+        flex-basis: 100%
+        margin-top: var(--space-s)
         white-space: nowrap
 
         b

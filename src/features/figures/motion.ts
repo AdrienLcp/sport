@@ -88,8 +88,8 @@ const CHAIN: readonly Bone[] = (() => {
  * The joint that barely moves between the two drawings is what the body is
  * pushing against: the planted foot, the hand on the floor, the shoulder on the
  * mat. Anchoring the rebuilt pose there keeps the contact exactly where it was
- * drawn — measuring the lowest point instead would lift the whole calf raise,
- * whose heel is meant to drop below the step it stands on.
+ * drawn — measuring the lowest point instead would pin the calf raise on its
+ * heel, which leaves the floor, rather than on the ball of the foot.
  */
 const contactOf = (reference: Joints, drawn: Joints): JointId | undefined => {
   let anchor: JointId | undefined

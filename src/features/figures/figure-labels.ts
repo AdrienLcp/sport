@@ -8,8 +8,8 @@ export const FIGURE_LABELS: Record<FigureId, LocalizedText> = {
     fr: 'Silhouette debout de profil, un bras tendu qui décrit un cercle complet autour de l’épaule, l’autre bras immobile le long du corps.'
   },
   'calf-raise': {
-    en: 'Detail of a leg standing on the flat floor, up on the ball of the foot, heel lifted.',
-    fr: 'Détail d’une jambe debout sur le sol plat, sur la pointe du pied, talon décollé.'
+    en: 'Figure standing side-on, both hands on a wall in front, rising from flat feet onto the balls of the feet, heels lifted.',
+    fr: 'Silhouette debout de profil, les deux mains au mur devant elle, qui monte des pieds à plat sur la pointe des pieds, talons décollés.'
   },
   'cat-cow': {
     en: 'Figure on all fours, hands and knees on the floor, the back rounding up to the ceiling with the head tucked, then hollowing with the head raised.',
