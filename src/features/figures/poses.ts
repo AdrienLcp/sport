@@ -195,12 +195,14 @@ export const POSES: Record<FigureId, Pose> = {
      purpose: laid at a shallow angle it met the crossed shin and the two arms at
      the same pitch, and four limbs at one angle print a lattice, not a body. A
      vertical column with one bar across it is the figure four, and it is the
-     only arrangement of these five strokes a reader can name at a glance. */
+     only arrangement of these five strokes a reader can name at a glance. Its
+     shin leans toward the feet: tipped toward the head, the knee bent the
+     wrong way. */
   'glute-stretch': {
     ankle: [91, 104],
     elbow: [68, 112],
     far: {
-      ankle: [86, 80],
+      ankle: [108, 85],
       elbow: [72, 114],
       knee: [92, 105],
       wrist: [90, 111]

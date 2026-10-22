@@ -133,6 +133,18 @@ export type Curve = (t: number) => number
  */
 const THROUGH_THE_PAGE = (170 / 180) * Math.PI
 
+/**
+ * A limb turns at its joint, carried by the bone above it. Turned on its own by
+ * the shorter way round, it can spin against that bone: the quad stretch's shin
+ * swings 141° up behind the body while its foot took the other road, a
+ * wrong-way turn on the screen. So every bone turns relative to its carrier,
+ * unless the carrier itself passes through the page and has no turn to give.
+ */
+/** The joint each joint hangs from: the ankle hangs from the knee. */
+const CARRIER: ReadonlyMap<JointId, JointId> = new Map(
+  BONES.map((bone) => [bone.to, bone.from])
+)
+
 const isThroughThePage = (from: number, to: number): boolean =>
   Math.abs(turn(from, to, 1) - from) >= THROUGH_THE_PAGE
 
@@ -184,11 +196,27 @@ export const interpolate = (
       continue
     }
 
-    built[bone.to] = polar(
-      parent,
-      turn(leaves, arrives, eased),
-      was + (becomes - was) * eased
-    )
+    const carrier = CARRIER.get(bone.from)
+    const carrierStart = carrier && start[carrier]
+    const carrierEnd = carrier && end[carrier]
+    const carrierBuilt = carrier && built[carrier]
+    const angle =
+      carrierStart !== undefined &&
+      carrierEnd !== undefined &&
+      carrierBuilt !== undefined &&
+      !isThroughThePage(
+        angleOf(carrierStart, startParent),
+        angleOf(carrierEnd, endParent)
+      )
+        ? angleOf(carrierBuilt, parent) +
+          turn(
+            leaves - angleOf(carrierStart, startParent),
+            arrives - angleOf(carrierEnd, endParent),
+            eased
+          )
+        : turn(leaves, arrives, eased)
+
+    built[bone.to] = polar(parent, angle, was + (becomes - was) * eased)
   }
 
   /*
