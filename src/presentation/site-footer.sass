@@ -3,16 +3,25 @@
 
 @layer components
   .site-footer
+    // Positioned like the plate above it, so a focus ring reaching up over
+    // the frame is painted on the frame rather than under it.
+    position: relative
     display: flex
+    flex-wrap: wrap
     justify-content: center
+    column-gap: var(--space-l)
 
-    .legal-link
+    .credit,
+    .footer-link
       @include typography.ledger-state
-      @include focus.ring
 
       // Small on purpose, on every plate: the padding keeps it a 24px target.
       padding-block: var(--space-2xs)
       color: var(--ink-dim)
+
+    .footer-link
+      @include focus.ring
+
       text-decoration: none
       text-underline-offset: var(--underline-offset)
 
@@ -22,3 +31,22 @@
 
       &[data-pressed]
         color: var(--ink-soft)
+
+    // Inside a sentence a link needs more than its place to read as one,
+    // so it keeps the hairline underline of the legal page's prose.
+    .author-link
+      @include focus.ring
+
+      padding-block: var(--space-2xs)
+      color: inherit
+      text-decoration: underline
+      text-decoration-color: var(--rule)
+      text-underline-offset: var(--underline-offset)
+
+      &[data-hovered]
+        color: var(--ink)
+        text-decoration-color: var(--ink)
+
+      &[data-pressed]
+        color: var(--ink-soft)
+        text-decoration-color: var(--ink-soft)
