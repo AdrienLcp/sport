@@ -162,10 +162,12 @@ The palette is two inks and one signal, and the discipline is that there is no t
 A warm two-ink palette on printing black, with a single cinnabar signal held in reserve for rules and points.
 
 ### Primary
+
 - **Cinnabar** (`#e2411e`): the only signal in the world, and it is spent sparingly — the rest-state chrono rule, the active marker, the focus ring, the caret. It carries no body text. Measured 4.5:1 on ground, which is the floor for a 2px rule and below what small text needs, which is why a second value exists for that case.
 - **Working cinnabar** (`#f05a31`): the working variant, 5.7:1, used when the signal must carry small text — a ledger state, a count against target. It exists so the signal never has to be read at 4.5:1 in a dark room.
 
 ### Neutral
+
 - **Printer's black** (`#14120f`): the ground. Warm, never pure black; `color-scheme: dark` is declared so browser-drawn surfaces follow.
 - **The day printing** swaps ground and ink — cream paper `#f3eee2`, printer's black `#1a1712` (15.4:1) — and re-steps every other value against the paper: prose `#453e33` (9.1:1), spent `#655c4f` (5.7:1), done `#746a5c` (4.6:1), and a deeper cinnabar, `#c7361a` for rules (4.6:1) and `#ad2f10` for small text (5.7:1). The rules darken instead of lightening. Both printings are written in `oklch()` in `_tokens.sass`, each value with its measured ratio.
 - **Cream** (`#e8e2d4`): the ink, 14.5:1 (AAA). Headings, figures, numbers read in action, and the fill of the primary action.
@@ -174,12 +176,14 @@ A warm two-ink palette on printing black, with a single cinnabar signal held in 
 - **Spent cream** (`#8a8071`): 4.8:1 (AA). A movement already done. The strike-through carries the state; this value only stops it from competing.
 
 ### Tertiary — the figure's own inks
+
 The figures are drawn in their own values, and they live in the token file rather than on the plate, because the contact sheet and the decomposition strip draw the same figures outside it.
 - **`#938877` (fig-far)**: the far side of the body.
 - **`#7b7263` (fig-ghost)**: the other end of a gesture, shown in reduced-motion.
 - **`#6a6154` (fig-prop)**: floor, chair, step, table. The floor must be visible to say that the movement happens on the ground — an earlier value at `#4a4236` measured 1.9:1 against the plate and vanished.
 
 ### The rules
+
 - **`#4a4236` (rule)**: the frame hairline. **`#3a342b` (rule-mid)**: under the head band. **`#2e2a22` (rule-soft)**: block separators. **`#201d18` (rule-faint)**: ledger lines.
 
 ### Named Rules
@@ -197,6 +201,7 @@ The figures are drawn in their own values, and they live in the token file rathe
 **Character:** A grotesque with enough width to stay legible at a metre and enough weight range to build the whole hierarchy without a second face. Self-hosting is not a preference but a requirement: the app runs with no network during a set, and `font-display: optional` is set so the font never swaps in under a reader and moves a line mid-gesture: when it misses its first ~100 ms, the page keeps the metric-matched `Libre Franklin fallback` faces (Arial, sized per weight band) for its whole life, and the next page has the font from cache. `font-synthesis: none` — a weight that does not exist is never faked. `font-variant-numeric: tabular-nums` is set on `body`, so every number in the product sits in its own column and a count changing from 9 to 10 does not shift the line.
 
 ### Hierarchy
+
 - **Display** (800, `sizes.fluid(4.5rem, 7.5rem)` from a 15rem to a 40rem screen, lh 1): the rest countdown, and only it. The one place where a number is allowed to be enormous.
 - **Headline** (800, `sizes.fluid(1.9rem, 2.9rem)` from a 24rem to a 40rem screen): plate titles — the session name on the title plate.
 - **Title** (800, `sizes.fluid(1.75rem, 2.6rem)`, same range as the headline): the movement name on a working plate.
@@ -256,6 +261,7 @@ Form language in the figures is separate and deliberate: bodies are drawn as rou
 ## Components
 
 ### Buttons
+
 - **Shape:** square (0 radius), full width, no border.
 - **Primary:** cream fill on ground text (`ink` → `ground`), 22px vertical padding, 69px tall, uppercase 800 at 0.14em tracking. It is deliberately the largest touch target on any plate — one sweaty hand, at a metre, must not have to aim.
 - **Hover / Active:** hover lifts the fill to white, active drops it to `ink-soft`. 180ms, `ease-out`.
@@ -263,15 +269,18 @@ Form language in the figures is separate and deliberate: bodies are drawn as rou
 - **Ghost:** transparent with a 1px inset `rule` ring, `ink-dim` text, 17px padding, 54px tall, 0.85rem. Hover raises the text to `ink` and the ring to `ink-dim`. This is the tone for every secondary destination, including the exit from a running session.
 
 ### Cards / Containers
+
 There are no cards. The plate is the only container: ground background, the engraved triple-hairline frame, 22px inset, no radius, no shadow. Nested containers do not exist in this world.
 
 ### Inputs / Fields
+
 - **Style:** no box at all. A field is a baseline row with a 2px bottom rule; the input itself is transparent, borderless, 2.1rem / 800 in `ink` with tabular numerals — the value is typographically a display number, not form filler.
 - **Focus:** the bottom rule turns cinnabar via `:focus-within`. Nothing glows, nothing grows.
 - **Placeholder:** `ink-dim` at weight 400, so an empty field reads as empty rather than as a faint value.
 - **Minimum height:** 56px.
 
 ### Ledger (signature component)
+
 The register of the five stations, and the system's most reused idea. A borderless list; each row is a baseline flex of address (3.6em, 0.8em, tracked), label, and state, separated by `rule-faint` hairlines with no rule under the last row.
 - **At rest:** `ink-dim`.
 - **Live:** `ink`, with its state in `signal-ink`.
@@ -280,34 +289,43 @@ The register of the five stations, and the system's most reused idea. A borderle
 The same component carries the five movements of a session, the five drills of a warm-up, and the three plates of the nutrition screen. Reuse it before inventing a list.
 
 ### The chrono rule (signature component)
+
 A 1px absolutely-positioned bar sitting exactly on the head band's bottom border, scaled from the left by `transform`. Running: `ink`, full → empty. Rest: 2px and cinnabar, sitting 2px lower. Read the other way as `.gauge`, it fills instead of empties and switches from `ink-dim` to `ink` at target, with a 320ms transition.
 
 ### The figure (signature component)
+
 Drawn SVG, one movement per figure, looping without end — unless the movement does not move. A pure hold has no entry in `MOTIONS` and the plate stands still: the plank, the side plank, the hollow, and every one of the eleven stretches. A still figure here is the system working, not a figure that failed to start. Depth is carried by **stroke weight**: torso 8, thigh 5.5, shin 4.2, far side 4.2. Props and floor in `fig-prop`. Under `prefers-reduced-motion` the figure does not freeze — it prints the arrival pose behind the working pose as a broken construction line, which is what a real manual does.
 
 ### The cue block
+
 Under the legend of a set or warm-up plate: a ruled toggle line (« The movement in detail · 4 steps »), then a two-column list — the term in head-band capitals (Moves, Still, Squeeze, Tempo, Breathe, Support, Stop), the answer in `ink-soft` prose. The toggle swaps the list for the numbered how-to **in the same place**, so the plate never grows. On a phone the block scrolls inside itself under a figure that keeps at least `clamp(150px, 26svh, 220px)`, and « Next » steps aside: the register and the action never move. The « Tempo » line and the figure's cycle read the same `Tempo`.
 
 ### The erratum
+
 What a printed manual tips in when a page came out wrong: a plate with no figure, the band reading « Erratum » with the failing address as its rank, a headline, one line of prose saying nothing noted is lost, the raw reason in a `facts` list, then the one full-width action back to the session and a ghost reload. It carries no cinnabar: an error is not a state to confirm. The same plate, without reason or reload, answers an unknown address.
 
 ### The charts (the curves plate)
+
 The curves are the journal's register drawn: one form per question, no dashboard. A **day grid** (weeks as columns, weekdays as rows) is the register of trained evenings — a whole session inks the cell, a stopped one outlines it, a rest day is the faint cell it is. **Columns** count a week: sessions (whole inked, stopped as an outline stacked above), repetitions, minutes held; past weeks in spent ink, the current week — still being written — in full ink. **Lines** follow the body, one measure per chart and never two scales on one axis; the last reading is the cinnabar dot, as in the journal. Marks are square-ended like everything else, grids are hairlines, and no text is drawn inside an SVG. Every chart has its numbers in a table beneath, a slip framed by a hairline that repeats the value under the pointer, and an invisible native range input over the plot that the keyboard, a screen reader and a dragging finger all walk the marks with.
 
 Regularity is counted in **weeks, never days**: a rest day is part of the programme, and a day streak would punish the one thing it asks for. It is printed as facts — current run, longest run, steady weeks — never as a flame or a badge.
 
 ### The slips above the plate
+
 What the app needs to say about itself sits in a framed band above the plate, never over it: a new printing ready (reload), the manual installable (install, not now), and the **specimen stamp** — the one band framed in cinnabar, so a visitor reading made-up numbers never mistakes them for their own.
 
 ### Settings controls
+
 The colophon's controls are the manual's own pieces: choices are ledger lines (the chosen one bold, its state in `signal-ink`), a switch is the shopping list's square tick, weekdays are framed cells that ink when a reminder falls on them, and the time is a ruled field like a reading.
 
 ### Browser surfaces
+
 Selection is `ink` on `ground` inverted, the caret is cinnabar, the scrollbar is `rule` on `ground` and thin, the focus ring is a 2px cinnabar outline at 3px offset, and `-webkit-tap-highlight-color` is cleared. These ship with the design; they are not defaults left alone.
 
 ## Do's and Don'ts
 
 ### Do:
+
 - **Do** reuse the ledger, the plate frame and the chrono rule before drawing a new component. Three scales of the same framed rectangle is what makes this read as a system.
 - **Do** carry state with length, weight or a strike-through, and give any colour-coded state a second channel (height, weight, or a mark).
 - **Do** write the measured contrast ratio above every new colour value in `_tokens.sass`.
@@ -316,6 +334,7 @@ Selection is `ink` on `ground` inverted, the caret is cinnabar, the scrollbar is
 - **Do** set every flex parent that must not grow with `min-height: 0`, or the plate will scroll out of its own frame.
 
 ### Don't:
+
 - **Don't** add a third family of value — no arbitration gray, no second accent, no new hue. If an element needs separation, change weight, size or rule.
 - **Don't** use `box-shadow` with an offset or a blur. Depth here is engraved, not lifted.
 - **Don't** introduce `border-radius`. It is 0 throughout and there is no scale to draw from.

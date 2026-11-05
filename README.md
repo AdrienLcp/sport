@@ -30,12 +30,12 @@ apart from your own.
 
 ## The PWA
 
-| Piece | Where |
-| --- | --- |
-| Web app manifest (icons, maskable, screenshots, shortcuts) | `src/infrastructure/pwa/web-app-manifest.ts` |
-| Service worker: precached shell, offline navigation, reminders, notification clicks | `src/service-worker/` |
-| Update-ready slip and install slip | `src/presentation/shell-notices.tsx`, `src/infrastructure/pwa/` |
-| Reminders: schedule, in-app clock, device store the worker reads | `src/features/reminders/`, `src/infrastructure/notifications.ts`, `src/infrastructure/storage/device-store.ts` |
+| Piece                                                                               | Where                                                                                                          |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Web app manifest (icons, maskable, screenshots, shortcuts)                          | `src/infrastructure/pwa/web-app-manifest.ts`                                                                   |
+| Service worker: precached shell, offline navigation, reminders, notification clicks | `src/service-worker/`                                                                                          |
+| Update-ready slip and install slip                                                  | `src/presentation/shell-notices.tsx`, `src/infrastructure/pwa/`                                                |
+| Reminders: schedule, in-app clock, device store the worker reads                    | `src/features/reminders/`, `src/infrastructure/notifications.ts`, `src/infrastructure/storage/device-store.ts` |
 
 **Reminders, honestly.** Séance has no server, on purpose, so there is no Web
 Push. A reminder arrives on time while the app is open, even in a background
@@ -92,15 +92,19 @@ react-aria, indented Sass, strict TypeScript, Biome, Vitest,
 `result`, `safe-storage`, `browser`, `react`, `theme-preference`.
 The visual system is described in [`DESIGN.md`](DESIGN.md).
 
-| Route | Plate |
-| --- | --- |
-| `/` | The session of the day; `/report` opens its report over it |
-| `/journal` | The register; `/journal/measure`, `/journal/report`, `/journal/backup` |
-| `/progress` | The curves |
-| `/table` | The count; `/table/pot`, `/table/market` |
-| `/settings` | Language, printing, reminders, install, data, specimen |
-| `/specimen` | Opens the made-up profile and lands on the curves |
-| `/dev/sheet`, `/dev/strip`, `/dev/figure/:id` | Drawing tools: contact sheet, decomposition, one figure |
+| Route                                         | Plate                                                                  |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| `/`                                           | The session of the day; `/report` opens its report over it             |
+| `/journal`                                    | The register; `/journal/measure`, `/journal/report`, `/journal/backup` |
+| `/progress`                                   | The curves                                                             |
+| `/table`                                      | The count; `/table/pot`, `/table/market`                               |
+| `/settings`                                   | Language, printing, reminders, install, data, specimen                 |
+| `/specimen`                                   | Opens the made-up profile and lands on the curves                      |
+| `/dev/sheet`, `/dev/strip`, `/dev/figure/:id` | Drawing tools: contact sheet, decomposition, one figure                |
+
+## Known upstream issues
+
+- `pnpm install` warns that `glob@11.1.0` is deprecated: `workbox-build` 7.4.1, the latest, which `vite-plugin-pwa` builds the service worker with, still depends on it. [GoogleChrome/workbox#3506](https://github.com/GoogleChrome/workbox/pull/3506) moves it to `tinyglobby`; no release carries it yet.
 
 ## Licence
 
