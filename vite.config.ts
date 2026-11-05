@@ -42,7 +42,7 @@ export default defineConfig({
     programmeSource(),
     privateBuildNoindex(),
     siteHost(),
-    react({ compiler: { logDiagnostics: true } }),
+    react({ compiler: { reportDiagnostics: true } }),
     {
       ...optimizeLocales.vite({ locales: Object.values(REGIONAL_LOCALES) }),
       enforce: 'pre'
