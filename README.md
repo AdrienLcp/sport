@@ -64,14 +64,24 @@ to `private/programme/<file>.ts` when it exists and to the public file
 otherwise, for Vite, Vitest and `tsc` alike; the build prints which one it
 read. A copy exports the same names as the file it replaces.
 
-`pnpm deploy:personal`, in a clone with a Netlify token configured —
-`NETLIFY_TOKEN_FILE`, or its path on the first line of
-`netlify-token-path.local` — runs `pnpm validate` and deploys the private build
-to a personal site.
+`pnpm deploy:personal` runs `pnpm validate` and deploys the private build to a
+personal site, with a token read from Bitwarden.
 
 The public demo, https://sport.adrienlcp.com, is deployed by CI on every push to
 `main`, from a clone that never holds the private programme; it refuses to
 deploy anything but the public one.
+
+## Operations
+
+Deploying, updating the dependencies, recreating the hosting, renewing the
+secrets and what to do when a step breaks: [`docs/operations/`](docs/operations/README.md).
+
+```bash
+pnpm ship             # push main; CI validates and deploys the public demo
+pnpm deploy:personal  # validate and deploy the private build to Netlify
+pnpm secrets:sync     # write the CI's Cloudflare secrets from Bitwarden
+pnpm hosting:create   # create whatever piece of the hosting is missing
+```
 
 ## Develop
 
